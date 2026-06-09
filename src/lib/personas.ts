@@ -1,0 +1,231 @@
+// Tenant personas · the heart of Gharpayy lead routing.
+// Every Insights surface uses these to (a) tell the right story and
+// (b) hand the lead to the right expert (see src/lib/experts.ts).
+
+export type Persona = {
+  id: string;
+  emoji: string;
+  title: string;
+  short: string;             // one-line description
+  storyQuote: string;        // insider one-liner shown on persona page hero
+  budget: [number, number];
+  bhk: string;
+  needs: string[];           // must-haves
+  dealBreakers?: string[];   // red flags we screen for
+  bestAreas: string[];       // area slugs (ordered, best-first)
+  employers?: string[];
+  colleges?: string[];
+  whatsappOpener: string;    // pre-filled WA message body
+  captainId?: string;        // override expert (otherwise captainForPersona)
+  tone?: "warm" | "premium" | "punchy";
+};
+
+export const PERSONAS: Persona[] = [
+  {
+    id: "techie-orr",
+    emoji: "👨‍💻",
+    title: "ORR techie",
+    short: "Walk-to-office near Ecoworld / ETV / Manyata.",
+    storyQuote: "You'll pay ₹8k extra for 'walk to office.' Worth it after the second monsoon.",
+    budget: [22000, 55000],
+    bhk: "1 / 2 BHK",
+    needs: ["Walk to office", "Fast Wi-Fi (50+ Mbps)", "Power backup", "Gated society"],
+    dealBreakers: ["Ground floor near drain", "No diesel backup", "No two-wheeler parking"],
+    bestAreas: ["bellandur", "marathahalli", "sarjapur-road", "whitefield", "mahadevapura"],
+    employers: ["Microsoft", "Oracle", "Adobe", "Myntra", "SAP", "Wipro", "Amazon", "Mercedes-Benz"],
+    whatsappOpener: "Hey · I'm an ORR techie looking for a 1/2 BHK walk to my office. Send me 3 options I can tour this weekend.",
+    tone: "punchy",
+  },
+  {
+    id: "student-christ",
+    emoji: "🎓",
+    title: "Christ / Jain student",
+    short: "Near campus, meals included, parents-approved.",
+    storyQuote: "My mom needs to FaceTime the warden before I sign. Send me PGs that can handle that call.",
+    budget: [9000, 22000],
+    bhk: "PG / Shared",
+    needs: ["Walking distance to campus", "Hot meals (3x)", "CCTV + biometric", "Laundry"],
+    dealBreakers: ["No warden onsite", "Late-night gate locked", "Shared bathroom > 3 people"],
+    bestAreas: ["koramangala", "btm-layout", "jayanagar", "bannerghatta-road"],
+    colleges: ["Christ University", "Jain University", "St Joseph's", "JNC", "Mount Carmel"],
+    whatsappOpener: "Hi · I'm a Christ/Jain student. Need a verified PG with meals, walking distance to campus, parents can speak to the warden.",
+    tone: "warm",
+  },
+  {
+    id: "founder-koramangala",
+    emoji: "🚀",
+    title: "Founder / startup operator",
+    short: "Walk to Razorpay / Zomato / Ola HQs, host-able 1 BHK.",
+    storyQuote: "I host investors. The Uber driver should know my building name. Show me those 4 streets.",
+    budget: [35000, 85000],
+    bhk: "1 / 2 BHK",
+    needs: ["Quiet for video calls", "Premium furnishing", "Address that signals seriously", "Café-rich street"],
+    dealBreakers: ["Echoey rooms", "Window facing main road", "Building without a name"],
+    bestAreas: ["koramangala", "indiranagar", "domlur", "hsr-layout"],
+    employers: ["Razorpay", "Zomato", "Ola", "Swiggy", "CRED", "Postman"],
+    whatsappOpener: "Hey · early-stage founder. Need a furnished 1BHK in Koramangala / Indiranagar I can host investors at. Premium budget, want speed.",
+    tone: "premium",
+  },
+  {
+    id: "ecity-fresher",
+    emoji: "🛠️",
+    title: "Electronic City fresher",
+    short: "Affordable PG with shuttle to Infosys / Wipro / Biocon.",
+    storyQuote: "First salary, EMI, parents back home. ₹12k all-in or it doesn't work.",
+    budget: [8000, 16000],
+    bhk: "PG / Shared",
+    needs: ["Office shuttle pickup", "Meals included", "Laundry", "Tight monthly budget"],
+    dealBreakers: ["No shuttle", "PG too far from highway", "Gas geyser only"],
+    bestAreas: ["electronic-city", "bommanahalli", "begur", "btm-layout"],
+    employers: ["Infosys", "Wipro", "TCS", "Biocon", "HCL"],
+    whatsappOpener: "Hi · fresher joining Infosys/Wipro at Electronic City. Need an under-₹12k PG with company shuttle pickup. Move in next week.",
+    tone: "warm",
+  },
+  {
+    id: "manyata-pro",
+    emoji: "🏢",
+    title: "Manyata professional",
+    short: "5-min commute to IBM / Target / Philips, premium feel.",
+    storyQuote: "Hebbal flyover at 8:45am is a punishment. Walk to gate or nothing.",
+    budget: [18000, 45000],
+    bhk: "1 BHK / Private",
+    needs: ["Cab/walk to Manyata gate", "Quiet zone", "Hot meals", "Female-safe building"],
+    bestAreas: ["hebbal", "thanisandra", "hennur", "kalyan-nagar"],
+    employers: ["IBM", "Target", "Nokia", "Philips", "Cognizant"],
+    whatsappOpener: "Hey · work at Manyata, want sub-15-min commute. Looking for a 1 BHK / private room ₹20–35k.",
+    tone: "punchy",
+  },
+  {
+    id: "couple-relocating",
+    emoji: "💍",
+    title: "Newly-married / relocating couple",
+    short: "Managed 1 / 2 BHK home, direct to owner, fast move-in.",
+    storyQuote: "Wedding's done. Movers in 12 days. We need keys, not a 30-tab spreadsheet.",
+    budget: [25000, 60000],
+    bhk: "1 / 2 BHK",
+    needs: ["Furnished kitchen", "Society amenities", "7-day move-in", "Paperwork handled"],
+    dealBreakers: ["No society pool of vendors", "No registered rental agreement"],
+    bestAreas: ["whitefield", "hsr-layout", "marathahalli", "indiranagar", "jp-nagar"],
+    whatsappOpener: "Hi · relocating to Bengaluru, just married. Want a furnished 1/2 BHK we can move into in 7-10 days. Direct to owner please.",
+    tone: "warm",
+  },
+  {
+    id: "iisc-researcher",
+    emoji: "🔬",
+    title: "IISc / research student",
+    short: "Quiet 1 BHK or PG near Malleshwaram / Yeshwanthpur.",
+    storyQuote: "I write at 2am. Need a wall my neighbour doesn't share.",
+    budget: [12000, 28000],
+    bhk: "PG / 1 BHK",
+    needs: ["Soundproof bedroom", "Cycle-able to lab", "Vegetarian meals", "Long-stay friendly"],
+    bestAreas: ["malleshwaram", "rajajinagar", "vijayanagar"],
+    colleges: ["IISc", "MS Ramaiah", "Bangalore University"],
+    whatsappOpener: "Hi · IISc/MSR student. Quiet 1BHK or single-occupancy PG, vegetarian, walking/cycling distance to campus.",
+    tone: "warm",
+  },
+  {
+    id: "girls-only",
+    emoji: "👩",
+    title: "Girls-only PG seeker",
+    short: "Verified girls PG with strict security and warden support.",
+    storyQuote: "I'm not paying for a 'female floor' that shares a stairwell. Show me real girls-only buildings.",
+    budget: [10000, 22000],
+    bhk: "PG / Shared",
+    needs: ["Female-only building (not floor)", "Female warden onsite", "CCTV + biometric", "Curfew option"],
+    dealBreakers: ["Co-ed common areas", "No female caretaker", "Outside food vendors freely entering"],
+    bestAreas: ["koramangala", "marathahalli", "hsr-layout", "btm-layout", "indiranagar"],
+    whatsappOpener: "Hi · girls-only PG please, fully female building (not just floor), warden onsite. Send 3 verified options.",
+    tone: "warm",
+  },
+  // ────── 6 NEW PERSONAS ──────
+  {
+    id: "relocating-family",
+    emoji: "👨‍👩‍👧",
+    title: "Relocating family",
+    short: "School + 2/3 BHK + parking + a society the kids can cycle in.",
+    storyQuote: "School admission first, then house. Can't sign before the seat is confirmed.",
+    budget: [35000, 90000],
+    bhk: "2 / 3 BHK",
+    needs: ["Within 3km of a CBSE/ICSE school", "Society with park", "2-car parking", "Power backup"],
+    dealBreakers: ["School zone unclear", "No play area", "Highway-facing"],
+    bestAreas: ["whitefield", "hsr-layout", "jp-nagar", "marathahalli", "sarjapur-road", "kasavanahalli"],
+    whatsappOpener: "Hi · relocating to Bengaluru with kids (Class 4 + KG). Need a 2/3 BHK near a good school, society with park. Budget ₹50k flex.",
+    tone: "warm",
+  },
+  {
+    id: "nri-returnee",
+    emoji: "🛬",
+    title: "NRI returning home",
+    short: "Premium furnished, video tour, sign before you land.",
+    storyQuote: "I land Friday. Want keys Friday evening. I'll wire the deposit from Dubai.",
+    budget: [45000, 120000],
+    bhk: "2 / 3 BHK",
+    needs: ["Fully furnished, ready", "Video tour + virtual sign", "Premium society", "Concierge support"],
+    dealBreakers: ["Cannot do digital agreement", "No video tour", "Owner wants in-person only"],
+    bestAreas: ["whitefield", "indiranagar", "koramangala", "hsr-layout", "domlur"],
+    whatsappOpener: "Hi · NRI moving back to BLR in 3 weeks. Want a fully-furnished 2/3 BHK, premium society, signed before I fly. Video tour please.",
+    tone: "premium",
+  },
+  {
+    id: "intern-summer",
+    emoji: "🧑‍💼",
+    title: "Summer intern",
+    short: "2-3 month PG, ultra-budget, near tech parks.",
+    storyQuote: "11-week stipend, mom's worried, sister wants WhatsApp video proof of the room.",
+    budget: [7000, 14000],
+    bhk: "PG / Shared",
+    needs: ["Short-stay (2-3 months) accepted", "Meals", "Walking distance to tech park", "No long deposit"],
+    dealBreakers: ["6-month minimum lock-in", "Deposit > 1 month rent"],
+    bestAreas: ["bellandur", "marathahalli", "electronic-city", "koramangala", "btm-layout"],
+    whatsappOpener: "Hi · summer intern at [company]. Need a 2-3 month PG, short-stay friendly, sub-₹13k. No 6-month lock please.",
+    tone: "warm",
+  },
+  {
+    id: "single-parent",
+    emoji: "🧑‍🍼",
+    title: "Single parent + kid",
+    short: "Safe gated society, school zone, neighbours who notice.",
+    storyQuote: "I work late. I need a watchman who knows my child's face by week two.",
+    budget: [20000, 50000],
+    bhk: "1 / 2 BHK",
+    needs: ["Gated society with active community", "Within 2km of a school", "24/7 security", "Daycare nearby"],
+    dealBreakers: ["No security at gate", "Isolated standalone building"],
+    bestAreas: ["hsr-layout", "jp-nagar", "indiranagar", "jayanagar", "frazer-town"],
+    whatsappOpener: "Hi · single parent + 6yr old, looking for a safe 1/2 BHK in a gated society near a school. Move in within 3 weeks.",
+    tone: "warm",
+  },
+  {
+    id: "senior-living",
+    emoji: "👵",
+    title: "Senior / retiree",
+    short: "Ground floor, lift, hospital nearby, very quiet.",
+    storyQuote: "Two flights of stairs ruled out 80% of your shortlist. Filter for me.",
+    budget: [18000, 45000],
+    bhk: "1 / 2 BHK",
+    needs: ["Ground or 1st floor with lift", "Hospital within 2km", "Quiet street", "Walking park nearby"],
+    dealBreakers: ["No lift on 2nd+ floor", "Stairs to entrance", "Loud bar/restaurant downstairs"],
+    bestAreas: ["jayanagar", "jp-nagar", "malleshwaram", "indiranagar", "frazer-town", "banashankari"],
+    whatsappOpener: "Hi · looking for a quiet 1/2 BHK for my parents. Ground/1st floor with lift, hospital nearby, gated society. ₹25-35k.",
+    tone: "warm",
+  },
+  {
+    id: "pet-parent",
+    emoji: "🐕",
+    title: "Pet parent",
+    short: "Pet-friendly society, ground/garden access, dog park within 1km.",
+    storyQuote: "Half of Sarjapur towers say 'pet-friendly' · only six actually allow large breeds. I'll send you the six.",
+    budget: [25000, 60000],
+    bhk: "1 / 2 BHK",
+    needs: ["Pet-allowed society (in writing)", "Ground floor or garden access", "Park within 1km", "Vet nearby"],
+    dealBreakers: ["RWA bans pets", "Owner okay but society isn't", "No outdoor space"],
+    bestAreas: ["sarjapur-road", "indiranagar", "kasavanahalli", "hsr-layout", "whitefield"],
+    whatsappOpener: "Hi · pet parent (Labrador). Need a 1/2 BHK in a society that ACTUALLY allows pets (in RWA bylaws). Ground floor preferred.",
+    tone: "punchy",
+  },
+];
+
+export const PERSONA_BY_ID = Object.fromEntries(PERSONAS.map((p) => [p.id, p]));
+
+export function personasForArea(slug: string): Persona[] {
+  return PERSONAS.filter((p) => p.bestAreas.includes(slug));
+}
