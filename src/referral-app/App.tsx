@@ -117,6 +117,23 @@ const queryClient = new QueryClient({
 function Router() {
   return (
     <Switch>
+      <Route path="/flatmates" component={FMHome} />
+      <Route path="/flatmates/onboard" component={FMOnboard} />
+      <Route path="/flatmates/discover" component={FMDiscover} />
+      <Route path="/flatmates/post" component={FMPost} />
+      <Route path="/flatmates/room/:id" component={FMRoom} />
+      <Route path="/flatmates/person/:id" component={FMPerson} />
+      <Route path="/flatmates/flat/:id" component={FMFlat} />
+      <Route path="/flatmates/interest/:kind/:id" component={FMInterest} />
+      <Route path="/flatmates/not-for-me/:kind/:id" component={FMNotForMe} />
+      <Route path="/flatmates/mutual/:id" component={FMMutual} />
+      <Route path="/flatmates/inbox" component={FMInbox} />
+      <Route path="/flatmates/chat/:id" component={FMChat} />
+      <Route path="/flatmates/groups" component={FMGroups} />
+      <Route path="/flatmates/group/:id" component={FMGroupRoom} />
+      <Route path="/flatmates/schedule" component={FMSchedule} />
+      <Route path="/flatmates/safety" component={FMSafety} />
+      <Route path="/flatmates/you" component={FMYou} />
       <Route path="/" component={IndexPage} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/home" component={HomePage} />
@@ -155,23 +172,6 @@ function Router() {
       <Route path="/manager/properties/:id/rooms" component={ManagerRoomsPage} />
 
       {/* Booking OS */}
-      <Route path="/flatmates" component={FMHome} />
-      <Route path="/flatmates/onboard" component={FMOnboard} />
-      <Route path="/flatmates/discover" component={FMDiscover} />
-      <Route path="/flatmates/post" component={FMPost} />
-      <Route path="/flatmates/room/:id" component={FMRoom} />
-      <Route path="/flatmates/person/:id" component={FMPerson} />
-      <Route path="/flatmates/flat/:id" component={FMFlat} />
-      <Route path="/flatmates/interest/:kind/:id" component={FMInterest} />
-      <Route path="/flatmates/not-for-me/:kind/:id" component={FMNotForMe} />
-      <Route path="/flatmates/mutual/:id" component={FMMutual} />
-      <Route path="/flatmates/inbox" component={FMInbox} />
-      <Route path="/flatmates/chat/:id" component={FMChat} />
-      <Route path="/flatmates/groups" component={FMGroups} />
-      <Route path="/flatmates/group/:id" component={FMGroupRoom} />
-      <Route path="/flatmates/schedule" component={FMSchedule} />
-      <Route path="/flatmates/safety" component={FMSafety} />
-      <Route path="/flatmates/you" component={FMYou} />
       <Route path="/manager/bookos" component={BookOSDash} />
       <Route path="/manager/bookos/bookings" component={BookOSBookings} />
       <Route path="/manager/bookos/bookings/new" component={BookOSBookingNew} />
