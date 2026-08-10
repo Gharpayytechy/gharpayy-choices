@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { FMShell, Section, Card, Btn, Pill, money, EmptyRoutes } from "@/referral-app/components/flatmates/Shell";
 import { PersonCard, RoomCard, FlatCard, GroupCard, ReadyCard } from "@/referral-app/components/flatmates/Cards";
-import { getMe, useFM, People, Rooms, Flats, Groups, Notifs, Threads, isHidden } from "@/referral-app/lib/flatmates/store";
+import { getMe, setMe, useFM, People, Rooms, Flats, Groups, Notifs, Threads, isHidden } from "@/referral-app/lib/flatmates/store";
 import { seedFlatmates, READY_STAYS } from "@/referral-app/lib/flatmates/seed";
 import { scoreMatch, resolutionRoutes } from "@/referral-app/lib/flatmates/match";
 import { ArrowRight, Sparkles } from "lucide-react";
