@@ -5,6 +5,19 @@ import { Toaster } from "@/referral-app/components/ui/toaster";
 import { TooltipProvider } from "@/referral-app/components/ui/tooltip";
 import { installReferralMockApi } from "@/referral-app/lib/mock-live-data";
 
+import FMOnboard from "@/referral-app/pages/flatmates/onboard";
+import FMHome from "@/referral-app/pages/flatmates/home";
+import FMDiscover from "@/referral-app/pages/flatmates/discover";
+import FMPost from "@/referral-app/pages/flatmates/post";
+import FMRoom from "@/referral-app/pages/flatmates/room";
+import FMPerson from "@/referral-app/pages/flatmates/person";
+import FMFlat from "@/referral-app/pages/flatmates/flat";
+import FMInterest, { NotForMe as FMNotForMe, MutualPage as FMMutual } from "@/referral-app/pages/flatmates/interest";
+import FMInbox, { Chat as FMChat } from "@/referral-app/pages/flatmates/inbox";
+import FMGroups, { GroupRoom as FMGroupRoom } from "@/referral-app/pages/flatmates/groups";
+import FMSchedule, { SafetyPage as FMSafety } from "@/referral-app/pages/flatmates/schedule";
+import FMYou from "@/referral-app/pages/flatmates/you";
+
 import NotFound from "@/referral-app/pages/not-found";
 import IndexPage from "@/referral-app/pages/index";
 import RegisterPage from "@/referral-app/pages/register";
@@ -104,6 +117,23 @@ const queryClient = new QueryClient({
 function Router() {
   return (
     <Switch>
+      <Route path="/flatmates" component={FMHome} />
+      <Route path="/flatmates/onboard" component={FMOnboard} />
+      <Route path="/flatmates/discover" component={FMDiscover} />
+      <Route path="/flatmates/post" component={FMPost} />
+      <Route path="/flatmates/room/:id" component={FMRoom} />
+      <Route path="/flatmates/person/:id" component={FMPerson} />
+      <Route path="/flatmates/flat/:id" component={FMFlat} />
+      <Route path="/flatmates/interest/:kind/:id" component={FMInterest} />
+      <Route path="/flatmates/not-for-me/:kind/:id" component={FMNotForMe} />
+      <Route path="/flatmates/mutual/:id" component={FMMutual} />
+      <Route path="/flatmates/inbox" component={FMInbox} />
+      <Route path="/flatmates/chat/:id" component={FMChat} />
+      <Route path="/flatmates/groups" component={FMGroups} />
+      <Route path="/flatmates/group/:id" component={FMGroupRoom} />
+      <Route path="/flatmates/schedule" component={FMSchedule} />
+      <Route path="/flatmates/safety" component={FMSafety} />
+      <Route path="/flatmates/you" component={FMYou} />
       <Route path="/" component={IndexPage} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/home" component={HomePage} />
