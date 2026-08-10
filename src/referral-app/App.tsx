@@ -17,6 +17,16 @@ import FMInbox, { Chat as FMChat } from "@/referral-app/pages/flatmates/inbox";
 import FMGroups, { GroupRoom as FMGroupRoom } from "@/referral-app/pages/flatmates/groups";
 import FMSchedule, { SafetyPage as FMSafety } from "@/referral-app/pages/flatmates/schedule";
 import FMYou from "@/referral-app/pages/flatmates/you";
+import FMNotifications from "@/referral-app/pages/flatmates/notifications";
+import FMMeetings from "@/referral-app/pages/flatmates/meetings";
+import FMHousehold from "@/referral-app/pages/flatmates/household";
+import FMSearch from "@/referral-app/pages/flatmates/search";
+import FMTrust from "@/referral-app/pages/flatmates/trust";
+import FMReady from "@/referral-app/pages/flatmates/ready";
+import FMMatchCenter from "@/referral-app/pages/flatmates/match-center";
+import FMRequirement from "@/referral-app/pages/flatmates/requirement";
+import FMLiquidity from "@/referral-app/pages/flatmates/liquidity";
+import FMSaved from "@/referral-app/pages/flatmates/saved";
 
 import NotFound from "@/referral-app/pages/not-found";
 import IndexPage from "@/referral-app/pages/index";
@@ -134,6 +144,18 @@ function Router() {
       <Route path="/flatmates/schedule" component={FMSchedule} />
       <Route path="/flatmates/safety" component={FMSafety} />
       <Route path="/flatmates/you" component={FMYou} />
+      <Route path="/flatmates/start" component={FMOnboard} />
+      <Route path="/flatmates/notifications" component={FMNotifications} />
+      <Route path="/flatmates/meetings" component={FMMeetings} />
+      <Route path="/flatmates/household" component={FMHousehold} />
+      <Route path="/flatmates/search" component={FMSearch} />
+      <Route path="/flatmates/trust" component={FMTrust} />
+      <Route path="/flatmates/ready" component={FMReady} />
+      <Route path="/flatmates/saved" component={FMSaved} />
+      <Route path="/flatmates/liquidity" component={FMLiquidity} />
+      <Route path="/flatmates/requirement" component={FMRequirement} />
+      <Route path="/flatmates/you/requirement" component={FMRequirement} />
+      <Route path="/flatmates/match/:kind/:id" component={FMMatchCenter} />
       <Route path="/" component={IndexPage} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/home" component={HomePage} />
