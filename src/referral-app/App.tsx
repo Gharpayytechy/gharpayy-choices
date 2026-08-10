@@ -17,6 +17,16 @@ import FMInbox, { Chat as FMChat } from "@/referral-app/pages/flatmates/inbox";
 import FMGroups, { GroupRoom as FMGroupRoom } from "@/referral-app/pages/flatmates/groups";
 import FMSchedule, { SafetyPage as FMSafety } from "@/referral-app/pages/flatmates/schedule";
 import FMYou from "@/referral-app/pages/flatmates/you";
+import FMNotifications from "@/referral-app/pages/flatmates/notifications";
+import FMMeetings from "@/referral-app/pages/flatmates/meetings";
+import FMHousehold from "@/referral-app/pages/flatmates/household";
+import FMSearch from "@/referral-app/pages/flatmates/search";
+import FMTrust from "@/referral-app/pages/flatmates/trust";
+import FMReady from "@/referral-app/pages/flatmates/ready";
+import FMMatchCenter from "@/referral-app/pages/flatmates/match-center";
+import FMRequirement from "@/referral-app/pages/flatmates/requirement";
+import FMLiquidity from "@/referral-app/pages/flatmates/liquidity";
+import FMSaved from "@/referral-app/pages/flatmates/saved";
 
 import NotFound from "@/referral-app/pages/not-found";
 import IndexPage from "@/referral-app/pages/index";
