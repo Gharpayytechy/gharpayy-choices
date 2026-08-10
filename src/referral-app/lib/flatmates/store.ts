@@ -177,8 +177,19 @@ export const scheduleMeeting = (data: any) => {
 };
 
 /* Someone is moving out → instantly create replacement supply */
-export const createReplacement = (payload: any) => {
+export const createReplacement = (payload: any = {}) => {
+  const me = getMe();
   const room = Rooms.create({
+    title: payload.title || `Room in my ${me.area || 'Bengaluru'} flat`,
+    area: payload.area || me.area || 'Koramangala',
+    rent: payload.rent || me.budgetIdeal || 18000,
+    deposit: payload.deposit || (me.budgetIdeal || 18000) * 2,
+    roomType: payload.roomType || 'Private',
+    bathroom: payload.bathroom || 'Attached',
+    furnishing: payload.furnishing || 'Furnished',
+    bhk: payload.bhk || 3,
+    residents: payload.residents || 2,
+    availableFrom: payload.availableFrom || new Date(Date.now()+15*864e5).toISOString(),
     type: "ROOM_REPLACEMENT",
     status: "LIVE",
     verifiedAt: new Date().toISOString(),
