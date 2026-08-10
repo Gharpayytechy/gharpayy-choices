@@ -17,7 +17,7 @@ export default function FlatmatesHome() {
     threads: Threads.all(), notifs: Notifs.all(),
   }));
 
-  useEffect(() => { if (typeof window !== "undefined" && !getMe().onboarded) nav("/flatmates/onboard"); }, []);
+  useEffect(() => { if (typeof window !== "undefined" && !getMe().onboarded) setMe({ onboarded: true }); }, []);
 
   const rank = (arr: any[]) => arr.filter((x) => !isHidden(x.id)).map((x) => ({ ...x, _s: scoreMatch(me, x).score })).sort((a, b) => b._s - a._s);
   const rooms = rank(data.rooms.filter((r: any) => r.status === "LIVE"));
