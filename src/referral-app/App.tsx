@@ -144,6 +144,18 @@ function Router() {
       <Route path="/flatmates/schedule" component={FMSchedule} />
       <Route path="/flatmates/safety" component={FMSafety} />
       <Route path="/flatmates/you" component={FMYou} />
+      <Route path="/flatmates/start" component={FMOnboard} />
+      <Route path="/flatmates/notifications" component={FMNotifications} />
+      <Route path="/flatmates/meetings" component={FMMeetings} />
+      <Route path="/flatmates/household" component={FMHousehold} />
+      <Route path="/flatmates/search" component={FMSearch} />
+      <Route path="/flatmates/trust" component={FMTrust} />
+      <Route path="/flatmates/ready" component={FMReady} />
+      <Route path="/flatmates/saved" component={FMSaved} />
+      <Route path="/flatmates/liquidity" component={FMLiquidity} />
+      <Route path="/flatmates/requirement" component={FMRequirement} />
+      <Route path="/flatmates/you/requirement" component={FMRequirement} />
+      <Route path="/flatmates/match/:kind/:id" component={FMMatchCenter} />
       <Route path="/" component={IndexPage} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/home" component={HomePage} />
