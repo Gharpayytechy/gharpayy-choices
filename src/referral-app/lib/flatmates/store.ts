@@ -201,3 +201,13 @@ export const markMovedIn = (kind: string, refId: string) => {
   pushNotif({ type: "household", title: "Welcome home 🎉", body: "Your household is set up. Manage rent, rules and expenses.", link: "/flatmates/household" });
   track("move_in_confirmed", { kind, refId });
 };
+
+// --- convenience aliases used by pages ---
+export const Saved = Saves;
+export const addMeeting = (data: any) => scheduleMeeting(data);
+export const resetFM = () => {
+  try {
+    Object.keys(localStorage).filter((k) => k.startsWith("fm_")).forEach((k) => localStorage.removeItem(k));
+  } catch {}
+  notify();
+};
