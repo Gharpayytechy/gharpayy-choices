@@ -3,13 +3,19 @@ import { newListings } from "@/lib/insights-utils";
 import { inr } from "@/lib/format";
 
 export function NewListingsTicker() {
-  const [items] = useState(() => newListings(12));
+  const [items, setItems] = useState<any[]>([]);
   const [i, setI] = useState(0);
   useEffect(() => {
+    setItems(newListings(12));
+  }, []);
+  useEffect(() => {
+    if (!items.length) return;
     const t = setInterval(() => setI((v) => (v + 1) % items.length), 2400);
     return () => clearInterval(t);
   }, [items.length]);
   const cur = items[i];
+  if (!cur) return null;
+
 
   return (
     <section className="max-w-6xl mx-auto px-4 md:px-6 py-3 w-full">
