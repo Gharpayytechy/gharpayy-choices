@@ -40,9 +40,12 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --font-display: "Space Grotesk", "Inter", ui-sans-serif, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, "JetBrains Mono", monospace;
+  --color-cta: var(--cta);
+  --color-cta-foreground: var(--cta-foreground);
+  --font-display: "Bricolage Grotesque", "Montserrat", ui-sans-serif, sans-serif;
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Sans Condensed", ui-monospace, monospace;
+
 }
 
 :root {
