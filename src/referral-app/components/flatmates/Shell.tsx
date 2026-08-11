@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { Link, useLocation } from "wouter";
-import { Home, Compass, Plus, MessageCircle, User, Bell, ChevronLeft, Heart, ShieldCheck, Search } from "lucide-react";
+import { Home, Compass, Plus, MessageCircle, User, Bell, ChevronLeft, Heart, ShieldCheck, Search, LayoutGrid } from "lucide-react";
 import { cn } from "@/referral-app/lib/utils";
 import { useFM, Notifs } from "@/referral-app/lib/flatmates/store";
 
