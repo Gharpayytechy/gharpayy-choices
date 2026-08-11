@@ -27,6 +27,10 @@ import FMMatchCenter from "@/referral-app/pages/flatmates/match-center";
 import FMRequirement from "@/referral-app/pages/flatmates/requirement";
 import FMLiquidity from "@/referral-app/pages/flatmates/liquidity";
 import FMSaved from "@/referral-app/pages/flatmates/saved";
+import FMHub from "@/referral-app/pages/flatmates/hub";
+import FMDeals from "@/referral-app/pages/flatmates/deals";
+import FMMoveout from "@/referral-app/pages/flatmates/moveout";
+import FMAgreement from "@/referral-app/pages/flatmates/agreement";
 
 import NotFound from "@/referral-app/pages/not-found";
 import IndexPage from "@/referral-app/pages/index";
@@ -156,6 +160,10 @@ function Router() {
       <Route path="/flatmates/requirement" component={FMRequirement} />
       <Route path="/flatmates/you/requirement" component={FMRequirement} />
       <Route path="/flatmates/match/:kind/:id" component={FMMatchCenter} />
+      <Route path="/flatmates/hub" component={FMHub} />
+      <Route path="/flatmates/deals" component={FMDeals} />
+      <Route path="/flatmates/moveout" component={FMMoveout} />
+      <Route path="/flatmates/agreement" component={FMAgreement} />
       <Route path="/" component={IndexPage} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/home" component={HomePage} />
