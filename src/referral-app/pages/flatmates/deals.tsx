@@ -1,7 +1,8 @@
 // @ts-nocheck
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FMShell, Section, Card, Pill, KPI, Meter, Btn, money } from "@/referral-app/components/flatmates/Shell";
 import { useFM, Rooms, People, getMe, track } from "@/referral-app/lib/flatmates/store";
+import { seedFlatmates } from "@/referral-app/lib/flatmates/seed";
 import { toast } from "sonner";
 import { HandCoins, Copy, TrendingDown, MessageCircle } from "lucide-react";
 
@@ -13,6 +14,7 @@ const median = (a: number[]) => {
 };
 
 export default function FlatmatesDeals() {
+  useEffect(() => { seedFlatmates(); }, []);
   const me = useFM(() => getMe());
   const rooms = useFM(() => Rooms.all().filter((r: any) => r.status === "LIVE"));
   const seekers = useFM(() => People.all().length);
