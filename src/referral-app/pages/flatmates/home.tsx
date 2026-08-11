@@ -6,7 +6,7 @@ import { PersonCard, RoomCard, FlatCard, GroupCard, ReadyCard } from "@/referral
 import { getMe, setMe, useFM, People, Rooms, Flats, Groups, Notifs, Threads, isHidden } from "@/referral-app/lib/flatmates/store";
 import { seedFlatmates, READY_STAYS } from "@/referral-app/lib/flatmates/seed";
 import { scoreMatch, resolutionRoutes } from "@/referral-app/lib/flatmates/match";
-import { ArrowRight, Sparkles, Activity, Zap, Sliders } from "lucide-react";
+import { ArrowRight, Sparkles, Activity, Zap, Sliders, HandCoins, FileText, LayoutGrid } from "lucide-react";
 
 export default function FlatmatesHome() {
   useEffect(() => { seedFlatmates(); }, []);
@@ -60,6 +60,9 @@ export default function FlatmatesHome() {
         <QuickTile href="/flatmates/ready" icon={Zap} label="Move this week" />
         <QuickTile href="/flatmates/liquidity" icon={Activity} label="Market pulse" />
         <QuickTile href="/flatmates/requirement" icon={Sliders} label="Tune filters" />
+        <QuickTile href="/flatmates/deals" icon={HandCoins} label="Fair rent & scripts" />
+        <QuickTile href="/flatmates/agreement" icon={FileText} label="Agreement check" />
+        <QuickTile href="/flatmates/hub" icon={LayoutGrid} label="All modules" />
       </div>
 
       {noResults ? (

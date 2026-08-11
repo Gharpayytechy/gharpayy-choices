@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { Link, useLocation } from "wouter";
-import { Home, Compass, Plus, MessageCircle, User, Bell, ChevronLeft, Heart, ShieldCheck, Search } from "lucide-react";
+import { Home, Compass, Plus, MessageCircle, User, Bell, ChevronLeft, Heart, ShieldCheck, Search, LayoutGrid } from "lucide-react";
 import { cn } from "@/referral-app/lib/utils";
 import { useFM, Notifs } from "@/referral-app/lib/flatmates/store";
 
@@ -22,9 +22,13 @@ export function FMShell({ children, title, sub, back, action, tab, wide }: any) 
             {sub && <p className="text-[11px] text-muted-foreground truncate">{sub}</p>}
           </div>
           {action}
+          <Link href="/flatmates/hub" className="w-9 h-9 grid place-items-center rounded-full hover:bg-muted transition-colors" aria-label="All modules">
+            <LayoutGrid className="w-[18px] h-[18px] text-muted-foreground" />
+          </Link>
           <Link href="/flatmates/search" className="w-9 h-9 grid place-items-center rounded-full hover:bg-muted transition-colors">
             <Search className="w-[18px] h-[18px] text-muted-foreground" />
           </Link>
+
           <Link href="/flatmates/notifications" className="relative w-9 h-9 grid place-items-center rounded-full hover:bg-muted transition-colors">
             <Bell className="w-[18px] h-[18px] text-muted-foreground" />
             {unread > 0 && <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary ring-2 ring-background" />}
