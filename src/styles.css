@@ -100,7 +100,7 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    background-image: radial-gradient(circle at 80% -10%, oklch(0.715 0.185 45 / 0.06), transparent 50%);
+    background-image: radial-gradient(circle at 80% -10%, oklch(0.404 0.184 264.5 / 0.05), transparent 50%);
   }
   h1, h2, h3, h4, h5 { font-family: var(--font-display); letter-spacing: -0.02em; color: var(--ink); }
   .num, .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
