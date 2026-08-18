@@ -1,119 +1,62 @@
+# Flatmates launch rescue plan
+
 ## Goal
 
-Bring the entire uploaded BookOS suite into the existing app module under `/manager/bookos/*` (wouter routes inside `src/referral-app`), keep the current app shell + nav, layer BookOS's gold/glass accents on the new surfaces, and persist everything in `localStorage` so we ship today. Then push every module past the original ("100x") with deeper data, automations, and cross-module wiring the original didn't have.
+Make `/gharpayy/flatmates` a coherent, end-to-end multi-account marketplace that can be launched today without dead actions or missing pages. Every role—seeker, flatmate poster, owner, group lead, admin, and super admin—must have a clear starting point, working profile/onboarding, requests, and conversations.
 
-## Scope
+## Launch-critical work
 
-All 15 BookOS modules ported:
+### 1. Make the first five minutes obvious
+- Replace the ambiguous start with a role-first welcome: **Find a room**, **Find a flatmate**, **List a property**, or **Build a group**.
+- Route each choice into one short, role-appropriate signup/onboarding flow and then its dashboard.
+- Keep `/flatmates/start` and `/flatmates/onboard` valid; add safe recovery redirects for legacy Flatmates links instead of showing “page doesn’t exist.”
+- Keep the home “What’s ready” banner and guide, but rewrite them as actionable launch guidance rather than demo instructions.
 
-1. Overview dashboard
-2. Bookings (list + new + detail)
-3. Quotations (compose, send, track)
-4. Tenants (list + detail)
-5. Payments (UPI + records)
-6. Rents (collection ledger)
-7. Properties
-8. Documents
-9. Expenses
-10. Maintenance
-11. Staff
-12. Analytics
-13. Notifications
-14. Admin console
-15. Settings
+### 2. Real accounts and durable marketplace data
+- Use Lovable Cloud for email/password and Google sign-in, profiles, account roles, requirements, listings, requests, chat threads/messages, and notifications.
+- Retain the floating account switcher for users who legitimately hold multiple account modes; demo persona switching becomes an admin-only preview tool rather than public impersonation.
+- Add secure role rules, with admin and super-admin roles stored separately from profiles and validated by the backend.
+- Preserve current demo data as launch-safe examples/fallbacks while real user data is introduced.
 
-Each lives under `src/referral-app/pages/manager/bookos/*` and is reachable from a new "Booking OS" entry in the manager sidebar.
+### 3. Fix the broken core actions
+- **What I’m looking for:** save and edit a seeker requirement, publish it, and immediately show matching rooms/people/groups.
+- **Add a property:** support owner/flatmate-poster listing in-app; validate the form, save the listing, and show success plus the new listing in the supply desk.
+- **WhatsApp:** repair the owner/property handoff using the canonical pre-filled WhatsApp URL and provide an in-app listing alternative so it is never a dead end.
+- **Requests:** interest/accept/decline actions update both sides and create/open a conversation when appropriate.
+- **Chat:** persist messages, show thread ownership/unread state, support send/retry/empty/error states, and update in real time.
 
-## What "100x" adds on top of the original
+### 4. Owner supply desk and role workspaces
+- Seeker: requirement, matches, saved items, requests, chats.
+- Flatmate poster: room listing, incoming applicants, household fit, chats.
+- Owner: portfolio/listing creation, qualified leads, visits, chats, listing health.
+- Group lead: group roster, invitations, shared shortlist, budget/readiness, group chat.
+- Each workspace gets a clear “next best action” and no dead controls.
 
-- **Unified store**: one `bookos-store.ts` with Bookings, Rents, Quotations, Tenants, Properties, Payments, Expenses, Maintenance, Staff, Documents, Notifications, ActivityLog — all in localStorage with a pub/sub `useStore` hook so every screen updates live.
-- **Cross-module wiring** the original lacked:
-  - Quotation → one-click convert to Booking (prefilled)
-  - Booking paid → auto-create Tenant + first Rent record + Activity log entry + Notification
-  - Rent overdue → auto-create Notification + Maintenance follow-up task
-  - Room from existing `manager/rooms.tsx` → "Create booking for this room" deep link, and booking marks the room soft-locked
-- **Scarcity engine**: 15-min offer timers with live countdown, auto-expire sweep, one-tap reactivate, WhatsApp deep-link with pre-filled offer + UPI QR.
-- **Money math everywhere**: token revenue, collected rent, pending, overdue, projected MRR, occupancy %, conversion %, avg ticket, time-to-pay — surfaced as KPI strips on every relevant page.
-- **Analytics 100x**: 30-day sparkline, status donut, channel mix, staff leaderboard, top properties, rent collection trend, overdue heatmap.
-- **Command palette** (`Cmd/Ctrl+K`): jump to any module, create booking, search tenant, copy UPI link.
-- **Keyboard shortcuts**: `N` new booking, `Q` new quote, `/` search, `G then D` dashboard, etc.
-- **Bulk actions**: multi-select bookings to approve/expire/remind; multi-select rents to mark paid.
-- **WhatsApp templates library**: editable per-stage messages (offer, reminder, paid receipt, overdue nudge).
-- **Activity log** writes from every mutation; admin console replays it live.
-- **Seed-on-empty**: realistic demo data appears on first load so empty installs still look alive.
-- **Print/Export**: per-booking receipt PDF (print CSS), quotations as shareable HTML, CSV export on every list.
+### 5. 100x connected control tower
+- Expand admin into a unified marketplace view: supply, demand, matches, owners, groups, requests, chats, trust/reports, and conversion bottlenecks.
+- Add a protected super-admin overview with platform-wide KPIs, recent activity, user/account search, moderation queues, role management, and drill-through links.
+- Admin access is backend-enforced; no client-side or hardcoded admin checks.
 
-## Design
+### 6. Route and QA hardening
+- Inventory every Flatmates CTA/link and ensure the destination exists.
+- Give Flatmates leaf screens route-appropriate metadata where supported by the current catch-all shell.
+- Add friendly recovery for unknown nested Flatmates URLs.
+- Verify desktop and mobile paths for all six roles: signup/login, onboarding, profile, create/edit requirement or listing, request lifecycle, chat send/receive, role switching, guide, WhatsApp, admin, and super admin.
+- Run route smoke tests, interaction tests, console/network checks, and production build checks before handoff.
 
-Hybrid: keep the app's existing top nav, manager sidebar, and color tokens. The new `/manager/bookos/*` pages use a local `BookOSShell` component that wraps content in BookOS's gold gradient hero, glass cards, serif headings, and amber/emerald status chips — scoped so the rest of the app stays untouched.
+## Technical details
 
-## Technical Plan
+- Keep the existing TanStack catch-all mount and internal Wouter Flatmates router to avoid a risky same-day rewrite.
+- Introduce focused Cloud-backed repositories/hooks behind the existing `src/flatmates/backend` boundary, replacing local-only writes incrementally.
+- Add database tables with explicit grants and row-level access rules. User roles live in a separate role table; chat access is limited to thread participants; marketplace listings expose only intended public fields.
+- Use Cloud realtime subscriptions for messages and request updates, with teardown on unmount.
+- Maintain compatibility aliases for all currently linked `/gharpayy/flatmates/*` paths.
 
-### New files
+## Acceptance criteria
 
-```text
-src/referral-app/pages/manager/bookos/
-  layout.tsx              # BookOSShell + sidebar entries
-  index.tsx               # Overview dashboard
-  bookings/index.tsx
-  bookings/new.tsx
-  bookings/[id].tsx
-  quotations/index.tsx
-  quotations/new.tsx
-  quotations/[id].tsx
-  tenants/index.tsx
-  tenants/[id].tsx
-  payments.tsx
-  rents.tsx
-  properties.tsx
-  documents.tsx
-  expenses.tsx
-  maintenance.tsx
-  staff.tsx
-  analytics.tsx
-  notifications.tsx
-  admin.tsx
-  settings.tsx
-
-src/referral-app/lib/bookos/
-  store.ts                # unified pub/sub localStorage store
-  seed.ts                 # demo data
-  format.ts               # fmt, timeAgo, statusMeta, waLink, upi, qr
-  shortcuts.ts            # keyboard + command palette hooks
-  templates.ts            # WhatsApp message templates
-
-src/referral-app/components/bookos/
-  Shell.tsx               # gold/glass wrapper
-  KPI.tsx, StatusChip.tsx, CountdownPill.tsx, EmptyState.tsx
-  CommandPalette.tsx, ConfirmDialog.tsx
-```
-
-### Modified files
-
-- `src/referral-app/App.tsx` — register 20+ new wouter routes under `/manager/bookos/...`.
-- `src/referral-app/pages/manager/dashboard.tsx` — add "Open Booking OS" card linking to `/manager/bookos`.
-- `src/referral-app/pages/manager/rooms.tsx` — add "Create booking" CTA per room; on booking paid mark room as `occupied` + soft-lock.
-
-### Routing
-
-Wouter (the app module's existing router), not TanStack file routes. Paths:
-`/manager/bookos`, `/manager/bookos/bookings`, `/manager/bookos/bookings/new`,
-`/manager/bookos/bookings/:id`, `/manager/bookos/quotations`, … etc.
-
-### Data model (localStorage namespaces, all prefixed `bookos_`)
-
-`bookings`, `rents`, `quotations`, `tenants`, `properties`, `payments`,
-`expenses`, `maintenance`, `staff`, `documents`, `notifications`,
-`activity`, `templates`, `settings`. One `subscribe()` channel so every
-component re-renders on any mutation.
-
-### Out of scope (this turn)
-
-- No Lovable Cloud / Supabase wiring (user chose localStorage).
-- No real WhatsApp/UPI integration beyond deep-links and QR images.
-- No file uploads — Documents module stores metadata + external URLs only.
-- The original BookOS's Supabase-backed admin console becomes a localStorage activity replay (same UX, no auth).
-
-## Deliverable
-
-After this turn the manager has a new "Booking OS" section in the sidebar. Clicking it opens a dashboard with live KPIs and 14 working modules. Creating a booking ripples through tenants, rents, notifications, and the activity log automatically. Everything works offline on a fresh install thanks to seed data.
+- No Flatmates navigation or CTA lands on a missing-page screen.
+- A new user can choose a role, create an account, finish onboarding, and reach a useful dashboard.
+- Seekers can publish what they need; posters/owners can publish supply in-app or open the correct WhatsApp handoff.
+- Two valid participants can exchange persistent messages and see request state changes.
+- Admin can see the complete marketplace; only super admin can manage roles/platform-wide controls.
+- Critical flows pass automated browser verification on mobile and desktop with no console errors or failed app requests.
