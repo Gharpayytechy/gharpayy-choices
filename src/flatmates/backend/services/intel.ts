@@ -173,3 +173,71 @@ export function nextActions() {
 
   return out.slice(0, 4);
 }
+
+/* ── Daily Top 10 (anti-spam feed) ─────────────────── */
+import { getDaily, setDailyPicks, DAILY_PICK_LIMIT, todayKey } from "@/flatmates/backend/store/store";
+
+/**
+ * The only supply a person can act on today. Ranked once per day and cached so
+ * the set is stable until midnight — limited requests to a limited set of people.
+ */
+export function dailyPicks(pools: any = {}, opts: any = {}) {
+  const tag = (arr: any[] = [], type: string) => arr.map((x) => ({ ...x, _type: type }));
+  const pool = [
+    ...tag(pools.rooms, "room"),
+    ...tag(pools.people, "person"),
+    ...tag(pools.flats, "flat"),
+  ];
+  const ranked = rankFeed(pool, { ...opts, sort: "match" });
+  const daily = getDaily();
+  const byId = new Map(ranked.map((r: any) => [r.id, r]));
+
+  let picks = (daily.picks || []).map((id: string) => byId.get(id)).filter(Boolean);
+  if (picks.length < DAILY_PICK_LIMIT) {
+    const have = new Set(picks.map((p: any) => p.id));
+    for (const r of ranked) {
+      if (picks.length >= DAILY_PICK_LIMIT) break;
+      if (!have.has(r.id)) { picks.push(r); have.add(r.id); }
+    }
+    setDailyPicks(picks.map((p: any) => p.id));
+  }
+  const msLeft = +new Date(todayKey() + "T23:59:59Z") - Date.now();
+  return {
+    picks,
+    date: daily.date,
+    poolSize: ranked.length,
+    refreshInHours: Math.max(0, Math.round(msLeft / 3600000)),
+  };
+}
+
+/* ── 100% response guarantee ───────────────────────── */
+/** Every listing answers every request — this is the SLA we surface and enforce. */
+export function responseSla(entity: any = {}) {
+  const mine = Interests.all().filter((i: any) => i.refId === entity.id);
+  const answered = mine.filter((i: any) => i.status && i.status !== "pending").length;
+  const base = entity.responseScore ?? 88;
+  const rate = mine.length ? Math.round((answered / mine.length) * 100) : base;
+  const pending = mine.filter((i: any) => i.status === "pending");
+  const oldest = pending.reduce((m: number, i: any) => Math.max(m, Date.now() - +new Date(i.at || i.createdAt || Date.now())), 0);
+  return {
+    rate,
+    guaranteed: rate >= 95,
+    pending: pending.length,
+    hoursWaiting: Math.round(oldest / 3600000),
+    label: rate >= 95 ? "Responds to every request" : `${rate}% response rate`,
+  };
+}
+
+/** Health of the guarantee across my own outgoing requests. */
+export function requestHealth() {
+  const mine = Interests.all().filter((i: any) => i.direction !== "in");
+  const answered = mine.filter((i: any) => i.status && i.status !== "pending");
+  return {
+    sent: mine.length,
+    answered: answered.length,
+    pending: mine.length - answered.length,
+    accepted: mine.filter((i: any) => i.status === "accepted").length,
+    declined: mine.filter((i: any) => i.status === "declined").length,
+    rate: mine.length ? Math.round((answered.length / mine.length) * 100) : 100,
+  };
+}
