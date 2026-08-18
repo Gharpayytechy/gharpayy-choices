@@ -21,3 +21,15 @@ export {
   opsActions,
   opsLog,
 } from "./services/ops";
+export {
+  trustScore,
+  trustTier,
+  safetyChecklist,
+  DEALBREAKERS,
+  failedDealbreakers,
+  rankFeed,
+  feedInsight,
+  pipeline,
+  nextActions,
+  STAGES,
+} from "./services/intel";

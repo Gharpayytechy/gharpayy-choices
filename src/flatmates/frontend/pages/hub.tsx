@@ -27,6 +27,7 @@ const GROUPS = [
       { href: "/flatmates/discover?tab=people", icon: Users, t: "Flatmates", s: "Verified seekers near you" },
       { href: "/flatmates/groups", icon: Sparkles, t: "Groups", s: "Form a household first" },
       { href: "/flatmates/inbox", icon: MessageCircle, t: "Conversations", s: "Interests and chats" },
+      { href: "/flatmates/pipeline", icon: Activity, t: "Your move", s: "Pipeline + next best action" },
       { href: "/flatmates/meetings", icon: CalendarDays, t: "Meets & visits", s: "Safe, scheduled, logged" },
     ],
   },

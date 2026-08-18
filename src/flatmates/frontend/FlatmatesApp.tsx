@@ -35,6 +35,7 @@ import FMHub from "@/flatmates/frontend/pages/hub";
 import FMDeals from "@/flatmates/frontend/pages/deals";
 import FMMoveout from "@/flatmates/frontend/pages/moveout";
 import FMAgreement from "@/flatmates/frontend/pages/agreement";
+import FMPipeline from "@/flatmates/frontend/pages/pipeline";
 
 import AdminCommand from "@/flatmates/frontend/admin/command";
 import AdminSupply from "@/flatmates/frontend/admin/supply";
@@ -102,6 +103,7 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/deals" component={FMDeals} />
       <Route path="/flatmates/moveout" component={FMMoveout} />
       <Route path="/flatmates/agreement" component={FMAgreement} />
+      <Route path="/flatmates/pipeline" component={FMPipeline} />
 
       <Route component={FlatmatesNotFound} />
     </Switch>
