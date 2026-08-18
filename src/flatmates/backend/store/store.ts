@@ -170,20 +170,20 @@ export const hideItem = (kind: string, refId: string, reason: string) => {
 export const isHidden = (refId: string) => Hides.all().some((h: any) => h.refId === refId);
 
 /* ── Daily state: top-10 picks + request quota ─────── */
-const DAILY = K("daily");
+const DAILY = () => K("daily__" + getActorId());
 export const todayKey = () => new Date().toISOString().slice(0, 10);
 export const DAILY_PICK_LIMIT = 10;
 export const DAILY_REQUEST_LIMIT = 5;
 
 const blankDaily = () => ({ date: todayKey(), picks: [] as string[], used: 0 });
 export const getDaily = () => {
-  const d = load(DAILY, null);
+  const d = load(DAILY(), null);
   if (!d || d.date !== todayKey()) return blankDaily();
   return d;
 };
 const setDaily = (patch: any) => {
   const next = { ...getDaily(), ...patch, date: todayKey() };
-  save(DAILY, next);
+  save(DAILY(), next);
   notify();
   return next;
 };
