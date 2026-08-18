@@ -63,7 +63,7 @@ export default function FlatmatesHome() {
               {cityInfo.areas.length > 0 && <div className="flex gap-1.5 overflow-x-auto py-2.5">{cityInfo.areas.slice(0,6).map(a=><button key={a} onClick={()=>setArea(area===a?"":a)} className={`shrink-0 h-8 px-2.5 rounded-md border text-xs font-semibold ${area===a?"bg-primary text-primary-foreground border-primary":"bg-card border-border"}`}>{a}</button>)}</div>}
               <button onClick={go} className="w-full h-11 rounded-md bg-primary text-primary-foreground text-sm font-bold flex items-center justify-center gap-2">{selected.cta} <ArrowRight className="w-4 h-4"/></button>
             </div>
-            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-primary-foreground/80"><span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-4 h-4"/>Verified profiles</span><span>Zero brokerage</span><span>Chats after acceptance</span></div>
+            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-primary-foreground/80"><span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-4 h-4"/>Verified profiles</span><span>Every listing reviewed before it goes live</span><span>Zero brokerage</span><span>Chats after acceptance</span></div>
           </div>
         </div>
       </section>
