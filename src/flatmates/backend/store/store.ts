@@ -199,6 +199,12 @@ export const quota = () => {
  * Interest is a REQUEST, not a chat. No thread exists until the recipient
  * accepts — this is what stops anyone from texting anyone.
  */
+/** Who owns a piece of supply (used to route requests to the right account). */
+export const ownerActorOf = (kind: string, refId: string): string | undefined => {
+  const row = kind === "room" ? Rooms.get(refId) : kind === "flat" ? Flats.get(refId) : kind === "person" ? People.get(refId) : undefined;
+  return row?.ownerActor;
+};
+
 export const sendInterest = (kind: string, refId: string, title: string, reasons: string[], note: string) => {
   const q = quota();
   if (!q.remaining) return { ok: false, reason: "quota", interest: null, thread: null, mutual: false };
@@ -209,6 +215,7 @@ export const sendInterest = (kind: string, refId: string, title: string, reasons
     kind, refId, title, reasons, note,
     direction: "out",
     status: "pending",
+    to: ownerActorOf(kind, refId),
     at: new Date().toISOString(),
   });
   setDaily({ used: getDaily().used + 1 });
