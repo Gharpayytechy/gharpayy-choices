@@ -6,6 +6,7 @@ import { PersonCard, RoomCard, FlatCard, GroupCard, ReadyCard } from "@/flatmate
 import { getMe, useFM, People, Rooms, Flats, Groups, isHidden, hideItem, track } from "@/flatmates/backend/store/store";
 import { seedFlatmates, READY_STAYS, AREA_LIST } from "@/flatmates/backend/store/seed";
 import { scoreMatch, resolutionRoutes, constraintImpact } from "@/flatmates/backend/store/match";
+import { rankFeed, feedInsight, DEALBREAKERS } from "@/flatmates/backend/services/intel";
 import { SlidersHorizontal, Map as MapIcon, Search, X } from "lucide-react";
 
 const TABS = [["all", "For You"], ["rooms", "Rooms"], ["people", "People"], ["groups", "Groups"], ["flats", "Flats"]];
@@ -16,6 +17,8 @@ export default function Discover() {
   const [tab, setTab] = useState(initial);
   const [q, setQ] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [dbs, setDbs] = useState<string[]>([]);
+  const [strict, setStrict] = useState(false);
   const [f, setF] = useState<any>({ maxRent: 0, area: "", roomType: "", verifiedOnly: false, freshOnly: false, sort: "match" });
   useEffect(() => { seedFlatmates(); }, []);
 
@@ -30,19 +33,21 @@ export default function Discover() {
     if (f.roomType) out = out.filter((x) => x.roomType === f.roomType);
     if (f.verifiedOnly) out = out.filter((x) => x.verified?.phone && x.verified?.work);
     if (f.freshOnly) out = out.filter((x) => !x.verifiedAt || Date.now() - +new Date(x.verifiedAt) < 3 * 86400000);
-    out = out.map((x) => ({ ...x, _s: scoreMatch(me, x).score }));
-    if (f.sort === "match") out.sort((a, b) => b._s - a._s);
-    if (f.sort === "price") out.sort((a, b) => (a.rent || 0) - (b.rent || 0));
-    if (f.sort === "new") out.sort((a, b) => +new Date(b.verifiedAt || 0) - +new Date(a.verifiedAt || 0));
-    return out;
+    return rankFeed(out, {
+      me,
+      dealbreakers: dbs,
+      strict,
+      sort: f.sort === "new" ? "fresh" : f.sort === "trust" ? "trust" : f.sort,
+    });
   };
 
-  const rooms = useMemo(() => apply(db.rooms.filter((r: any) => r.status === "LIVE")), [db, q, f, me]);
-  const people = useMemo(() => apply(db.people), [db, q, f, me]);
-  const flats = useMemo(() => apply(db.flats), [db, q, f, me]);
+  const rooms = useMemo(() => apply(db.rooms.filter((r: any) => r.status === "LIVE")), [db, q, f, me, dbs, strict]);
+  const people = useMemo(() => apply(db.people), [db, q, f, me, dbs, strict]);
+  const flats = useMemo(() => apply(db.flats), [db, q, f, me, dbs, strict]);
   const total = tab === "rooms" ? rooms.length : tab === "people" ? people.length : tab === "flats" ? flats.length : tab === "groups" ? db.groups.length : rooms.length + people.length + flats.length;
 
   const impact = constraintImpact(me, db.rooms);
+  const insight = feedInsight([...rooms, ...people, ...flats]);
 
   return (
     <FMShell title="Discover" tab="discover"
@@ -66,6 +71,32 @@ export default function Discover() {
             className={`shrink-0 px-3.5 h-9 rounded-full text-sm font-semibold border ${tab === k ? "bg-slate-900 text-white border-slate-900" : "bg-white border-slate-900/10 text-slate-600"}`}>{label}</button>
         ))}
       </div>
+
+      <div className="flex gap-1.5 overflow-x-auto pb-3 -mx-4 px-4">
+        {DEALBREAKERS.map((d: any) => {
+          const on = dbs.includes(d.key);
+          return (
+            <button key={d.key}
+              onClick={() => setDbs((prev) => (on ? prev.filter((k) => k !== d.key) : [...prev, d.key]))}
+              className={`shrink-0 px-3 h-8 rounded-full text-[12px] font-semibold border transition-colors ${on ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border text-muted-foreground"}`}>
+              {on ? "\u2713 " : ""}{d.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {!!dbs.length && (
+        <Card className="p-3 mb-4 flex items-center gap-3">
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-semibold">{strict ? "Hiding everything that breaks a deal-breaker" : "Deal-breakers demote instead of hide"}</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">{insight ? `${insight.strong} strong \u00b7 avg ${insight.avg}% match \u00b7 ${insight.trusted} highly trusted` : "No results yet"}</p>
+          </div>
+          <button onClick={() => setStrict((v) => !v)}
+            className={`shrink-0 px-3 h-8 rounded-full text-[12px] font-semibold border ${strict ? "bg-foreground text-background border-foreground" : "bg-card border-border"}`}>
+            {strict ? "Strict on" : "Strict off"}
+          </button>
+        </Card>
+      )}
 
       {showFilters && (
         <Card className="p-4 mb-4">
@@ -97,7 +128,7 @@ export default function Discover() {
           </div>
           <p className="text-xs font-semibold text-slate-500 mb-1.5">Sort</p>
           <div className="flex gap-1.5 mb-4">
-            {[["match", "Best match"], ["price", "Price"], ["new", "Freshest"]].map(([k, l]: any) => (
+            {[["match", "Best match"], ["trust", "Most trusted"], ["price", "Price"], ["new", "Freshest"]].map(([k, l]: any) => (
               <button key={k} onClick={() => setF({ ...f, sort: k })}
                 className={`px-2.5 h-8 rounded-lg text-xs font-medium border ${f.sort === k ? "bg-slate-900 text-white border-slate-900" : "bg-white border-slate-900/10"}`}>{l}</button>
             ))}
