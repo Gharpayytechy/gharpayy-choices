@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/gharpayy_/flatmates")({
   ssr: false,
-  beforeLoad: () => { throw redirect({ href: "/flatmates", statusCode: 301 }); },
   head: () => ({
     meta: [
       { title: "Gharpayy Flatmates · Find your room & flatmate" },
@@ -14,5 +14,10 @@ export const Route = createFileRoute("/gharpayy_/flatmates")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => null,
+  component: LegacyFlatmatesRedirect,
 });
+
+function LegacyFlatmatesRedirect() {
+  useEffect(() => { window.location.replace("/flatmates"); }, []);
+  return <div className="min-h-screen grid place-items-center text-sm text-muted-foreground">Opening Flatmates…</div>;
+}

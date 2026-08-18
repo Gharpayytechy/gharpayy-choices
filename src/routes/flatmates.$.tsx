@@ -1,8 +1,6 @@
 // @ts-nocheck
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
-
-const FlatmatesApp = lazy(() => import("@/flatmates/frontend/FlatmatesApp"));
+import FlatmatesApp from "@/flatmates/frontend/FlatmatesApp";
 
 export const Route = createFileRoute("/flatmates/$")({
   ssr: false,
@@ -20,9 +18,5 @@ export const Route = createFileRoute("/flatmates/$")({
 });
 
 function FlatmatesSplat() {
-  return (
-    <Suspense fallback={<div className="min-h-screen grid place-items-center text-muted-foreground">Loading Flatmates…</div>}>
-      <FlatmatesApp />
-    </Suspense>
-  );
+  return <FlatmatesApp />;
 }
