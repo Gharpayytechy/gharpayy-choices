@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Link, useLocation } from "wouter";
 import { cn } from "@/referral-app/lib/utils";
-import { LayoutDashboard, Boxes, Users, Building2, Target, ArrowLeft, Crown } from "lucide-react";
+import { LayoutDashboard, Boxes, Users, Building2, Target, ArrowLeft, Crown, Radar, KeyRound, Database } from "lucide-react";
 
 const NAV = [
   { href: "/flatmates/admin", label: "Command", icon: LayoutDashboard },
@@ -9,6 +9,9 @@ const NAV = [
   { href: "/flatmates/admin/demand", label: "Demand", icon: Users },
   { href: "/flatmates/admin/owners", label: "Owners", icon: Building2 },
   { href: "/flatmates/admin/missions", label: "Missions", icon: Target },
+  { href: "/flatmates/admin/tower", label: "Control Tower", icon: Radar },
+  { href: "/flatmates/admin/keys", label: "Access keys", icon: KeyRound },
+  { href: "/flatmates/admin/schemas", label: "Data schemas", icon: Database },
   { href: "/flatmates/admin/super", label: "Super admin", icon: Crown },
 ];
 

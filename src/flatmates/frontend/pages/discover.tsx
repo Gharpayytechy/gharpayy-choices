@@ -9,6 +9,7 @@ import { CITY_OPTIONS, cityByName } from "@/flatmates/backend/store/locations";
 import { matchesCommon } from "@/flatmates/backend/services/search";
 import { rankFeed } from "@/flatmates/backend/services/intel";
 import { SlidersHorizontal, Map as MapIcon, Search, X, MessageCircle } from "lucide-react";
+import { NoDeadEnd } from "@/flatmates/frontend/components/NoDeadEnd";
 import { WhatsAppHelp } from "@/flatmates/frontend/components/WhatsAppHelp";
 
 const TABS = [["all","All"],["rooms","Rooms"],["people","People"],["groups","Groups"],["flats","Whole flats"],["ready","Ready now"]];
@@ -46,7 +47,7 @@ export default function Discover() {
       <Label text="Sort"><div className="flex flex-wrap gap-1.5">{[["match","Best match"],["trust","Most trusted"],["price","Lowest rent"],["new","Freshest"]].map(([k,l])=><Chip key={k} on={f.sort===k} label={l} click={()=>setF({sort:k})}/>)}</div></Label>
       <Btn className="w-full" onClick={()=>setShowFilters(false)}>Show {counts[tab]} results</Btn>
     </Card>}
-    {counts[tab]===0?<Card className="p-6"><p className="font-display text-lg font-semibold">No honest match for these filters yet</p><p className="text-sm text-muted-foreground mt-1">Try a nearby locality, remove one filter, or send the exact requirement to Gharpayy.</p><div className="flex flex-wrap gap-2 mt-4"><button onClick={reset} className="h-10 px-4 rounded-lg border border-border text-sm font-semibold">Reset filters</button><WhatsAppHelp module="Discover" action="Find a match when filters return no results" city={f.city} area={f.areas[0]}/></div></Card>:<>
+    {counts[tab]===0?<NoDeadEnd me={me} filters={f} onReset={reset} module="Discover"/>:<>
       {(tab==="all"||tab==="rooms")&&<Section title={`${results.rooms.length} rooms`}><div className="space-y-3">{results.rooms.map((x:any)=><RoomCard key={x.id} me={me} r={x}/>)}</div></Section>}
       {(tab==="all"||tab==="people")&&<Section title={`${results.people.length} people`}><div className="space-y-3">{results.people.map((x:any)=><PersonCard key={x.id} me={me} p={x}/>)}</div></Section>}
       {(tab==="all"||tab==="groups")&&<Section title={`${results.groups.length} groups forming`}><div className="space-y-3">{results.groups.map((x:any)=><GroupCard key={x.id} g={x} people={db.people}/>)}</div></Section>}
