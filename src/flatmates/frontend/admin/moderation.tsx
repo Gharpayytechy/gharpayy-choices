@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ShieldCheck, AlertTriangle, Loader2 } from "lucide-react";
 import { FMShell } from "@/flatmates/frontend/components/Shell";
+import { supabase } from "@/integrations/supabase/client";
 import { moderationQueue, moderateListing } from "@/lib/listings.functions";
 
 export default function AdminModeration() {
@@ -11,6 +12,11 @@ export default function AdminModeration() {
 
   const load = async () => {
     try {
+      const { data: s } = await supabase.auth.getSession();
+      if (!s.session) {
+        setState({ loading: false, allowed: false, listings: [], signals: [] });
+        return;
+      }
       const res: any = await moderationQueue();
       setState({ loading: false, ...res });
     } catch (e: any) {
