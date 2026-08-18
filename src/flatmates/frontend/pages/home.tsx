@@ -10,13 +10,12 @@ import { CITY_OPTIONS, cityByName } from "@/flatmates/backend/store/locations";
 import { currentAccount } from "@/flatmates/backend/store/accounts";
 import { WhatsAppHelp } from "@/flatmates/frontend/components/WhatsAppHelp";
 
+/** The four canonical doors. We never ask "owner or tenant" — we ask what you're trying to do. */
 const SETUPS = [
-  { key: "find-room", icon: KeyRound, title: "Find a room", sub: "Verified rooms in existing homes", to: "/flatmates/discover?tab=rooms" },
-  { key: "find-flatmate", icon: Users, title: "Find my flatmate", sub: "Match people before you share", to: "/flatmates/discover?tab=people" },
-  { key: "form-group", icon: Sparkles, title: "Form a group", sub: "Build a household, then rent", to: "/flatmates/groups" },
-  { key: "whole-flat", icon: Home, title: "Rent a whole flat", sub: "Direct owner homes for your crew", to: "/flatmates/discover?tab=flats" },
-  { key: "list-room", icon: MapPin, title: "List a spare room", sub: "Replacement or open bedroom", to: "/flatmates/post?mode=room" },
-  { key: "list-property", icon: Building2, title: "List owner property", sub: "Manage leads from one supply desk", to: "/flatmates/owner" },
+  { key: "need-room", icon: KeyRound, title: "I need a room or shared flat", sub: "Room Seeker · find somewhere you can actually live", to: "/flatmates/discover?tab=rooms" },
+  { key: "have-room", icon: Users, title: "I have a room, need a flatmate", sub: "Replacement Host · fill your room with the right person", to: "/flatmates/publish?mode=replacement_room" },
+  { key: "own-property", icon: Building2, title: "I own a property, want occupants", sub: "Property Owner · fill your asset faster", to: "/flatmates/publish?mode=owner_room" },
+  { key: "managed", icon: Home, title: "I want Gharpayy to manage it", sub: "Managed Property · we run the property for you", to: "/flatmates/owner?mandate=1" },
 ];
 
 export default function FlatmatesHome() {
