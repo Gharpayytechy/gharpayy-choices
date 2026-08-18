@@ -53,6 +53,11 @@ import AdminDemand from "@/flatmates/frontend/admin/demand";
 import AdminOwners from "@/flatmates/frontend/admin/owners";
 import AdminMissions from "@/flatmates/frontend/admin/missions";
 import AdminSuper from "@/flatmates/frontend/admin/super";
+import AdminTower from "@/flatmates/frontend/admin/tower";
+import AdminKeys from "@/flatmates/frontend/admin/keys";
+import AdminSchemas from "@/flatmates/frontend/admin/schemas";
+import FMPlaybook from "@/flatmates/frontend/pages/playbook";
+import FMProperty from "@/flatmates/frontend/pages/property";
 
 const queryClient = new QueryClient();
 
@@ -81,6 +86,9 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/admin/missions" component={AdminMissions} />
       <Route path="/flatmates/admin/super" component={AdminSuper} />
       <Route path="/flatmates/super-admin" component={AdminSuper} />
+      <Route path="/flatmates/admin/tower" component={AdminTower} />
+      <Route path="/flatmates/admin/keys" component={AdminKeys} />
+      <Route path="/flatmates/admin/schemas" component={AdminSchemas} />
 
       {/* App */}
       <Route path="/flatmates" component={FMHome} />
@@ -88,6 +96,9 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/start" component={FMOnboard} />
       <Route path="/flatmates/discover" component={FMDiscover} />
       <Route path="/flatmates/map" component={FMMap} />
+      <Route path="/flatmates/playbook" component={FMPlaybook} />
+      <Route path="/flatmates/property" component={FMProperty} />
+      <Route path="/flatmates/property/:id" component={FMProperty} />
       <Route path="/flatmates/post" component={FMPost} />
       <Route path="/flatmates/room/:id" component={FMRoom} />
       <Route path="/flatmates/person/:id" component={FMPerson} />
