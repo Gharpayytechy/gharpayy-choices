@@ -137,7 +137,7 @@ export default function FlatmatesApp() {
       <TooltipProvider>
         <Toaster />
         <div className="fm-theme min-h-[100dvh]">
-          <WouterRouter base="/gharpayy">
+          <WouterRouter base={typeof window !== "undefined" && window.location.pathname.startsWith("/gharpayy") ? "/gharpayy" : ""}>
             <FlatmatesRoutes />
             <RoleSwitcher />
           </WouterRouter>

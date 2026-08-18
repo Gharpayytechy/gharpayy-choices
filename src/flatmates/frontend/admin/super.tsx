@@ -123,10 +123,17 @@ export default function AdminSuper() {
 
           <Panel title="Trust" sub="Verification and behaviour across the base.">
             <div className="p-4 space-y-2">
-              {(trust || []).slice(0, 8).map((t: any, i: number) => (
+              {[
+                { label: "Rooms verified", value: `${trust?.roomsVerified ?? 0} / ${trust?.roomsTotal ?? 0}` },
+                { label: "Phone verified", value: `${trust?.phoneVerified ?? 0} / ${trust?.peopleTotal ?? 0}` },
+                { label: "ID verified", value: `${trust?.idVerified ?? 0} / ${trust?.peopleTotal ?? 0}` },
+                { label: "Work verified", value: `${trust?.workVerified ?? 0} / ${trust?.peopleTotal ?? 0}` },
+                { label: "Stale listings", value: trust?.staleRooms ?? 0 },
+                { label: "Reports", value: trust?.reports ?? 0 },
+              ].map((t, i) => (
                 <div key={i} className="flex items-center justify-between text-sm">
-                  <span className="font-medium">{t.label || t.name}</span>
-                  <Tag>{t.value ?? t.score ?? t.tier}</Tag>
+                  <span className="font-medium">{t.label}</span>
+                  <Tag>{t.value}</Tag>
                 </div>
               ))}
             </div>
