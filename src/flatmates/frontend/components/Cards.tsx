@@ -4,6 +4,7 @@ import { MapPin, Users, CalendarDays, Sparkles } from "lucide-react";
 import { Card, Pill, MatchRing, SaveBtn, money, shortDate, freshness, VerifiedRow } from "./Shell";
 import { toggleSave, isSaved, useFM } from "@/flatmates/backend/store/store";
 import { scoreMatch } from "@/flatmates/backend/store/match";
+import { WhyChips, TrustBadge } from "./Intel";
 
 function useSaved(kind: string, id: string) {
   return useFM(() => isSaved(kind, id));
@@ -45,7 +46,8 @@ export function PersonCard({ me, p }: any) {
             <Pill><CalendarDays className="w-3 h-3" />{shortDate(p.moveIn)}</Pill>
             <Pill>{p.roomType}</Pill>
           </div>
-          <div className="mt-2"><VerifiedRow v={p.verified} /></div>
+          <div className="mt-2 flex flex-wrap items-center gap-1.5"><TrustBadge entity={p} /><VerifiedRow v={p.verified} /></div>
+          <WhyChips me={me} item={p} />
           {!!gates.length && <Pill tone="red" className="mt-2">{gates[0]}</Pill>}
           <WhyLink kind="person" id={p.id} />
         </div>
@@ -89,6 +91,8 @@ export function RoomCard({ me, r }: any) {
           {r.genderPref !== "Any" && <Pill>{r.genderPref} household</Pill>}
           <Pill>{r.commuteKm} km away</Pill>
         </div>
+        <div className="mt-2"><TrustBadge entity={r} /></div>
+        <WhyChips me={me} item={r} />
         {!!gates.length && <Pill tone="red" className="mt-2">{gates[0]}</Pill>}
         <WhyLink kind="room" id={r.id} />
         <div className="flex gap-2 mt-3">
