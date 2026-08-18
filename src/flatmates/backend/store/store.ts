@@ -292,8 +292,19 @@ export const sweepStaleRequests = () => {
   return closed;
 };
 
-export const incomingRequests = () => Interests.all().filter((i: any) => i.direction === "in" && i.status === "pending");
-export const outgoingRequests = () => Interests.all().filter((i: any) => i.direction !== "in" && i.status === "pending");
+export const incomingRequests = () => {
+  const me = getActorId();
+  return Interests.all().filter((i: any) => i.status === "pending" && (i.direction === "in" || (i.to === me && i.actor !== me)));
+};
+export const outgoingRequests = () => {
+  const me = getActorId();
+  return Interests.all().filter((i: any) => i.status === "pending" && i.direction !== "in" && i.actor !== undefined ? i.actor === me : true)
+    .filter((i: any) => i.status === "pending" && i.direction !== "in" && i.to !== me);
+};
+
+/** Requests that landed on the listings this account owns. */
+export const requestsForMyListings = () =>
+  Interests.all().filter((i: any) => i.to === getActorId() && i.actor !== getActorId());
 
 /** Seed a few incoming requests so accept/decline is usable on day one. */
 export const ensureIncomingRequests = () => {
