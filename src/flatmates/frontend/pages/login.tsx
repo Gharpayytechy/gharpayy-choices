@@ -1,25 +1,48 @@
 // @ts-nocheck
-/** Log in to an account created on this device. */
-import { useState } from "react";
+/** Real account login backed by the Lovable Cloud auth service. */
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Card, Btn } from "@/flatmates/frontend/components/Shell";
-import { logIn, listAccounts, ROLE_META } from "@/flatmates/backend/store/accounts";
-import { track } from "@/flatmates/backend/store/store";
-import { ArrowLeft } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { ArrowLeft, Loader2, LogOut } from "lucide-react";
 
 export default function FlatmatesLogin() {
   const [, nav] = useLocation();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const accounts = listAccounts();
+  const [busy, setBusy] = useState(false);
+  const [session, setSession] = useState<any>(undefined);
 
-  const submit = (e: any) => {
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session ?? null));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  const submit = async (e: any) => {
     e?.preventDefault?.();
     setError("");
-    const res = logIn(form);
-    if (!res.ok) { setError(res.error); return; }
-    track("account_login", { role: res.account.role });
-    nav(ROLE_META[res.account.role]?.home || "/flatmates");
+    setBusy(true);
+    const { data, error: err } = await supabase.auth.signInWithPassword({
+      email: form.email.trim().toLowerCase(),
+      password: form.password,
+    });
+    setBusy(false);
+    if (err || !data.user) {
+      setError(err?.message || "Could not sign in.");
+      return;
+    }
+    const { data: roles } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user.id);
+    const isStaff = (roles ?? []).some((r: any) => r.role === "admin" || r.role === "moderator");
+    nav(isStaff ? "/flatmates/admin/moderation" : "/flatmates");
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setSession(null);
   };
 
   return (
@@ -34,6 +57,18 @@ export default function FlatmatesLogin() {
       </header>
 
       <main className="max-w-lg mx-auto px-4 py-5">
+        {session && (
+          <Card className="p-3 mb-4 flex items-center gap-3">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold truncate">Signed in as {session.user?.email}</p>
+              <Link href="/flatmates" className="text-xs text-primary font-semibold">Go to Flatmates</Link>
+            </div>
+            <button onClick={signOut} className="h-9 px-3 rounded-xl border border-border text-xs font-semibold inline-flex items-center gap-1.5">
+              <LogOut className="w-3.5 h-3.5" /> Sign out
+            </button>
+          </Card>
+        )}
+
         <form onSubmit={submit}>
           <Field label="Email">
             <input className={inp} type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@email.com" autoComplete="email" />
@@ -48,24 +83,10 @@ export default function FlatmatesLogin() {
             </Card>
           )}
 
-          <Btn className="w-full" type="submit">Log in</Btn>
+          <Btn className="w-full" type="submit" disabled={busy}>
+            {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : "Log in"}
+          </Btn>
         </form>
-
-        {!!accounts.length && (
-          <div className="mt-6">
-            <p className="text-xs font-semibold text-muted-foreground mb-2">Accounts on this device</p>
-            <div className="space-y-2">
-              {accounts.map((a: any) => (
-                <button key={a.id} onClick={() => setForm({ email: a.email, password: "" })}
-                  className="w-full text-left rounded-2xl border border-border p-3 hover:bg-muted transition-colors">
-                  <span className="text-base">{ROLE_META[a.role]?.emoji || "🙂"}</span>{" "}
-                  <span className="font-semibold text-sm">{a.name}</span>
-                  <span className="block text-xs text-muted-foreground">{a.email}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
 
         <p className="text-center text-sm text-muted-foreground mt-6">
           New here? <Link href="/flatmates/signup" className="font-semibold text-primary">Create an account</Link>
