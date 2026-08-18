@@ -199,7 +199,10 @@ export function dailyPicks(pools: any = {}, opts: any = {}) {
       if (picks.length >= DAILY_PICK_LIMIT) break;
       if (!have.has(r.id)) { picks.push(r); have.add(r.id); }
     }
-    setDailyPicks(picks.map((p: any) => p.id));
+    const ids = picks.map((p: any) => p.id);
+    // persist outside the render pass so subscribers aren't notified mid-render
+    if (typeof queueMicrotask === "function") queueMicrotask(() => setDailyPicks(ids));
+    else setTimeout(() => setDailyPicks(ids), 0);
   }
   const msLeft = +new Date(todayKey() + "T23:59:59Z") - Date.now();
   return {
