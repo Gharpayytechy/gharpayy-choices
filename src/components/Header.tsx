@@ -11,7 +11,7 @@ const nav = [
   { to: "/areas", label: "Areas" },
   { to: "/persona-quiz", label: "Find me" },
   { to: "/gharpayy", label: "Gharpayy" },
-  { to: "/gharpayy/flatmates", label: "Flatmates" },
+  { to: "/flatmates", label: "Flatmates" },
   { to: "/app", label: "Earn 💸" },
 ];
 

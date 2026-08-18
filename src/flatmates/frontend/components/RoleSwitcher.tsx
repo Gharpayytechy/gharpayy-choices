@@ -84,7 +84,7 @@ export function RoleSwitcher() {
               <button onClick={() => { setOpen(false); navigate("/flatmates/signup"); }}
                 className="h-10 rounded-xl bg-primary text-primary-foreground text-sm font-semibold">Create account</button>
               {account ? (
-                <button onClick={() => { logOut(); setOpen(false); navigate("/flatmates/welcome"); }}
+                 <button onClick={() => { logOut(); setOpen(false); navigate("/flatmates"); }}
                   className="h-10 rounded-xl border border-border text-sm font-semibold">Log out</button>
               ) : (
                 <button onClick={() => { setOpen(false); navigate("/flatmates/login"); }}
@@ -92,7 +92,7 @@ export function RoleSwitcher() {
               )}
             </div>
 
-            <a href="/gharpayy/flatmates/guide" className="flex items-center justify-between rounded-2xl bg-foreground text-background px-4 py-3 text-sm font-semibold">
+            <a href="/flatmates/guide" className="flex items-center justify-between rounded-2xl bg-foreground text-background px-4 py-3 text-sm font-semibold">
               What's ready & how to use it <ArrowRight className="w-4 h-4" />
             </a>
             <p className="text-[11px] text-muted-foreground mt-3 text-center">

@@ -42,6 +42,7 @@ import FMGuide from "@/flatmates/frontend/pages/guide";
 import FMWelcome from "@/flatmates/frontend/pages/welcome";
 import FMSignup from "@/flatmates/frontend/pages/signup";
 import FMLogin from "@/flatmates/frontend/pages/login";
+import FMMap from "@/flatmates/frontend/pages/map";
 import { RoleSwitcher } from "@/flatmates/frontend/components/RoleSwitcher";
 import { seedFlatmates } from "@/flatmates/backend/store/seed";
 import { hydrateAccounts } from "@/flatmates/backend/store/accounts";
@@ -61,7 +62,7 @@ function FlatmatesNotFound() {
       <div>
         <p className="font-display text-2xl font-semibold">Page not found</p>
         <p className="text-sm text-muted-foreground mt-1">This Flatmates screen does not exist.</p>
-        <a href="/gharpayy/flatmates" className="inline-block mt-4 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold">
+        <a href="/flatmates" className="inline-block mt-4 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold">
           Back to Flatmates
         </a>
       </div>
@@ -86,6 +87,7 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/onboard" component={FMOnboard} />
       <Route path="/flatmates/start" component={FMOnboard} />
       <Route path="/flatmates/discover" component={FMDiscover} />
+      <Route path="/flatmates/map" component={FMMap} />
       <Route path="/flatmates/post" component={FMPost} />
       <Route path="/flatmates/room/:id" component={FMRoom} />
       <Route path="/flatmates/person/:id" component={FMPerson} />
