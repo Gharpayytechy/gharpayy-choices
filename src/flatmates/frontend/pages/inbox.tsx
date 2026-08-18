@@ -8,6 +8,7 @@ import {
   sweepStaleRequests, ensureIncomingRequests,
 } from "@/flatmates/backend/store/store";
 import { requestHealth } from "@/flatmates/backend/services/intel";
+import { seedFlatmates } from "@/flatmates/backend/store/seed";
 import { Send, Check, X, Clock, ShieldCheck } from "lucide-react";
 
 const TABS = ["Requests", "Chats", "Rooms", "Groups", "Support"];
@@ -24,7 +25,7 @@ export default function Inbox() {
   const [tab, setTab] = useState("Requests");
   const [declining, setDeclining] = useState<string | null>(null);
 
-  useEffect(() => { ensureIncomingRequests(); sweepStaleRequests(); }, []);
+  useEffect(() => { seedFlatmates(); ensureIncomingRequests(); sweepStaleRequests(); }, []);
 
   const threads = useFM(() => Threads.all());
   const incoming = useFM(() => incomingRequests());
