@@ -18,15 +18,39 @@ const listeners = new Set<() => void>();
 export const subscribe = (fn: () => void) => { listeners.add(fn); return () => { listeners.delete(fn); }; };
 export const notify = () => listeners.forEach((f) => f());
 
-function makeDB<T extends { id: string }>(name: string) {
+/* ── Multi-user: the "acting" account ────────────────────
+   No auth for now. A single switch decides whose eyes you see the
+   marketplace through: any seeker, any poster/owner, a group lead or ops. */
+const ACTOR = K("actor");
+export const DEFAULT_ACTOR = "seeker_aarav";
+export const getActorId = (): string => {
+  if (typeof localStorage === "undefined") return DEFAULT_ACTOR;
+  try { return localStorage.getItem(ACTOR) || DEFAULT_ACTOR; } catch { return DEFAULT_ACTOR; }
+};
+export const setActorId = (id: string) => {
+  if (typeof localStorage !== "undefined") { try { localStorage.setItem(ACTOR, id); } catch {} }
+  notify();
+  return id;
+};
+/** Actor profile defaults, registered by the actor catalogue (avoids a cycle). */
+let ACTOR_SEEDS: Record<string, any> = {};
+export const registerActorSeeds = (seeds: Record<string, any>) => { ACTOR_SEEDS = seeds; };
+
+function makeDB<T extends { id: string }>(name: string, scoped = false) {
   const key = K(name);
+  const mine = (r: any) => {
+    if (!scoped) return true;
+    const me = getActorId();
+    return !r.actor || r.actor === me || r.to === me;
+  };
   return {
     key,
-    all(): T[] { return load(key); },
+    all(): T[] { return load(key).filter(mine); },
+    allRaw(): T[] { return load(key); },
     get(id: string): T | undefined { return load(key).find((x: any) => x.id === id); },
     create(data: any): T {
       const all = load(key);
-      const row = { id: uid(), createdAt: new Date().toISOString(), ...data };
+      const row = { id: uid(), createdAt: new Date().toISOString(), ...(scoped ? { actor: getActorId() } : {}), ...data };
       all.unshift(row); save(key, all); notify(); return row;
     },
     update(id: string, patch: any) {
