@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { useEffect } from "react";
 import { Link } from "wouter";
-import { FMShell, Section, Card, Pill, KPI, money } from "@/referral-app/components/flatmates/Shell";
-import { useFM, People, Rooms, Flats, Groups, Threads, Meetings, Saved, Interests, getMe } from "@/referral-app/lib/flatmates/store";
-import { READY_STAYS, seedFlatmates } from "@/referral-app/lib/flatmates/seed";
+import { FMShell, Section, Card, Pill, KPI, money } from "@/flatmates/frontend/components/Shell";
+import { useFM, People, Rooms, Flats, Groups, Threads, Meetings, Saved, Interests, getMe } from "@/flatmates/backend/store/store";
+import { READY_STAYS, seedFlatmates } from "@/flatmates/backend/store/seed";
 import {
   Compass, Users, Home, Bookmark, MessageCircle, CalendarDays, ShieldCheck, Activity, Sliders,
   Zap, Search, Bell, Receipt, FileText, LogOut, HandCoins, Sparkles, Plus, User,

@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useState } from "react";
 import { useRoute, useLocation, Link } from "wouter";
-import { FMShell, Card, Btn, Pill } from "@/referral-app/components/flatmates/Shell";
-import { Rooms, People, Flats, sendInterest, hideItem } from "@/referral-app/lib/flatmates/store";
+import { FMShell, Card, Btn, Pill } from "@/flatmates/frontend/components/Shell";
+import { Rooms, People, Flats, sendInterest, hideItem } from "@/flatmates/backend/store/store";
 
 const REASONS = ["Same location", "Similar lifestyle", "Budget alignment", "Similar move-in", "Looking to form a flat together", "Their available room"];
 

@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { Link, useRoute, useSearch, useLocation } from "wouter";
 import { useState } from "react";
-import { FMShell, Card, Btn, Pill, Section, money, shortDate, MatchRing } from "@/referral-app/components/flatmates/Shell";
-import { Groups, People, Flats, getMe, useFM, track, pushNotif } from "@/referral-app/lib/flatmates/store";
-import { FlatCard } from "@/referral-app/components/flatmates/Cards";
+import { FMShell, Card, Btn, Pill, Section, money, shortDate, MatchRing } from "@/flatmates/frontend/components/Shell";
+import { Groups, People, Flats, getMe, useFM, track, pushNotif } from "@/flatmates/backend/store/store";
+import { FlatCard } from "@/flatmates/frontend/components/Cards";
 
 export default function GroupsPage() {
   const me = useFM(() => getMe());

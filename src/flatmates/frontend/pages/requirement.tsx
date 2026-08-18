@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { useState } from "react";
-import { FMShell, Card, Pill, Section, Btn, Meter, money } from "@/referral-app/components/flatmates/Shell";
-import { getMe, setMe, useFM, Rooms, track } from "@/referral-app/lib/flatmates/store";
-import { AREA_LIST } from "@/referral-app/lib/flatmates/seed";
-import { constraintImpact, scoreMatch } from "@/referral-app/lib/flatmates/match";
+import { FMShell, Card, Pill, Section, Btn, Meter, money } from "@/flatmates/frontend/components/Shell";
+import { getMe, setMe, useFM, Rooms, track } from "@/flatmates/backend/store/store";
+import { AREA_LIST } from "@/flatmates/backend/store/seed";
+import { constraintImpact, scoreMatch } from "@/flatmates/backend/store/match";
 import { Sliders, TrendingUp } from "lucide-react";
 
 const ROOM_TYPES = ["Private room", "Twin sharing", "Shared room", "Any"];

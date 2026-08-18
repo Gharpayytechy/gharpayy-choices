@@ -1,10 +1,10 @@
 // @ts-nocheck
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { FMShell, Card, Btn, Pill, Section, money } from "@/referral-app/components/flatmates/Shell";
-import { parsePost, writeDescription, shareCopy } from "@/referral-app/lib/flatmates/parse";
-import { Rooms, Flats, getMe, setMe, track, People } from "@/referral-app/lib/flatmates/store";
-import { AREA_LIST } from "@/referral-app/lib/flatmates/seed";
+import { FMShell, Card, Btn, Pill, Section, money } from "@/flatmates/frontend/components/Shell";
+import { parsePost, writeDescription, shareCopy } from "@/flatmates/backend/store/parse";
+import { Rooms, Flats, getMe, setMe, track, People } from "@/flatmates/backend/store/store";
+import { AREA_LIST } from "@/flatmates/backend/store/seed";
 import { ClipboardPaste, Home, Users, Search, Sparkles, Building2, Camera, Check } from "lucide-react";
 
 const OPTIONS = [

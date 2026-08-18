@@ -1,10 +1,10 @@
 // @ts-nocheck
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
-import { FMShell, Card, Pill, Section, money, shortDate } from "@/referral-app/components/flatmates/Shell";
-import { getMe, useFM, People, Rooms, Flats, Groups } from "@/referral-app/lib/flatmates/store";
-import { AREA_LIST, READY_STAYS } from "@/referral-app/lib/flatmates/seed";
-import { scoreMatch } from "@/referral-app/lib/flatmates/match";
+import { FMShell, Card, Pill, Section, money, shortDate } from "@/flatmates/frontend/components/Shell";
+import { getMe, useFM, People, Rooms, Flats, Groups } from "@/flatmates/backend/store/store";
+import { AREA_LIST, READY_STAYS } from "@/flatmates/backend/store/seed";
+import { scoreMatch } from "@/flatmates/backend/store/match";
 import { Search, MapPin, Building2, GraduationCap, Users, Home } from "lucide-react";
 
 const SUGGEST = [

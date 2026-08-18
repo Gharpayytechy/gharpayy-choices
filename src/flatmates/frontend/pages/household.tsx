@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState } from "react";
-import { FMShell, Card, Pill, Section, Btn, LinkBtn, KPI, Meter, money, shortDate } from "@/referral-app/components/flatmates/Shell";
-import { getMe, setMe, useFM, Rooms, createReplacement, pushNotif, track } from "@/referral-app/lib/flatmates/store";
+import { FMShell, Card, Pill, Section, Btn, LinkBtn, KPI, Meter, money, shortDate } from "@/flatmates/frontend/components/Shell";
+import { getMe, setMe, useFM, Rooms, createReplacement, pushNotif, track } from "@/flatmates/backend/store/store";
 import { Home, Users, Receipt, Sparkles, AlertTriangle } from "lucide-react";
 
 export default function FMHousehold() {

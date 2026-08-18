@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Link } from "wouter";
-import { FMShell, Card, Pill, Section, KPI, Meter, money, VerifiedRow } from "@/referral-app/components/flatmates/Shell";
-import { getMe, useFM, Saved, Interests, Meetings, Threads, resetFM } from "@/referral-app/lib/flatmates/store";
+import { FMShell, Card, Pill, Section, KPI, Meter, money, VerifiedRow } from "@/flatmates/frontend/components/Shell";
+import { getMe, useFM, Saved, Interests, Meetings, Threads, resetFM } from "@/flatmates/backend/store/store";
 import { Bookmark, CalendarDays, Home, ShieldCheck, Sliders, Activity } from "lucide-react";
 
 export default function You() {

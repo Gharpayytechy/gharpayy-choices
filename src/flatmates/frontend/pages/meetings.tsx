@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Link } from "wouter";
-import { FMShell, Card, Pill, Section, LinkBtn, Btn, shortDate } from "@/referral-app/components/flatmates/Shell";
-import { useFM, Meetings, Interests } from "@/referral-app/lib/flatmates/store";
+import { FMShell, Card, Pill, Section, LinkBtn, Btn, shortDate } from "@/flatmates/frontend/components/Shell";
+import { useFM, Meetings, Interests } from "@/flatmates/backend/store/store";
 import { CalendarDays, MapPin, ShieldCheck, Clock } from "lucide-react";
 
 export default function FMMeetings() {

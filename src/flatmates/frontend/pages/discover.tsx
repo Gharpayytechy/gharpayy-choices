@@ -1,11 +1,11 @@
 // @ts-nocheck
 import { useState, useEffect, useMemo } from "react";
 import { Link, useSearch } from "wouter";
-import { FMShell, Card, Btn, Pill, money, EmptyRoutes, Section } from "@/referral-app/components/flatmates/Shell";
-import { PersonCard, RoomCard, FlatCard, GroupCard, ReadyCard } from "@/referral-app/components/flatmates/Cards";
-import { getMe, useFM, People, Rooms, Flats, Groups, isHidden, hideItem, track } from "@/referral-app/lib/flatmates/store";
-import { seedFlatmates, READY_STAYS, AREA_LIST } from "@/referral-app/lib/flatmates/seed";
-import { scoreMatch, resolutionRoutes, constraintImpact } from "@/referral-app/lib/flatmates/match";
+import { FMShell, Card, Btn, Pill, money, EmptyRoutes, Section } from "@/flatmates/frontend/components/Shell";
+import { PersonCard, RoomCard, FlatCard, GroupCard, ReadyCard } from "@/flatmates/frontend/components/Cards";
+import { getMe, useFM, People, Rooms, Flats, Groups, isHidden, hideItem, track } from "@/flatmates/backend/store/store";
+import { seedFlatmates, READY_STAYS, AREA_LIST } from "@/flatmates/backend/store/seed";
+import { scoreMatch, resolutionRoutes, constraintImpact } from "@/flatmates/backend/store/match";
 import { SlidersHorizontal, Map as MapIcon, Search, X } from "lucide-react";
 
 const TABS = [["all", "For You"], ["rooms", "Rooms"], ["people", "People"], ["groups", "Groups"], ["flats", "Flats"]];

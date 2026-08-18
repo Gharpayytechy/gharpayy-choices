@@ -1,11 +1,11 @@
 // @ts-nocheck
 import { useEffect } from "react";
 import { Link } from "wouter";
-import { FMShell, Section, Card, Pill, KPI, LinkBtn, money, EmptyRoutes, Eyebrow } from "@/referral-app/components/flatmates/Shell";
-import { PersonCard, RoomCard, FlatCard, GroupCard, ReadyCard } from "@/referral-app/components/flatmates/Cards";
-import { getMe, setMe, useFM, People, Rooms, Flats, Groups, Notifs, Threads, isHidden } from "@/referral-app/lib/flatmates/store";
-import { seedFlatmates, READY_STAYS } from "@/referral-app/lib/flatmates/seed";
-import { scoreMatch, resolutionRoutes } from "@/referral-app/lib/flatmates/match";
+import { FMShell, Section, Card, Pill, KPI, LinkBtn, money, EmptyRoutes, Eyebrow } from "@/flatmates/frontend/components/Shell";
+import { PersonCard, RoomCard, FlatCard, GroupCard, ReadyCard } from "@/flatmates/frontend/components/Cards";
+import { getMe, setMe, useFM, People, Rooms, Flats, Groups, Notifs, Threads, isHidden } from "@/flatmates/backend/store/store";
+import { seedFlatmates, READY_STAYS } from "@/flatmates/backend/store/seed";
+import { scoreMatch, resolutionRoutes } from "@/flatmates/backend/store/match";
 import { ArrowRight, Sparkles, Activity, Zap, Sliders, HandCoins, FileText, LayoutGrid } from "lucide-react";
 
 export default function FlatmatesHome() {

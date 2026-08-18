@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useEffect, useMemo, useState } from "react";
-import { FMShell, Section, Card, Pill, KPI, Meter, Btn, money } from "@/referral-app/components/flatmates/Shell";
-import { useFM, Rooms, People, getMe, track } from "@/referral-app/lib/flatmates/store";
-import { seedFlatmates } from "@/referral-app/lib/flatmates/seed";
+import { FMShell, Section, Card, Pill, KPI, Meter, Btn, money } from "@/flatmates/frontend/components/Shell";
+import { useFM, Rooms, People, getMe, track } from "@/flatmates/backend/store/store";
+import { seedFlatmates } from "@/flatmates/backend/store/seed";
 import { toast } from "sonner";
 import { HandCoins, Copy, TrendingDown, MessageCircle } from "lucide-react";
 

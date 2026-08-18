@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { Link, useRoute } from "wouter";
-import { FMShell, Card, Pill, Section, money, shortDate, VerifiedRow, MatchRing } from "@/referral-app/components/flatmates/Shell";
-import { People, getMe, useFM, toggleSave, isSaved } from "@/referral-app/lib/flatmates/store";
-import { explain } from "@/referral-app/lib/flatmates/match";
+import { FMShell, Card, Pill, Section, money, shortDate, VerifiedRow, MatchRing } from "@/flatmates/frontend/components/Shell";
+import { People, getMe, useFM, toggleSave, isSaved } from "@/flatmates/backend/store/store";
+import { explain } from "@/flatmates/backend/store/match";
 
 export default function PersonDetail() {
   const [, params] = useRoute("/flatmates/person/:id");

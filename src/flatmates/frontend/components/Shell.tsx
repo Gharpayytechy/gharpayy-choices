@@ -2,7 +2,7 @@
 import { Link, useLocation } from "wouter";
 import { Home, Compass, Plus, MessageCircle, User, Bell, ChevronLeft, Heart, ShieldCheck, Search, LayoutGrid } from "lucide-react";
 import { cn } from "@/referral-app/lib/utils";
-import { useFM, Notifs } from "@/referral-app/lib/flatmates/store";
+import { useFM, Notifs } from "@/flatmates/backend/store/store";
 
 export function FMShell({ children, title, sub, back, action, tab, wide }: any) {
   const unread = useFM(() => Notifs.all().filter((n: any) => !n.read).length);

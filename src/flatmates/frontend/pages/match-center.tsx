@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useParams, Link } from "wouter";
-import { FMShell, Card, Pill, Section, LinkBtn, Meter, money, shortDate, freshness } from "@/referral-app/components/flatmates/Shell";
-import { getMe, useFM, People, Rooms, Flats } from "@/referral-app/lib/flatmates/store";
-import { explain, matchBadge } from "@/referral-app/lib/flatmates/match";
+import { FMShell, Card, Pill, Section, LinkBtn, Meter, money, shortDate, freshness } from "@/flatmates/frontend/components/Shell";
+import { getMe, useFM, People, Rooms, Flats } from "@/flatmates/backend/store/store";
+import { explain, matchBadge } from "@/flatmates/backend/store/match";
 import { CheckCircle2, MessageSquareWarning, ShieldAlert, ArrowRight } from "lucide-react";
 
 export default function FMMatchCenter() {

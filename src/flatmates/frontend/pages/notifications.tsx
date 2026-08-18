@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Link } from "wouter";
-import { FMShell, Card, Pill, Btn, timeAgo } from "@/referral-app/components/flatmates/Shell";
-import { useFM, Notifs } from "@/referral-app/lib/flatmates/store";
+import { FMShell, Card, Pill, Btn, timeAgo } from "@/flatmates/frontend/components/Shell";
+import { useFM, Notifs } from "@/flatmates/backend/store/store";
 import { Bell, Sparkles, CalendarDays, Home, Users } from "lucide-react";
 
 const ICON: any = { match: Sparkles, visit: CalendarDays, supply: Home, household: Home, mutual: Users, interest: Users };

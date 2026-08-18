@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState } from "react";
-import { FMShell, Section, Card, Pill, Btn, money } from "@/referral-app/components/flatmates/Shell";
-import { useFM, getMe, setMe, track } from "@/referral-app/lib/flatmates/store";
+import { FMShell, Section, Card, Pill, Btn, money } from "@/flatmates/frontend/components/Shell";
+import { useFM, getMe, setMe, track } from "@/flatmates/backend/store/store";
 import { toast } from "sonner";
 import { FileText, Copy, ShieldCheck } from "lucide-react";
 

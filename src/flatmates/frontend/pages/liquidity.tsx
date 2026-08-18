@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { Link } from "wouter";
-import { FMShell, Card, Pill, Section, KPI, Meter, money } from "@/referral-app/components/flatmates/Shell";
-import { useFM, People, Rooms, Flats, Groups, Interests, Threads } from "@/referral-app/lib/flatmates/store";
-import { AREA_LIST } from "@/referral-app/lib/flatmates/seed";
+import { FMShell, Card, Pill, Section, KPI, Meter, money } from "@/flatmates/frontend/components/Shell";
+import { useFM, People, Rooms, Flats, Groups, Interests, Threads } from "@/flatmates/backend/store/store";
+import { AREA_LIST } from "@/flatmates/backend/store/seed";
 import { Activity, TrendingUp, TrendingDown, Target } from "lucide-react";
 
 export default function FMLiquidity() {

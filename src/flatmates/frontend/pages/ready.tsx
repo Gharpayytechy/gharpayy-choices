@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { FMShell, Card, Pill, Section, LinkBtn, money, KPI } from "@/referral-app/components/flatmates/Shell";
-import { getMe, useFM } from "@/referral-app/lib/flatmates/store";
-import { READY_STAYS } from "@/referral-app/lib/flatmates/seed";
+import { FMShell, Card, Pill, Section, LinkBtn, money, KPI } from "@/flatmates/frontend/components/Shell";
+import { getMe, useFM } from "@/flatmates/backend/store/store";
+import { READY_STAYS } from "@/flatmates/backend/store/seed";
 import { Zap, Utensils, MapPin, ShieldCheck } from "lucide-react";
 
 export default function FMReady() {

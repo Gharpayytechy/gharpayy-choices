@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { Link } from "wouter";
-import { FMShell, Card, Section, LinkBtn, Pill, money } from "@/referral-app/components/flatmates/Shell";
-import { PersonCard, RoomCard, FlatCard } from "@/referral-app/components/flatmates/Cards";
-import { getMe, useFM, Saves, People, Rooms, Flats, Interests } from "@/referral-app/lib/flatmates/store";
+import { FMShell, Card, Section, LinkBtn, Pill, money } from "@/flatmates/frontend/components/Shell";
+import { PersonCard, RoomCard, FlatCard } from "@/flatmates/frontend/components/Cards";
+import { getMe, useFM, Saves, People, Rooms, Flats, Interests } from "@/flatmates/backend/store/store";
 import { Bookmark } from "lucide-react";
 
 export default function FMSaved() {

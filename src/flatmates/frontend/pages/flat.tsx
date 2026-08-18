@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { Link, useRoute } from "wouter";
-import { FMShell, Card, Pill, Section, money, shortDate } from "@/referral-app/components/flatmates/Shell";
-import { Flats, People, useFM, getMe } from "@/referral-app/lib/flatmates/store";
-import { PersonCard } from "@/referral-app/components/flatmates/Cards";
+import { FMShell, Card, Pill, Section, money, shortDate } from "@/flatmates/frontend/components/Shell";
+import { Flats, People, useFM, getMe } from "@/flatmates/backend/store/store";
+import { PersonCard } from "@/flatmates/frontend/components/Cards";
 
 export default function FlatDetail() {
   const [, params] = useRoute("/flatmates/flat/:id");

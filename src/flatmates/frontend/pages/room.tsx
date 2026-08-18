@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { Link, useRoute, useLocation } from "wouter";
 import { useState } from "react";
-import { FMShell, Card, Btn, Pill, Section, money, shortDate, freshness, VerifiedRow, MatchRing } from "@/referral-app/components/flatmates/Shell";
-import { Rooms, People, getMe, useFM, toggleSave, isSaved, hideItem, sendInterest, track } from "@/referral-app/lib/flatmates/store";
-import { explain } from "@/referral-app/lib/flatmates/match";
+import { FMShell, Card, Btn, Pill, Section, money, shortDate, freshness, VerifiedRow, MatchRing } from "@/flatmates/frontend/components/Shell";
+import { Rooms, People, getMe, useFM, toggleSave, isSaved, hideItem, sendInterest, track } from "@/flatmates/backend/store/store";
+import { explain } from "@/flatmates/backend/store/match";
 import { MapPin, Users, ShieldCheck, AlertTriangle } from "lucide-react";
 
 export default function RoomDetail() {

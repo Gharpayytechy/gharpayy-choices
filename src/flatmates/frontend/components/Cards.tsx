@@ -2,8 +2,8 @@
 import { Link } from "wouter";
 import { MapPin, Users, CalendarDays, Sparkles } from "lucide-react";
 import { Card, Pill, MatchRing, SaveBtn, money, shortDate, freshness, VerifiedRow } from "./Shell";
-import { toggleSave, isSaved, useFM } from "@/referral-app/lib/flatmates/store";
-import { scoreMatch } from "@/referral-app/lib/flatmates/match";
+import { toggleSave, isSaved, useFM } from "@/flatmates/backend/store/store";
+import { scoreMatch } from "@/flatmates/backend/store/match";
 
 function useSaved(kind: string, id: string) {
   return useFM(() => isSaved(kind, id));

@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useState } from "react";
 import { Link, useRoute } from "wouter";
-import { FMShell, Card, Pill, Btn, Section } from "@/referral-app/components/flatmates/Shell";
-import { Threads, useFM, reply, Interests } from "@/referral-app/lib/flatmates/store";
+import { FMShell, Card, Pill, Btn, Section } from "@/flatmates/frontend/components/Shell";
+import { Threads, useFM, reply, Interests } from "@/flatmates/backend/store/store";
 import { Send } from "lucide-react";
 
 const TABS = ["All", "Matches", "Rooms", "Groups", "Support"];

@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useState } from "react";
 import { Link, useSearch, useLocation } from "wouter";
-import { FMShell, Card, Btn, Pill, Section } from "@/referral-app/components/flatmates/Shell";
-import { Meetings, useFM, addMeeting } from "@/referral-app/lib/flatmates/store";
+import { FMShell, Card, Btn, Pill, Section } from "@/flatmates/frontend/components/Shell";
+import { Meetings, useFM, addMeeting } from "@/flatmates/backend/store/store";
 
 const SLOTS = ["Today 6:30 PM", "Tomorrow 11:00 AM", "Tomorrow 7:00 PM", "Sat 10:30 AM", "Sat 5:00 PM", "Sun 12:00 PM"];
 const PLACES = ["At the flat", "Video call", "Coffee nearby"];

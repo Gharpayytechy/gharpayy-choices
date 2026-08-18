@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { FMShell, Card, Pill, Section, Btn, Meter, KPI } from "@/referral-app/components/flatmates/Shell";
-import { getMe, setMe, useFM, track, pushNotif } from "@/referral-app/lib/flatmates/store";
+import { FMShell, Card, Pill, Section, Btn, Meter, KPI } from "@/flatmates/frontend/components/Shell";
+import { getMe, setMe, useFM, track, pushNotif } from "@/flatmates/backend/store/store";
 import { ShieldCheck, Phone, Mail, Briefcase, IdCard, Camera, Lock } from "lucide-react";
 
 const LEVELS = [

@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "wouter";
-import { FMShell, Card, Btn, Pill, Section, money } from "@/referral-app/components/flatmates/Shell";
-import { getMe, setMe, track } from "@/referral-app/lib/flatmates/store";
-import { seedFlatmates, AREA_LIST } from "@/referral-app/lib/flatmates/seed";
+import { FMShell, Card, Btn, Pill, Section, money } from "@/flatmates/frontend/components/Shell";
+import { getMe, setMe, track } from "@/flatmates/backend/store/store";
+import { seedFlatmates, AREA_LIST } from "@/flatmates/backend/store/seed";
 import { MapPin, Sparkles, Users, Home, Zap, Check } from "lucide-react";
 
 const INTENTS = [

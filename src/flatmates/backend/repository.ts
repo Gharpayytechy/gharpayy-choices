@@ -21,8 +21,8 @@ import {
   notify,
   track,
   useFM,
-} from "@/referral-app/lib/flatmates/store";
-import { seedFlatmates, READY_STAYS, AREA_LIST } from "@/referral-app/lib/flatmates/seed";
+} from "@/flatmates/backend/store/store";
+import { seedFlatmates, READY_STAYS, AREA_LIST } from "@/flatmates/backend/store/seed";
 
 export const repo = {
   people: People,
