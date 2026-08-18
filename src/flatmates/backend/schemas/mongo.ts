@@ -720,7 +720,7 @@ export const SCHEMAS: CollectionDef[] = [
       legalBasis: REQ("String", "", { enum: ["consent", "contract", "legitimate_use"] }),
       grantedAt: REQ("Date"),
       revokedAt: S("Date"),
-      disclosures: REQ("Array<Object>", "{ field, toPersonId, atypearl, reason }"),
+      disclosures: REQ("Array<Object>", "{ field, toPersonId, at, reason }"),
       retentionUntil: REQ("Date"),
       ...AUDIT,
     },
