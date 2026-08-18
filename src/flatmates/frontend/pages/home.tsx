@@ -12,10 +12,10 @@ import { WhatsAppHelp } from "@/flatmates/frontend/components/WhatsAppHelp";
 
 /** The four canonical doors. We never ask "owner or tenant" — we ask what you're trying to do. */
 const SETUPS = [
-  { key: "need-room", icon: KeyRound, title: "I need a room or shared flat", sub: "Room Seeker · find somewhere you can actually live", to: "/flatmates/discover?tab=rooms" },
-  { key: "have-room", icon: Users, title: "I have a room, need a flatmate", sub: "Replacement Host · fill your room with the right person", to: "/flatmates/publish?mode=replacement_room" },
-  { key: "own-property", icon: Building2, title: "I own a property, want occupants", sub: "Property Owner · fill your asset faster", to: "/flatmates/publish?mode=owner_room" },
-  { key: "managed", icon: Home, title: "I want Gharpayy to manage it", sub: "Managed Property · we run the property for you", to: "/flatmates/owner?mandate=1" },
+  { key: "need-room", icon: KeyRound, title: "I need a room or shared flat", sub: "Room Seeker · find somewhere you can actually live", to: "/flatmates/discover?tab=rooms", cta: "Find my place" },
+  { key: "have-room", icon: Users, title: "I have a room, need a flatmate", sub: "Replacement Host · fill your room with the right person", to: "/flatmates/publish?mode=replacement_room", cta: "Find a flatmate" },
+  { key: "own-property", icon: Building2, title: "I own a property, want occupants", sub: "Property Owner · fill your asset faster", to: "/flatmates/publish?mode=owner_room", cta: "Find tenants" },
+  { key: "managed", icon: Home, title: "I want Gharpayy to manage it", sub: "Managed Property · we run the property for you", to: "/flatmates/owner?mandate=1", cta: "Manage my property" },
 ];
 
 export default function FlatmatesHome() {
@@ -41,7 +41,7 @@ export default function FlatmatesHome() {
     <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-3">
         <Link href="/flatmates" className="flex items-center gap-2 min-w-0"><span className="w-8 h-8 rounded-lg bg-primary text-primary-foreground grid place-items-center font-display font-bold">G</span><span className="font-display font-bold">Gharpayy Flatmates</span></Link>
-        <nav className="hidden md:flex items-center gap-1 ml-5 text-sm font-semibold text-muted-foreground"><Link href="/flatmates/discover" className="px-3 py-2 hover:text-foreground">Discover</Link><Link href="/flatmates/map" className="px-3 py-2 hover:text-foreground">Map</Link><Link href="/flatmates/post" className="px-3 py-2 hover:text-foreground">List</Link><Link href="/flatmates/guide" className="px-3 py-2 hover:text-foreground">Guide</Link><Link href="/flatmates/playbook" className="px-3 py-2 hover:text-foreground">Playbook</Link></nav>
+        <nav className="hidden md:flex items-center gap-1 ml-5 text-sm font-semibold text-muted-foreground"><Link href="/flatmates/discover" className="px-3 py-2 hover:text-foreground">Discover</Link><Link href="/flatmates/map" className="px-3 py-2 hover:text-foreground">Map</Link><Link href="/flatmates/publish" className="px-3 py-2 hover:text-foreground">List</Link><Link href="/flatmates/guide" className="px-3 py-2 hover:text-foreground">Guide</Link><Link href="/flatmates/playbook" className="px-3 py-2 hover:text-foreground">Playbook</Link></nav>
         <div className="ml-auto flex items-center gap-2">{account ? <Link href="/flatmates/inbox" className="h-9 px-3 rounded-lg border border-border grid place-items-center text-xs font-semibold">My inbox</Link> : <><Link href="/flatmates/login" className="hidden sm:grid h-9 px-3 place-items-center text-xs font-semibold">Log in</Link><Link href="/flatmates/signup" className="h-9 px-3 rounded-lg bg-primary text-primary-foreground grid place-items-center text-xs font-semibold">Join free</Link></>}</div>
       </div>
     </header>
@@ -61,7 +61,7 @@ export default function FlatmatesHome() {
                 <div className="relative"><Search className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground"/><input value={q} onChange={(e)=>setQ(e.target.value)} onKeyDown={(e)=>e.key==="Enter"&&go()} placeholder="Area, office, college or apartment" className="w-full h-11 rounded-md border border-border bg-background pl-9 pr-3 text-sm"/></div>
               </div>
               {cityInfo.areas.length > 0 && <div className="flex gap-1.5 overflow-x-auto py-2.5">{cityInfo.areas.slice(0,6).map(a=><button key={a} onClick={()=>setArea(area===a?"":a)} className={`shrink-0 h-8 px-2.5 rounded-md border text-xs font-semibold ${area===a?"bg-primary text-primary-foreground border-primary":"bg-card border-border"}`}>{a}</button>)}</div>}
-              <button onClick={go} className="w-full h-11 rounded-md bg-primary text-primary-foreground text-sm font-bold flex items-center justify-center gap-2">Explore {selected.title.toLowerCase()} <ArrowRight className="w-4 h-4"/></button>
+              <button onClick={go} className="w-full h-11 rounded-md bg-primary text-primary-foreground text-sm font-bold flex items-center justify-center gap-2">{selected.cta} <ArrowRight className="w-4 h-4"/></button>
             </div>
             <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-primary-foreground/80"><span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-4 h-4"/>Verified profiles</span><span>Zero brokerage</span><span>Chats after acceptance</span></div>
           </div>
