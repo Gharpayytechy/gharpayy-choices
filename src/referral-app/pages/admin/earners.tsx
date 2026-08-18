@@ -60,10 +60,10 @@ export default function AdminEarners() {
                   </td>
                   <td className="px-4 py-3 text-right text-blue-400 font-bold">{r.leads}</td>
                   <td className="px-4 py-3 text-right text-green-400 font-bold">{r.bookings}</td>
-                  <td className="px-4 py-3 text-right text-orange-400 font-black">₹{r.earned.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-right text-sky-400 font-black">₹{r.earned.toLocaleString()}</td>
                   <td className="px-4 py-3 text-right">
                     {i < 3 ? (
-                      <button className="text-[10px] font-bold text-orange-400 hover:underline inline-flex items-center gap-1">
+                      <button className="text-[10px] font-bold text-sky-400 hover:underline inline-flex items-center gap-1">
                         <Crown className="w-3 h-3" /> Promote
                       </button>
                     ) : (

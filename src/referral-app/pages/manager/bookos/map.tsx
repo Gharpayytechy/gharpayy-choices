@@ -98,7 +98,7 @@ export default function MapPage() {
             </div>
             <div className="grid grid-cols-2 gap-2 mt-4">
               <button onClick={() => { RoomsXDB.update(open.id, { operationalStatus: "ready", readyDate: new Date().toISOString() }); setOpen({ ...open, operationalStatus: "ready" }); }} className="py-2 rounded-lg bg-emerald-100 text-emerald-800 text-xs font-semibold">Ready today</button>
-              <button onClick={() => { RoomsXDB.update(open.id, { turnaround: "checkout_today" }); setOpen({ ...open, turnaround: "checkout_today" }); }} className="py-2 rounded-lg bg-orange-100 text-orange-800 text-xs font-semibold">Checkout today</button>
+              <button onClick={() => { RoomsXDB.update(open.id, { turnaround: "checkout_today" }); setOpen({ ...open, turnaround: "checkout_today" }); }} className="py-2 rounded-lg bg-blue-100 text-blue-900 text-xs font-semibold">Checkout today</button>
               <button onClick={() => { RoomsXDB.update(open.id, { operationalStatus: "cleaning" }); setOpen({ ...open, operationalStatus: "cleaning" }); }} className="py-2 rounded-lg bg-blue-100 text-blue-800 text-xs font-semibold">Send to cleaning</button>
               <button onClick={() => { RoomsXDB.update(open.id, { operationalStatus: "maintenance" }); setOpen({ ...open, operationalStatus: "maintenance" }); }} className="py-2 rounded-lg bg-rose-100 text-rose-800 text-xs font-semibold">Block: maintenance</button>
             </div>

@@ -20,7 +20,7 @@ export default function AdminZones() {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <div className="text-[10px] uppercase tracking-widest text-orange-400 font-bold">5 hero zones</div>
+          <div className="text-[10px] uppercase tracking-widest text-sky-400 font-bold">5 hero zones</div>
           <h1 className="text-2xl md:text-3xl font-black text-white">Gharpayy zones · operations</h1>
           <p className="text-sm text-slate-400 mt-1 max-w-2xl">
             Same five zones a real Gharpayy customer sees on the homepage. Click any zone to open the expert workload, lead pipeline,

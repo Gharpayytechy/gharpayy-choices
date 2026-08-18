@@ -71,7 +71,7 @@ const ACTION_META: Record<ActionType, { label: string; icon: any; cls: string }>
   visit_done:      { label: "Visit completed",  icon: CheckCircle2,  cls: "text-emerald-600 bg-emerald-50" },
   prebooked:       { label: "Pre-booked",       icon: ShieldCheck,   cls: "text-primary bg-primary/10" },
   confirm:         { label: "Owner confirmed",  icon: CheckCircle2,  cls: "text-slate-600 bg-slate-50" },
-  rent_changed:    { label: "Rent updated",     icon: IndianRupee,   cls: "text-orange-600 bg-orange-50" },
+  rent_changed:    { label: "Rent updated",     icon: IndianRupee,   cls: "text-blue-800 bg-blue-50" },
 };
 
 /* ─────────────── Storage helpers ─────────────── */
@@ -472,7 +472,7 @@ function RoomCard({ room, visits, onConfirm, onStatus, onShare, onRemove, openVi
             <Badge variant="outline" className={`text-[10px] ${STATUS_META[room.status].cls}`}>{STATUS_META[room.status].label}</Badge>
             {stale && <Badge variant="outline" className="text-[10px] bg-rose-50 text-rose-600 border-rose-200"><Lock className="w-3 h-3 mr-1" /> Locked</Badge>}
             {locked && !stale && <Badge variant="outline" className="text-[10px] bg-sky-50 text-sky-700 border-sky-200"><Clock className="w-3 h-3 mr-1" /> Soft-lock</Badge>}
-            {demand > 75 && <Badge variant="outline" className="text-[10px] bg-orange-50 text-orange-700 border-orange-200"><Flame className="w-3 h-3 mr-1" /> Hot</Badge>}
+            {demand > 75 && <Badge variant="outline" className="text-[10px] bg-blue-50 text-blue-800 border-blue-200"><Flame className="w-3 h-3 mr-1" /> Hot</Badge>}
           </div>
           <p className="text-xs text-slate-500 mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5">
             <span>{room.beds} bed</span>
@@ -498,7 +498,7 @@ function RoomCard({ room, visits, onConfirm, onStatus, onShare, onRemove, openVi
           <span>Demand index</span><span>{demand}/100</span>
         </div>
         <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-          <div className={`h-full rounded-full ${demand > 75 ? "bg-orange-500" : demand > 50 ? "bg-amber-400" : "bg-slate-300"}`} style={{ width: `${demand}%` }} />
+          <div className={`h-full rounded-full ${demand > 75 ? "bg-blue-700" : demand > 50 ? "bg-amber-400" : "bg-slate-300"}`} style={{ width: `${demand}%` }} />
         </div>
       </div>
 

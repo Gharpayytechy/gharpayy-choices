@@ -64,9 +64,9 @@ export default function HomePage() {
 
           {/* Daily Quote */}
           <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-            className="bg-orange-500/10 border border-orange-500/20 rounded-2xl px-4 py-3 flex items-start gap-3">
+            className="bg-blue-700/10 border border-blue-700/20 rounded-2xl px-4 py-3 flex items-start gap-3">
             <span className="text-xl shrink-0">💬</span>
-            <p className="text-orange-300 font-bold text-sm leading-snug">{quote}</p>
+            <p className="text-sky-300 font-bold text-sm leading-snug">{quote}</p>
           </motion.div>
 
           {/* Hero Earnings Card */}
@@ -81,7 +81,7 @@ export default function HomePage() {
             <p className="text-zinc-400 font-bold mb-1">TOTAL KAMAI</p>
             <h2 className="text-5xl font-black text-green-400 tracking-tighter mb-4">₹{dashboard.referrer.totalEarned}</h2>
             <div className="flex items-center gap-3 bg-zinc-900/50 p-4 rounded-xl border border-zinc-700/50">
-              <div className="bg-orange-500 text-white w-10 h-10 flex items-center justify-center rounded-lg font-black text-xl">
+              <div className="bg-blue-700 text-white w-10 h-10 flex items-center justify-center rounded-lg font-black text-xl">
                 {dashboard.rank}
               </div>
               <div>
@@ -105,11 +105,11 @@ export default function HomePage() {
           {/* Big Refer CTA */}
           <button
             onClick={() => setLocation("/refer")}
-            className="w-full bg-orange-500 hover:bg-orange-600 active:scale-95 transition-all text-white rounded-3xl p-6 flex flex-col items-center justify-center gap-3 shadow-[0_10px_0_rgba(194,65,12,1)]"
+            className="w-full bg-blue-700 hover:bg-blue-800 active:scale-95 transition-all text-white rounded-3xl p-6 flex flex-col items-center justify-center gap-3 shadow-[0_10px_0_rgba(194,65,12,1)]"
           >
             <span className="text-4xl">💰</span>
             <span className="text-2xl font-black uppercase tracking-wide">Naya Refer Karo</span>
-            <span className="text-orange-200 text-sm">PG · Flat · Ghar · Sab kuch</span>
+            <span className="text-blue-200 text-sm">PG · Flat · Ghar · Sab kuch</span>
           </button>
 
           {/* XP Level */}
@@ -119,14 +119,14 @@ export default function HomePage() {
                 <p className="text-zinc-400 font-bold text-sm">LEVEL</p>
                 <h3 className="text-2xl font-black text-white">{levelName}</h3>
               </div>
-              <span className="text-orange-400 font-bold">{dashboard.referrer.xp} XP</span>
+              <span className="text-sky-400 font-bold">{dashboard.referrer.xp} XP</span>
             </div>
             <div className="h-4 bg-zinc-900 rounded-full overflow-hidden border border-zinc-700">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progressPercent}%` }}
                 transition={{ type: "spring", stiffness: 50, damping: 15 }}
-                className="h-full bg-orange-500 rounded-full"
+                className="h-full bg-blue-700 rounded-full"
               />
             </div>
             <p className="text-xs text-zinc-500 mt-2 text-right font-medium">{dashboard.nextLevelXp - dashboard.referrer.xp} XP to go</p>
@@ -144,18 +144,18 @@ export default function HomePage() {
 
           {/* Daily Quote */}
           <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
-            className="bg-orange-50 border border-orange-100 rounded-2xl px-4 py-3 flex items-start gap-3">
+            className="bg-blue-50 border border-blue-100 rounded-2xl px-4 py-3 flex items-start gap-3">
             <span className="text-xl shrink-0">✨</span>
-            <p className="text-orange-800 font-semibold text-sm leading-snug italic">"{quote}"</p>
+            <p className="text-blue-900 font-semibold text-sm leading-snug italic">"{quote}"</p>
           </motion.div>
 
           {/* Header */}
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold font-display text-slate-800">Hi, {dashboard.referrer.name.split(' ')[0]} 👋</h2>
-              <p className="text-orange-600 font-medium">Help a friend find a home, earn together!</p>
+              <p className="text-blue-800 font-medium">Help a friend find a home, earn together!</p>
             </div>
-            <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 border border-orange-200 shadow-sm">
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-800 border border-blue-200 shadow-sm">
               <Trophy className="w-6 h-6" />
             </div>
           </div>
@@ -164,9 +164,9 @@ export default function HomePage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-3xl p-6 shadow-xl shadow-orange-100/50 border border-orange-100 relative overflow-hidden"
+            className="bg-white rounded-3xl p-6 shadow-xl shadow-blue-100/50 border border-blue-100 relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-bl-full -z-0" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-0" />
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div>
                 <p className="text-sm font-medium text-slate-500 mb-1">Your Wallet</p>
@@ -174,23 +174,23 @@ export default function HomePage() {
               </div>
               <div className="text-right">
                 <p className="text-sm font-medium text-slate-500 mb-1">Campus Rank</p>
-                <p className="text-4xl font-black text-orange-500 tracking-tight">#{dashboard.rank}</p>
+                <p className="text-4xl font-black text-blue-700 tracking-tight">#{dashboard.rank}</p>
               </div>
             </div>
-            <div className="mt-6 pt-6 border-t border-orange-50">
+            <div className="mt-6 pt-6 border-t border-blue-50">
               <div className="flex justify-between text-sm font-medium mb-2">
                 <span className="text-slate-700 flex items-center gap-1">
                   <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                   {levelName}
                 </span>
-                <span className="text-orange-600">{dashboard.referrer.xp} / {dashboard.nextLevelXp} XP</span>
+                <span className="text-blue-800">{dashboard.referrer.xp} / {dashboard.nextLevelXp} XP</span>
               </div>
               <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${progressPercent}%` }}
                   transition={{ type: "spring", stiffness: 40 }}
-                  className="h-full bg-gradient-to-r from-orange-400 to-orange-500 rounded-full"
+                  className="h-full bg-gradient-to-r from-sky-400 to-blue-700 rounded-full"
                 />
               </div>
             </div>
@@ -227,20 +227,20 @@ export default function HomePage() {
           {/* Activity */}
           <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
             <h3 className="font-bold font-display text-slate-800 mb-4 flex items-center gap-2">
-              <Award className="w-5 h-5 text-orange-500" />
+              <Award className="w-5 h-5 text-blue-700" />
               Recent Activity
             </h3>
             {dashboard.recentActivity.length > 0 ? (
               <div className="space-y-4">
                 {dashboard.recentActivity.slice(0, 3).map((activity) => (
                   <div key={activity.id} className="flex items-start gap-3">
-                    <div className="w-2 h-2 mt-2 rounded-full bg-orange-400 shrink-0" />
+                    <div className="w-2 h-2 mt-2 rounded-full bg-sky-400 shrink-0" />
                     <div>
                       <p className="text-sm font-medium text-slate-800">{activity.description}</p>
                       <p className="text-xs text-slate-500">
                         {new Date(activity.createdAt).toLocaleDateString()}
                         {activity.amount && <span className="ml-2 text-green-600 font-medium">+₹{activity.amount}</span>}
-                        {activity.xpGained && <span className="ml-2 text-orange-500 font-medium">+{activity.xpGained} XP</span>}
+                        {activity.xpGained && <span className="ml-2 text-blue-700 font-medium">+{activity.xpGained} XP</span>}
                       </p>
                     </div>
                   </div>
@@ -263,7 +263,7 @@ export default function HomePage() {
         {/* Daily Quote */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
           className="bg-white border border-slate-200 rounded-xl px-4 py-3 flex items-start gap-3 shadow-sm">
-          <Zap className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+          <Zap className="w-4 h-4 text-blue-700 shrink-0 mt-0.5" />
           <p className="text-slate-600 text-sm font-medium italic leading-snug">"{quote}"</p>
         </motion.div>
 
@@ -285,9 +285,9 @@ export default function HomePage() {
             <p className="text-2xl font-black text-slate-900">₹{dashboard.referrer.paidEarnings}</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
-            <div className="absolute right-0 top-0 bottom-0 w-1 bg-orange-500" />
+            <div className="absolute right-0 top-0 bottom-0 w-1 bg-blue-700" />
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Pending</p>
-            <p className="text-2xl font-black text-orange-600">₹{dashboard.referrer.pendingEarnings}</p>
+            <p className="text-2xl font-black text-blue-800">₹{dashboard.referrer.pendingEarnings}</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Conversion</p>
@@ -320,15 +320,15 @@ export default function HomePage() {
           <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-bold text-slate-900 flex items-center gap-2">
-                <Target className="w-4 h-4 text-orange-500" />
+                <Target className="w-4 h-4 text-blue-700" />
                 Pipeline
               </h3>
-              <button onClick={() => setLocation("/activity")} className="text-xs text-orange-500 font-bold">View All →</button>
+              <button onClick={() => setLocation("/activity")} className="text-xs text-blue-700 font-bold">View All →</button>
             </div>
             <div className="space-y-4">
               {[
                 { label: "Total Referrals", value: dashboard.referrer.totalReferrals, pct: 100, color: "bg-slate-800" },
-                { label: "Verified Leads", value: dashboard.referrer.verifiedReferrals, pct: dashboard.referrer.totalReferrals ? (dashboard.referrer.verifiedReferrals / dashboard.referrer.totalReferrals) * 100 : 0, color: "bg-orange-400" },
+                { label: "Verified Leads", value: dashboard.referrer.verifiedReferrals, pct: dashboard.referrer.totalReferrals ? (dashboard.referrer.verifiedReferrals / dashboard.referrer.totalReferrals) * 100 : 0, color: "bg-sky-400" },
                 { label: "Bookings", value: dashboard.referrer.bookedReferrals, pct: dashboard.referrer.totalReferrals ? (dashboard.referrer.bookedReferrals / dashboard.referrer.totalReferrals) * 100 : 0, color: "bg-green-500" },
               ].map(row => (
                 <div key={row.label}>
@@ -347,20 +347,20 @@ export default function HomePage() {
           <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
             <div>
               <h3 className="font-bold text-slate-900 flex items-center gap-2 mb-2">
-                <Star className="w-4 h-4 text-orange-500 fill-orange-500" />
+                <Star className="w-4 h-4 text-blue-700 fill-blue-700" />
                 {levelName}
               </h3>
               <p className="text-sm text-slate-500 mb-6">Rank #{dashboard.rank} · Gharpayy Homes</p>
               <div className="mb-2 flex justify-between items-end">
                 <span className="text-3xl font-black text-slate-900">{dashboard.referrer.xp} <span className="text-base text-slate-500 font-medium">XP</span></span>
-                <span className="text-sm font-medium text-orange-600">{dashboard.nextLevelXp} XP required</span>
+                <span className="text-sm font-medium text-blue-800">{dashboard.nextLevelXp} XP required</span>
               </div>
               <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${progressPercent}%` }}
                   transition={{ type: "spring", stiffness: 40 }}
-                  className="h-full bg-orange-500 rounded-full"
+                  className="h-full bg-blue-700 rounded-full"
                 />
               </div>
             </div>

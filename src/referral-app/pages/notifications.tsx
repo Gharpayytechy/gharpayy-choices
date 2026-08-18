@@ -10,7 +10,7 @@ import { cn } from "@/referral-app/lib/utils";
 const TYPE_CONFIG: Record<string, { icon: React.ReactNode; color: string }> = {
   LEAD_VERIFIED: { icon: <CheckCheck className="w-4 h-4" />, color: "bg-green-100 text-green-600" },
   LEAD_BOOKED: { icon: <IndianRupee className="w-4 h-4" />, color: "bg-green-100 text-green-600" },
-  PAYOUT_APPROVED: { icon: <IndianRupee className="w-4 h-4" />, color: "bg-orange-100 text-orange-600" },
+  PAYOUT_APPROVED: { icon: <IndianRupee className="w-4 h-4" />, color: "bg-blue-100 text-blue-800" },
   PAYOUT_PAID: { icon: <IndianRupee className="w-4 h-4" />, color: "bg-green-100 text-green-700" },
   LEVEL_UP: { icon: <Trophy className="w-4 h-4" />, color: "bg-yellow-100 text-yellow-600" },
   BADGE_EARNED: { icon: <Star className="w-4 h-4" />, color: "bg-purple-100 text-purple-600" },
@@ -72,7 +72,7 @@ export default function NotificationsPage() {
             <h1 className="text-2xl font-black font-display text-slate-900 flex items-center gap-2">
               <Bell className="w-6 h-6 text-primary" /> Notifications
             </h1>
-            {unread.length > 0 && <p className="text-sm text-orange-600 font-medium mt-1">{unread.length} unread</p>}
+            {unread.length > 0 && <p className="text-sm text-blue-800 font-medium mt-1">{unread.length} unread</p>}
           </div>
           {unread.length > 0 && (
             <button onClick={handleMarkAll} className="flex items-center gap-2 text-sm text-slate-500 hover:text-primary font-medium transition-colors">
@@ -100,7 +100,7 @@ export default function NotificationsPage() {
                   onClick={() => !n.isRead && handleMarkOne(n.id)}
                   className={cn(
                     "flex gap-4 p-4 rounded-2xl border transition-all cursor-pointer hover:shadow-sm",
-                    n.isRead ? "bg-white border-slate-100 opacity-70" : "bg-white border-orange-100 shadow-sm",
+                    n.isRead ? "bg-white border-slate-100 opacity-70" : "bg-white border-blue-100 shadow-sm",
                   )}>
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${config.color}`}>
                     {config.icon}

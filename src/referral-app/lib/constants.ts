@@ -80,8 +80,8 @@ export const BADGE_DESCRIPTIONS: Record<string, string> = {
 };
 
 export const PERSONA_THEMES: Record<string, { bg: string; text: string; accent: string; emoji: string; title: string }> = {
-  GUARD: { bg: "bg-zinc-900", text: "text-white", accent: "text-orange-400", emoji: "🛡️", title: "Daily Worker" },
-  STUDENT: { bg: "bg-orange-50", text: "text-slate-900", accent: "text-orange-600", emoji: "🎓", title: "Student" },
+  GUARD: { bg: "bg-zinc-900", text: "text-white", accent: "text-sky-400", emoji: "🛡️", title: "Daily Worker" },
+  STUDENT: { bg: "bg-blue-50", text: "text-slate-900", accent: "text-blue-800", emoji: "🎓", title: "Student" },
   EARNER: { bg: "bg-slate-50", text: "text-slate-900", accent: "text-primary", emoji: "💼", title: "Side Hustler" },
   PG_MANAGER: { bg: "bg-blue-50", text: "text-blue-950", accent: "text-blue-600", emoji: "🏠", title: "PG Manager" },
   BROKER: { bg: "bg-slate-900", text: "text-white", accent: "text-green-400", emoji: "🤝", title: "Broker" },

@@ -16,7 +16,7 @@ export default function GroupsPage() {
       <h2 className="text-2xl font-semibold tracking-tight">Don't have flatmates yet? Build the household first.</h2>
       <p className="text-sm text-slate-500 mt-1 mb-4">We group people by area overlap, budget capacity and move-in spread.</p>
       {flat && (
-        <Card className="p-4 mb-4 bg-orange-50 border-orange-200">
+        <Card className="p-4 mb-4 bg-blue-50 border-blue-200">
           <p className="text-sm font-semibold">Building a group for {flat.title}</p>
           <p className="text-xs text-slate-600">{money(flat.rent)}/month · {money(Math.round(flat.rent / flat.bhk))} per person with {flat.bhk} people</p>
         </Card>
@@ -38,7 +38,7 @@ export default function GroupsPage() {
                 {members.map((m: any) => (
                   <div key={m.id} className="flex items-center justify-between text-sm">
                     <span>{m.name} · {m.occupation}</span>
-                    <Link href={`/flatmates/person/${m.id}`} className="text-xs font-semibold text-orange-600">Meet {m.name.split(" ")[0]}</Link>
+                    <Link href={`/flatmates/person/${m.id}`} className="text-xs font-semibold text-blue-800">Meet {m.name.split(" ")[0]}</Link>
                   </div>
                 ))}
               </div>
@@ -81,7 +81,7 @@ export function GroupRoom() {
           <MatchRing score={g.compatibility} />
         </div>
         <div className="flex -space-x-2 mt-3">
-          {members.map((m: any) => <span key={m.id} className="w-9 h-9 rounded-full bg-orange-100 border-2 border-white grid place-items-center text-xs font-bold text-orange-700">{m.name[0]}</span>)}
+          {members.map((m: any) => <span key={m.id} className="w-9 h-9 rounded-full bg-blue-100 border-2 border-white grid place-items-center text-xs font-bold text-blue-800">{m.name[0]}</span>)}
           <span className="w-9 h-9 rounded-full bg-slate-900 border-2 border-white grid place-items-center text-[10px] font-bold text-white">You</span>
         </div>
       </Card>

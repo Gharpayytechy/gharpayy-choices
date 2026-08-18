@@ -97,7 +97,7 @@ export default function AdminDashboard() {
         {/* Action row */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.2em] text-orange-400 font-black">Today's cockpit</div>
+            <div className="text-[10px] uppercase tracking-[0.2em] text-sky-400 font-black">Today's cockpit</div>
             <h2 className="text-xl md:text-2xl font-black text-white">{todayCount} new leads · {unassignedCount} need a expert</h2>
             <p className="text-xs text-slate-500 mt-0.5">Filter, route, follow up. The whole NMS pipeline in one screen.</p>
           </div>
@@ -106,7 +106,7 @@ export default function AdminDashboard() {
               onSuccess: (r: any) => toast.success(`Auto-routed ${r?.count ?? 0} unassigned leads`),
             })}
             disabled={autoRoute.isPending || unassignedCount === 0}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white text-sm font-black shrink-0 shadow-lg shadow-orange-500/30"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-blue-700 hover:bg-blue-800 disabled:opacity-50 text-white text-sm font-black shrink-0 shadow-lg shadow-blue-700/30"
           >
             <Zap className="w-4 h-4" />
             {autoRoute.isPending ? "Routing…" : `Auto-route ${unassignedCount} unassigned`}
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
           <DarkMetric title="Total leads" value={analytics.totalLeads} icon={Users} tone="text-blue-400" bg="bg-blue-500/10" border="border-blue-500/20" />
           <DarkMetric title="Verified" value={analytics.verifiedLeads} icon={UserCheck} tone="text-amber-400" bg="bg-amber-500/10" border="border-amber-500/20" />
           <DarkMetric title="Booked PGs" value={analytics.bookedLeads} icon={Home} tone="text-emerald-400" bg="bg-emerald-500/10" border="border-emerald-500/20" />
-          <DarkMetric title="Conversion" value={`${Math.round(analytics.conversionRate)}%`} icon={Target} tone="text-orange-400" bg="bg-orange-500/10" border="border-orange-500/20" />
+          <DarkMetric title="Conversion" value={`${Math.round(analytics.conversionRate)}%`} icon={Target} tone="text-sky-400" bg="bg-blue-700/10" border="border-blue-700/20" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
             </div>
             <div className="space-y-4">
               <Money label="Revenue generated" value={analytics.totalRevenue} tone="text-white" sub="₹2,000 per booking" />
-              <Money label="Payout liability" value={analytics.totalPayoutLiability} tone="text-orange-400" sub="Promised to referrers" />
+              <Money label="Payout liability" value={analytics.totalPayoutLiability} tone="text-sky-400" sub="Promised to referrers" />
               <Money label="Net platform profit" value={analytics.totalRevenue - analytics.totalPayoutLiability} tone="text-emerald-400" sub="Revenue − payouts" />
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function AdminDashboard() {
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-orange-500/15 rounded-lg"><Headset className="w-4 h-4 text-orange-400" /></div>
+              <div className="p-1.5 bg-blue-700/15 rounded-lg"><Headset className="w-4 h-4 text-sky-400" /></div>
               <h3 className="text-sm font-black text-white uppercase tracking-wider">Expert workload</h3>
             </div>
             <span className="text-[10px] text-slate-500 uppercase tracking-widest">Live · routed by persona + zone</span>
@@ -190,7 +190,7 @@ export default function AdminDashboard() {
             {captainWorkload.map(({ expert, open, closed, total }) => (
               <div key={expert.id} className="border border-slate-800 bg-slate-950 rounded-xl p-3">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-9 h-9 rounded-full bg-orange-500 text-white flex items-center justify-center font-black text-sm">{expert.initial}</div>
+                  <div className="w-9 h-9 rounded-full bg-blue-700 text-white flex items-center justify-center font-black text-sm">{expert.initial}</div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-sm text-white truncate">{expert.name}</p>
                     <p className="text-[11px] text-slate-500 truncate">{expert.title}</p>
@@ -222,7 +222,7 @@ export default function AdminDashboard() {
                   <tr key={expert.id} className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40">
                     <td className="py-3 pr-4">
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-black text-xs">{expert.initial}</div>
+                        <div className="w-8 h-8 rounded-full bg-blue-700 text-white flex items-center justify-center font-black text-xs">{expert.initial}</div>
                         <span className="font-bold text-slate-100">{expert.name}</span>
                       </div>
                     </td>

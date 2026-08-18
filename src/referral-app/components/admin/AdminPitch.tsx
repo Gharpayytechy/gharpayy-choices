@@ -5,7 +5,7 @@ import type { Pitch } from "@/lib/gharpayy-brand";
 export function AdminPitch({ eyebrow, title, pitch }: { eyebrow: string; title: string; pitch: Pitch }) {
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 mb-4">
-      <div className="text-[10px] uppercase tracking-widest font-bold text-orange-400">{eyebrow}</div>
+      <div className="text-[10px] uppercase tracking-widest font-bold text-sky-400">{eyebrow}</div>
       <h2 className="text-base md:text-lg font-bold text-white mt-0.5">{title}</h2>
       <dl className="mt-3 grid md:grid-cols-3 gap-3 text-sm">
         <div>

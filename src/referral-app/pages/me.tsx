@@ -72,7 +72,7 @@ export default function ProfilePage() {
       case 'BOOKED': return 'bg-green-100 text-green-700 border-green-200';
       case 'VERIFIED': return 'bg-blue-100 text-blue-700 border-blue-200';
       case 'LOST': return 'bg-red-100 text-red-700 border-red-200';
-      default: return 'bg-orange-100 text-orange-700 border-orange-200';
+      default: return 'bg-blue-100 text-blue-800 border-blue-200';
     }
   };
 
@@ -125,7 +125,7 @@ export default function ProfilePage() {
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-3">
           <button onClick={() => setLocation("/payout-setup")}
-            className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl hover:border-orange-200 hover:shadow-sm transition-all text-left">
+            className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl hover:border-blue-200 hover:shadow-sm transition-all text-left">
             <Wallet className="w-5 h-5 text-primary" />
             <div>
               <p className="font-bold text-slate-800 text-sm">Payout Setup</p>
@@ -133,7 +133,7 @@ export default function ProfilePage() {
             </div>
           </button>
           <button onClick={() => setLocation("/challenges")}
-            className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl hover:border-orange-200 hover:shadow-sm transition-all text-left">
+            className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl hover:border-blue-200 hover:shadow-sm transition-all text-left">
             <Target className="w-5 h-5 text-primary" />
             <div>
               <p className="font-bold text-slate-800 text-sm">Challenges</p>
@@ -141,7 +141,7 @@ export default function ProfilePage() {
             </div>
           </button>
           <button onClick={() => setLocation("/teams")}
-            className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl hover:border-orange-200 hover:shadow-sm transition-all text-left">
+            className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl hover:border-blue-200 hover:shadow-sm transition-all text-left">
             <Share2 className="w-5 h-5 text-primary" />
             <div>
               <p className="font-bold text-slate-800 text-sm">My Squad</p>
@@ -149,7 +149,7 @@ export default function ProfilePage() {
             </div>
           </button>
           <button onClick={() => setLocation("/notifications")}
-            className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl hover:border-orange-200 hover:shadow-sm transition-all text-left">
+            className="flex items-center gap-3 p-4 bg-white border border-slate-100 rounded-2xl hover:border-blue-200 hover:shadow-sm transition-all text-left">
             <Bell className="w-5 h-5 text-primary" />
             <div>
               <p className="font-bold text-slate-800 text-sm">Notifications</p>

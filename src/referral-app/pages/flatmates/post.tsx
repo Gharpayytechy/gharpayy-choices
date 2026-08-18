@@ -136,7 +136,7 @@ function RoomWizard({ onDone }: any) {
 
   return (
     <div>
-      <p className="text-xs font-bold uppercase tracking-widest text-orange-600">Step {step} / 5</p>
+      <p className="text-xs font-bold uppercase tracking-widest text-blue-800">Step {step} / 5</p>
       <h2 className="text-2xl font-semibold tracking-tight mb-4">
         {["Property", "The vacancy", "Household", "House rules", "Photos"][step - 1]}
       </h2>

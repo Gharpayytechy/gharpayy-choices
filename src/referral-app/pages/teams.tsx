@@ -111,7 +111,7 @@ export default function TeamsPage() {
                       {referrer && team.captainId !== referrer.id && (
                         <button onClick={() => handleJoin(team.id, team.inviteCode)}
                           disabled={joiningId === team.id}
-                          className="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold hover:bg-orange-600 transition-colors disabled:opacity-50">
+                          className="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors disabled:opacity-50">
                           {joiningId === team.id ? "..." : "Join"}
                         </button>
                       )}
@@ -133,7 +133,7 @@ export default function TeamsPage() {
             {(leaderboard || []).map((entry, i) => (
               <motion.div key={entry.teamId} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
                 className="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-4">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shrink-0 ${i === 0 ? "bg-yellow-100 text-yellow-700" : i === 1 ? "bg-slate-100 text-slate-700" : i === 2 ? "bg-orange-100 text-orange-700" : "bg-slate-50 text-slate-500"}`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shrink-0 ${i === 0 ? "bg-yellow-100 text-yellow-700" : i === 1 ? "bg-slate-100 text-slate-700" : i === 2 ? "bg-blue-100 text-blue-800" : "bg-slate-50 text-slate-500"}`}>
                   {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `#${entry.rank}`}
                 </div>
                 <div className="flex-1">

@@ -34,9 +34,9 @@ export default function PersonaKitPage() {
         <KitCard title="Voice-note script" body={voiceNote} onCopy={copy} />
 
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <div className="text-xs font-bold text-orange-400 uppercase tracking-wider">Best areas</div>
+          <div className="text-xs font-bold text-sky-400 uppercase tracking-wider">Best areas</div>
           <div className="text-sm text-slate-300 mt-1">{persona.bestAreas.slice(0, 5).join(" · ")}</div>
-          <div className="text-xs font-bold text-orange-400 uppercase tracking-wider mt-3">Budget</div>
+          <div className="text-xs font-bold text-sky-400 uppercase tracking-wider mt-3">Budget</div>
           <div className="text-sm text-slate-300 mt-1">₹{persona.budget[0].toLocaleString()} – ₹{persona.budget[1].toLocaleString()}</div>
         </div>
       </div>
@@ -48,7 +48,7 @@ function KitCard({ title, body, onCopy }: any) {
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
       <div className="flex items-center justify-between mb-2">
-        <div className="text-xs font-bold text-orange-400 uppercase tracking-wider">{title}</div>
+        <div className="text-xs font-bold text-sky-400 uppercase tracking-wider">{title}</div>
         <button onClick={() => onCopy(body)} className="text-[11px] text-slate-400 hover:text-white inline-flex items-center gap-1">
           <Copy className="w-3 h-3" /> Copy
         </button>

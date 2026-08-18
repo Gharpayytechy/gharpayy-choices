@@ -74,7 +74,7 @@ export function FilterBar({
             onClick={() => set("range")(r)}
             className={`px-3 py-1.5 rounded-full text-xs font-bold transition ${
               value.range === r
-                ? "bg-orange-500 text-white shadow-sm"
+                ? "bg-blue-700 text-white shadow-sm"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
             }`}
           >

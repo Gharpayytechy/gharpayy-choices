@@ -8,7 +8,7 @@ import { Users, Trophy, Crown, ChevronLeft, Star } from "lucide-react";
 const LEVEL_COLORS: Record<string, string> = {
   BEGINNER: "bg-slate-100 text-slate-600",
   EXPLORER: "bg-blue-100 text-blue-700",
-  HUSTLER: "bg-orange-100 text-orange-700",
+  HUSTLER: "bg-blue-100 text-blue-800",
   PRO: "bg-purple-100 text-purple-700",
   LEGEND: "bg-yellow-100 text-yellow-700",
 };
@@ -45,7 +45,7 @@ export default function TeamDetailPage() {
         </button>
 
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-3xl p-6">
+          className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-3xl p-6">
           <h1 className="text-3xl font-black font-display text-slate-900 mb-1">{team.name}</h1>
           {team.description && <p className="text-slate-600 mb-4">{team.description}</p>}
           <div className="grid grid-cols-3 gap-3">

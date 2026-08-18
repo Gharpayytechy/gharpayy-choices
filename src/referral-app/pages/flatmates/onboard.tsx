@@ -65,7 +65,7 @@ export default function FlatmatesOnboard() {
                     <div className="font-semibold tracking-tight">{it.title}</div>
                     <div className="text-xs text-slate-500">{it.desc}</div>
                   </div>
-                  <span className="text-xs font-semibold text-orange-600">{it.cta} →</span>
+                  <span className="text-xs font-semibold text-blue-800">{it.cta} →</span>
                 </div>
               </button>
             ))}
@@ -134,7 +134,7 @@ export default function FlatmatesOnboard() {
               onChange={(e) => patch({ budgetIdeal: +e.target.value, budgetMax: Math.max(+e.target.value, d.budgetMax) })} />
           </Field>
           <Field label={`Maximum budget · ${money(d.budgetMax)}`}>
-            <input type="range" min={5000} max={60000} step={500} value={d.budgetMax} className="w-full accent-orange-500"
+            <input type="range" min={5000} max={60000} step={500} value={d.budgetMax} className="w-full accent-blue-700"
               onChange={(e) => patch({ budgetMax: +e.target.value })} />
           </Field>
           <Field label="Maximum deposit"><Choice options={["1 month", "2 months", "3 months", "Flexible"]} value={d.depositMonths} onChange={(v) => patch({ depositMonths: v })} /></Field>
@@ -184,7 +184,7 @@ export default function FlatmatesOnboard() {
 
       {step === 9 && (
         <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-orange-600">Your living style</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-blue-800">Your living style</p>
           <h2 className="text-3xl font-semibold tracking-tight mt-1">
             {d.dna.social === "Very social" ? "Open Host" : d.dna.social === "Mostly private" ? "Quiet Independent" : "Balanced Independent"}
           </h2>
@@ -204,7 +204,7 @@ export default function FlatmatesOnboard() {
               const on = d.priorities.includes(p);
               return (
                 <button key={p} onClick={() => patch({ priorities: on ? d.priorities.filter((x: string) => x !== p) : [...d.priorities, p].slice(0, 3) })}
-                  className={`px-3 h-9 rounded-xl text-sm font-medium border ${on ? "bg-orange-500 text-white border-orange-500" : "bg-white border-slate-900/10"}`}>{p}</button>
+                  className={`px-3 h-9 rounded-xl text-sm font-medium border ${on ? "bg-blue-700 text-white border-blue-700" : "bg-white border-slate-900/10"}`}>{p}</button>
               );
             })}
           </div>
@@ -243,7 +243,7 @@ function Choice({ options, value, onChange }: any) {
 function StepWrap({ title, sub, children, onNext, onBack, nextLabel = "Continue" }: any) {
   return (
     <div>
-      {sub && <p className="text-xs font-bold uppercase tracking-widest text-orange-600 mb-1">{sub}</p>}
+      {sub && <p className="text-xs font-bold uppercase tracking-widest text-blue-800 mb-1">{sub}</p>}
       <h2 className="text-2xl font-semibold tracking-tight mb-4">{title}</h2>
       {children}
       <div className="flex gap-2 mt-6">

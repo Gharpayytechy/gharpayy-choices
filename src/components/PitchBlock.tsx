@@ -14,7 +14,7 @@ export function PitchBlock({ eyebrow, title, pitch, dark = false }: {
   return (
     <div className={`rounded-xl border ${base} p-4 md:p-5`}>
       {eyebrow && (
-        <div className={`text-[10px] uppercase tracking-widest font-bold ${dark ? "text-orange-400" : "text-primary"}`}>
+        <div className={`text-[10px] uppercase tracking-widest font-bold ${dark ? "text-sky-400" : "text-primary"}`}>
           {eyebrow}
         </div>
       )}

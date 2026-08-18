@@ -8,7 +8,7 @@ import { Calculator, TrendingUp, IndianRupee, Star, Zap } from "lucide-react";
 const LEVEL_INFO = [
   { level: "BEGINNER", label: "Beginner", minXp: 0, color: "bg-slate-200 text-slate-700" },
   { level: "EXPLORER", label: "Explorer", minXp: 100, color: "bg-blue-100 text-blue-700" },
-  { level: "HUSTLER", label: "Hustler", minXp: 300, color: "bg-orange-100 text-orange-700" },
+  { level: "HUSTLER", label: "Hustler", minXp: 300, color: "bg-blue-100 text-blue-800" },
   { level: "PRO", label: "Pro", minXp: 700, color: "bg-purple-100 text-purple-700" },
   { level: "LEGEND", label: "Legend", minXp: 1500, color: "bg-yellow-100 text-yellow-700" },
 ];
@@ -44,7 +44,7 @@ export default function CalculatorPage() {
               <span className="text-2xl font-black text-primary">{referrals}</span>
             </div>
             <input type="range" min={1} max={50} value={referrals} onChange={e => setReferrals(Number(e.target.value))}
-              className="w-full accent-orange-500" />
+              className="w-full accent-blue-700" />
             <div className="flex justify-between text-xs text-slate-400 mt-1">
               <span>1</span><span>50</span>
             </div>
@@ -80,10 +80,10 @@ export default function CalculatorPage() {
                 <p className="text-4xl font-black text-green-700">₹{data.totalEarnings.toLocaleString()}</p>
                 <p className="text-sm text-green-600 mt-1">{data.verifiedCount} verified · {data.bookedCount} booked</p>
               </div>
-              <div className="bg-orange-50 border border-orange-100 rounded-2xl p-5">
-                <p className="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Monthly Projection</p>
-                <p className="text-4xl font-black text-orange-700">₹{data.monthlyProjection.toLocaleString()}</p>
-                <p className="text-sm text-orange-600 mt-1">4 weeks × ₹{data.totalEarnings.toLocaleString()}</p>
+              <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5">
+                <p className="text-xs font-bold text-blue-800 uppercase tracking-wider mb-2">Monthly Projection</p>
+                <p className="text-4xl font-black text-blue-800">₹{data.monthlyProjection.toLocaleString()}</p>
+                <p className="text-sm text-blue-800 mt-1">4 weeks × ₹{data.totalEarnings.toLocaleString()}</p>
               </div>
             </div>
 
@@ -131,10 +131,10 @@ export default function CalculatorPage() {
               <p className="text-slate-400 text-sm mt-2">Assuming consistent weekly performance</p>
             </div>
 
-            <div className="bg-orange-500 rounded-2xl p-5 text-white text-center">
+            <div className="bg-blue-700 rounded-2xl p-5 text-white text-center">
               <p className="font-bold text-lg mb-2">Ready to start earning?</p>
-              <p className="text-sm text-orange-100 mb-4">Join thousands earning from PG referrals in Bangalore</p>
-              <a href="/register" className="block bg-white text-orange-600 font-bold py-3 rounded-xl hover:bg-orange-50 transition-colors">
+              <p className="text-sm text-blue-100 mb-4">Join thousands earning from PG referrals in Bangalore</p>
+              <a href="/register" className="block bg-white text-blue-800 font-bold py-3 rounded-xl hover:bg-blue-50 transition-colors">
                 Register Now →
               </a>
             </div>

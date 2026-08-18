@@ -33,8 +33,8 @@ const PERSONAS: {
     title: "College Student",
     subtitle: "Help friends find homes, earn rewards.",
     icon: <GraduationCap className="w-8 h-8" />,
-    color: "bg-orange-50 border-orange-100 text-orange-950",
-    activeColor: "ring-2 ring-primary border-primary bg-orange-100 shadow-xl shadow-orange-500/20",
+    color: "bg-blue-50 border-blue-100 text-orange-950",
+    activeColor: "ring-2 ring-primary border-primary bg-blue-100 shadow-xl shadow-blue-700/20",
     emoji: "🎓",
     tag: "Most Popular",
   },
@@ -113,7 +113,7 @@ export function PersonaSelector() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 via-orange-50/30 to-slate-100">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100">
       <div className="max-w-5xl w-full">
         {/* Hero Header */}
         <div className="text-center mb-10">
@@ -121,7 +121,7 @@ export function PersonaSelector() {
             <div className="flex items-center justify-center gap-2 mb-4">
               <span className="text-4xl">🏘️</span>
               <div className="text-left">
-                <h1 className="text-2xl font-black font-display text-orange-600 leading-none">Gharpayy</h1>
+                <h1 className="text-2xl font-black font-display text-blue-800 leading-none">Gharpayy</h1>
                 <p className="text-xs font-bold text-slate-500 uppercase tracking-widest leading-none">Homes</p>
               </div>
             </div>
@@ -134,7 +134,7 @@ export function PersonaSelector() {
             <div className="flex items-center justify-center gap-3 mt-4 flex-wrap">
               <span className="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full">₹50 per verification</span>
               <span className="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full">₹500 per booking</span>
-              <span className="text-sm text-orange-600 bg-orange-50 px-3 py-1 rounded-full font-bold">7 unique experiences</span>
+              <span className="text-sm text-blue-800 bg-blue-50 px-3 py-1 rounded-full font-bold">7 unique experiences</span>
             </div>
           </motion.div>
         </div>

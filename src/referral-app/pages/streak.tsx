@@ -83,7 +83,7 @@ export default function StreakPage() {
 
         {/* Main streak display */}
         <motion.div
-          className="relative bg-gradient-to-br from-orange-500 to-red-500 rounded-3xl p-8 text-white text-center overflow-hidden shadow-2xl"
+          className="relative bg-gradient-to-br from-blue-700 to-red-500 rounded-3xl p-8 text-white text-center overflow-hidden shadow-2xl"
           initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
         >
           <div className="absolute inset-0 opacity-10">
@@ -127,7 +127,7 @@ export default function StreakPage() {
           className={`w-full py-5 rounded-2xl font-black text-xl flex items-center justify-center gap-3 transition-all shadow-lg
             ${checkedInToday
               ? "bg-green-100 text-green-700 border-2 border-green-200 cursor-default"
-              : "bg-orange-500 hover:bg-orange-600 text-white shadow-orange-200"
+              : "bg-blue-700 hover:bg-blue-800 text-white shadow-blue-200"
             }`}
         >
           {checkedInToday ? (
@@ -153,11 +153,11 @@ export default function StreakPage() {
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: i * 0.05 }}
                   className={`w-full aspect-square rounded-xl flex items-center justify-center text-lg font-bold
-                    ${d.checked ? "bg-orange-500 text-white shadow-md shadow-orange-200" : "bg-muted text-muted-foreground"}`}
+                    ${d.checked ? "bg-blue-700 text-white shadow-md shadow-blue-200" : "bg-muted text-muted-foreground"}`}
                 >
                   {d.checked ? "🔥" : "·"}
                 </motion.div>
-                {d.checked && <span className="text-[9px] text-orange-500 font-bold">+{d.xp}</span>}
+                {d.checked && <span className="text-[9px] text-blue-700 font-bold">+{d.xp}</span>}
               </div>
             ))}
           </div>
@@ -173,14 +173,14 @@ export default function StreakPage() {
               const achieved = (data?.streak.longestStreak || 0) >= m.days;
               return (
                 <div key={m.days} className={`p-4 rounded-2xl border-2 flex items-center gap-3 transition-all
-                  ${achieved ? "border-orange-300 bg-orange-50" : "border-border bg-card"}`}>
+                  ${achieved ? "border-sky-300 bg-blue-50" : "border-border bg-card"}`}>
                   <span className="text-2xl">{m.icon}</span>
                   <div>
                     <p className="font-bold text-sm">{m.days}-Day Streak</p>
-                    <p className={`text-xs font-bold ${achieved ? "text-orange-600" : "text-muted-foreground"}`}>{m.reward}</p>
+                    <p className={`text-xs font-bold ${achieved ? "text-blue-800" : "text-muted-foreground"}`}>{m.reward}</p>
                   </div>
                   {achieved
-                    ? <CheckCircle2 className="w-4 h-4 text-orange-500 ml-auto" />
+                    ? <CheckCircle2 className="w-4 h-4 text-blue-700 ml-auto" />
                     : <Lock className="w-4 h-4 text-muted-foreground ml-auto" />
                   }
                 </div>

@@ -25,7 +25,7 @@ export function ZoneHero({ leads }: { leads: any[] }) {
       <div className="relative p-5 md:p-7">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-5">
           <div>
-            <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-orange-400">
+            <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-sky-400">
               <Flame className="w-3 h-3" /> Gharpayy · Bengaluru · 5 hero zones
             </div>
             <h1 className="text-2xl md:text-3xl font-black text-white mt-1.5 leading-tight">
@@ -39,7 +39,7 @@ export function ZoneHero({ leads }: { leads: any[] }) {
             <Stat label="Open" value={totalOpen} tone="text-blue-400" />
             <Stat label="Booked" value={totalBooked} tone="text-emerald-400" />
             {hottest && (
-              <Link href={`/admin/zone/${hottest.z.slug}`} className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white text-xs font-black">
+              <Link href={`/admin/zone/${hottest.z.slug}`} className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-blue-700 hover:bg-blue-800 text-white text-xs font-black">
                 <Flame className="w-3.5 h-3.5" /> Hottest: {hottest.z.display} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             )}
@@ -53,12 +53,12 @@ export function ZoneHero({ leads }: { leads: any[] }) {
               <Link
                 key={z.slug}
                 href={`/admin/zone/${z.slug}`}
-                className="group relative rounded-xl overflow-hidden border border-slate-800 bg-slate-900 hover:border-orange-500 transition shadow-lg hover:shadow-orange-500/20"
+                className="group relative rounded-xl overflow-hidden border border-slate-800 bg-slate-900 hover:border-blue-700 transition shadow-lg hover:shadow-blue-700/20"
               >
                 <div className="relative h-28 overflow-hidden">
                   <img src={z.heroImage} alt={z.display} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                  <div className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded-md bg-orange-500 text-[9px] font-black text-white tracking-wider">
+                  <div className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded-md bg-blue-700 text-[9px] font-black text-white tracking-wider">
                     {z.offer.split(" ").slice(0, 4).join(" ")}
                   </div>
                   <div className="absolute bottom-1.5 left-2 right-2">
@@ -73,7 +73,7 @@ export function ZoneHero({ leads }: { leads: any[] }) {
                   <div className="grid grid-cols-3 gap-1 mt-1.5">
                     <Mini value={s.open} label="Open" tone="text-blue-400" />
                     <Mini value={s.booked} label="Won" tone="text-emerald-400" />
-                    <Mini value={`${s.conversion || 0}%`} label="Conv" tone="text-orange-400" />
+                    <Mini value={`${s.conversion || 0}%`} label="Conv" tone="text-sky-400" />
                   </div>
                   <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-800">
                     <div className="flex items-center gap-1.5 min-w-0">
@@ -82,7 +82,7 @@ export function ZoneHero({ leads }: { leads: any[] }) {
                       </div>
                       <span className="text-[10px] font-bold text-slate-300 truncate">{expert?.name?.split(" ")[0] || "Expert"}</span>
                     </div>
-                    <ArrowRight className="w-3 h-3 text-slate-500 group-hover:text-orange-400 group-hover:translate-x-0.5 transition" />
+                    <ArrowRight className="w-3 h-3 text-slate-500 group-hover:text-sky-400 group-hover:translate-x-0.5 transition" />
                   </div>
                 </div>
               </Link>

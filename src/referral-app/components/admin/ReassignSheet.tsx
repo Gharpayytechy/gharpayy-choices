@@ -25,9 +25,9 @@ export function ReassignSheet({
             <button
               key={c.id}
               onClick={() => { onPick(c.id); onOpenChange(false); }}
-              className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-orange-400 hover:bg-orange-50 text-left transition"
+              className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-400 hover:bg-blue-50 text-left transition"
             >
-              <div className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center font-black">
+              <div className="w-10 h-10 rounded-full bg-blue-700 text-white flex items-center justify-center font-black">
                 {c.initial}
               </div>
               <div className="flex-1 min-w-0">
@@ -35,7 +35,7 @@ export function ReassignSheet({
                 <p className="text-xs text-slate-500 truncate">{c.title}</p>
                 <p className="text-[11px] text-slate-400 truncate">{c.responseSla}</p>
               </div>
-              <span className="text-orange-600 font-bold text-sm">→</span>
+              <span className="text-blue-800 font-bold text-sm">→</span>
             </button>
           ))}
         </div>

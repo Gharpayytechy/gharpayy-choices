@@ -146,13 +146,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-1.5">
             <span className="text-xl">🏘️</span>
             <div>
-              <span className={cn("text-base font-black font-display leading-none", isGuard || isBroker ? "text-orange-400" : "text-primary")}>Gharpayy</span>
+              <span className={cn("text-base font-black font-display leading-none", isGuard || isBroker ? "text-sky-400" : "text-primary")}>Gharpayy</span>
               <span className={cn("text-[9px] font-bold ml-1 opacity-60 uppercase tracking-widest", isGuard || isBroker ? "text-white" : "text-foreground")}>Homes</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/streak">
-              <Flame className={cn("w-5 h-5", isGuard || isBroker ? "text-orange-400" : "text-orange-500")} />
+              <Flame className={cn("w-5 h-5", isGuard || isBroker ? "text-sky-400" : "text-blue-700")} />
             </Link>
             <Link href="/notifications">
               <Bell className={cn("w-5 h-5", isGuard || isBroker ? "text-zinc-400" : "text-muted-foreground")} />

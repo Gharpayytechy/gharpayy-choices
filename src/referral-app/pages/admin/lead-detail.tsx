@@ -259,8 +259,8 @@ export default function AdminLeadDetail() {
 
           {/* Right Column: Lead Details */}
           <div className="space-y-6">
-            <div className="bg-white rounded-xl border border-orange-200 shadow-sm overflow-hidden">
-              <div className="p-4 border-b border-orange-100 bg-orange-50 font-bold text-orange-900 flex items-center gap-2">
+            <div className="bg-white rounded-xl border border-blue-200 shadow-sm overflow-hidden">
+              <div className="p-4 border-b border-blue-100 bg-blue-50 font-bold text-blue-900 flex items-center gap-2">
                 Lead Owner
               </div>
               <div className="p-4 space-y-3">

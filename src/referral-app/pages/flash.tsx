@@ -57,7 +57,7 @@ export default function FlashDealsPage() {
   const urgencyColor = (expiresAt: string) => {
     const hours = (new Date(expiresAt).getTime() - Date.now()) / 3600000;
     if (hours < 2) return "text-red-600 bg-red-50 border-red-200";
-    if (hours < 6) return "text-orange-600 bg-orange-50 border-orange-200";
+    if (hours < 6) return "text-blue-800 bg-blue-50 border-blue-200";
     return "text-blue-600 bg-blue-50 border-blue-200";
   };
 
@@ -68,7 +68,7 @@ export default function FlashDealsPage() {
       <PageHeader title="Flash Deals" subtitle="Limited-time bonus commissions on select homes" />
       <div className="p-4 md:p-6 max-w-3xl mx-auto space-y-6">
         {/* Header */}
-        <div className="relative bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 rounded-3xl p-6 text-white overflow-hidden">
+        <div className="relative bg-gradient-to-br from-blue-700 via-red-500 to-pink-500 rounded-3xl p-6 text-white overflow-hidden">
           <div className="absolute inset-0 opacity-20">
             {Array.from({ length: 8 }).map((_, i) => (
               <Zap key={i} className="absolute w-6 h-6" style={{ left: `${i * 15}%`, top: `${(i * 23) % 80}%` }} />
@@ -113,11 +113,11 @@ export default function FlashDealsPage() {
                   key={deal.id}
                   initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.08 }}
-                  className="bg-card border-2 border-orange-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer"
+                  className="bg-card border-2 border-blue-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer"
                   onClick={() => setLocation(`/pg/${deal.propertyId}`)}
                 >
                   {/* Discount badge */}
-                  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 flex justify-between items-center">
+                  <div className="bg-gradient-to-r from-blue-700 to-red-500 text-white px-4 py-2 flex justify-between items-center">
                     <div className="flex items-center gap-2 font-bold">
                       <Zap className="w-4 h-4" />
                       {deal.discount}% OFF + {deal.bonusMultiplier}x referral bonus
@@ -145,10 +145,10 @@ export default function FlashDealsPage() {
                       <span className="text-sm text-muted-foreground">/month</span>
                     </div>
 
-                    <div className="bg-orange-50 border border-orange-100 rounded-xl p-3 mb-4">
-                      <p className="text-sm font-bold text-orange-700">
+                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 mb-4">
+                      <p className="text-sm font-bold text-blue-800">
                         🎁 Your referral bonus: <span className="text-lg">₹{deal.bonusAmount}</span>
-                        <span className="font-normal text-orange-600"> (normally ₹{Math.round(deal.bonusAmount / deal.bonusMultiplier)})</span>
+                        <span className="font-normal text-blue-800"> (normally ₹{Math.round(deal.bonusAmount / deal.bonusMultiplier)})</span>
                       </p>
                     </div>
 
@@ -164,7 +164,7 @@ export default function FlashDealsPage() {
                         <motion.div
                           initial={{ width: 0 }} animate={{ width: `${fillPct}%` }}
                           transition={{ delay: i * 0.1 + 0.3, type: "spring" }}
-                          className={`h-full rounded-full ${fillPct > 75 ? "bg-red-500" : fillPct > 50 ? "bg-orange-500" : "bg-green-500"}`}
+                          className={`h-full rounded-full ${fillPct > 75 ? "bg-red-500" : fillPct > 50 ? "bg-blue-700" : "bg-green-500"}`}
                         />
                       </div>
                     </div>

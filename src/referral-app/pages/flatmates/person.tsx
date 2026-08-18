@@ -9,14 +9,14 @@ export default function PersonDetail() {
   const me = useFM(() => getMe());
   const p = useFM(() => People.get(params?.id));
   const saved = useFM(() => isSaved("person", params?.id));
-  if (!p) return <FMShell title="Profile" back="/flatmates/discover"><Card className="p-6">This profile is no longer active. <Link href="/flatmates/discover" className="text-orange-600 font-semibold">See similar people →</Link></Card></FMShell>;
+  if (!p) return <FMShell title="Profile" back="/flatmates/discover"><Card className="p-6">This profile is no longer active. <Link href="/flatmates/discover" className="text-blue-800 font-semibold">See similar people →</Link></Card></FMShell>;
   const ex = explain(me, p);
 
   return (
     <FMShell title={p.name} back="/flatmates/discover" tab="discover">
       <Card className="p-4">
         <div className="flex gap-3">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-200 to-amber-100 grid place-items-center text-2xl font-bold text-orange-700">{p.name[0]}</div>
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-200 to-amber-100 grid place-items-center text-2xl font-bold text-blue-800">{p.name[0]}</div>
           <div className="flex-1">
             <div className="flex items-start"><div className="flex-1">
               <h2 className="text-xl font-semibold tracking-tight">{p.name}, {p.age}</h2>
@@ -57,7 +57,7 @@ export default function PersonDetail() {
       </Section>
 
       <div className="flex gap-2 mt-4 mb-4">
-        <button onClick={() => toggleSave("person", p.id)} className={`h-11 px-4 rounded-xl border text-sm font-semibold ${saved ? "border-orange-300 text-orange-600 bg-orange-50" : "border-slate-900/12"}`}>{saved ? "Saved" : "Save"}</button>
+        <button onClick={() => toggleSave("person", p.id)} className={`h-11 px-4 rounded-xl border text-sm font-semibold ${saved ? "border-sky-300 text-blue-800 bg-blue-50" : "border-slate-900/12"}`}>{saved ? "Saved" : "Save"}</button>
         <Link href={`/flatmates/interest/person/${p.id}`} className="flex-1 h-11 rounded-xl bg-slate-900 text-white grid place-items-center text-sm font-semibold">I'm Interested</Link>
       </div>
       <Link href="/flatmates/safety" className="text-xs text-slate-400 underline">Report or block this profile</Link>

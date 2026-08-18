@@ -72,7 +72,7 @@ export default function InfluencerDashboard() {
           {[
             { label: "Total Clicks", value: d.totalClicks?.toLocaleString(), icon: <MousePointer className="w-4 h-4" />, color: "text-blue-600" },
             { label: "Conversions", value: referrer.bookedReferrals || 0, icon: <Zap className="w-4 h-4" />, color: "text-green-600" },
-            { label: "CTR", value: `${d.clickThroughRate}%`, icon: <TrendingUp className="w-4 h-4" />, color: "text-orange-600" },
+            { label: "CTR", value: `${d.clickThroughRate}%`, icon: <TrendingUp className="w-4 h-4" />, color: "text-blue-800" },
             { label: "Earned", value: `₹${d.totalEarned?.toLocaleString()}`, icon: <Share2 className="w-4 h-4" />, color: "text-primary" },
           ].map((k, i) => (
             <motion.div key={k.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
