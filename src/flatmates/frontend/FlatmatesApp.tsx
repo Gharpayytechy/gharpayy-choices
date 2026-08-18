@@ -59,6 +59,7 @@ import AdminSchemas from "@/flatmates/frontend/admin/schemas";
 import FMPlaybook from "@/flatmates/frontend/pages/playbook";
 import FMProperty from "@/flatmates/frontend/pages/property";
 import FMPublish from "@/flatmates/frontend/pages/publish";
+import FMWorkspace from "@/flatmates/frontend/pages/workspace";
 import AdminModeration from "@/flatmates/frontend/admin/moderation";
 
 const queryClient = new QueryClient();
@@ -104,6 +105,10 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/property/:id" component={FMProperty} />
       <Route path="/flatmates/post" component={FMPost} />
       <Route path="/flatmates/publish" component={FMPublish} />
+      <Route path="/flatmates/host" component={FMWorkspace} />
+      <Route path="/flatmates/move" component={FMWorkspace} />
+      <Route path="/flatmates/portfolio" component={FMWorkspace} />
+      <Route path="/flatmates/managed" component={FMWorkspace} />
       <Route path="/flatmates/room/:id" component={FMRoom} />
       <Route path="/flatmates/person/:id" component={FMPerson} />
       <Route path="/flatmates/flat/:id" component={FMFlat} />

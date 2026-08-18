@@ -12,10 +12,10 @@ import { WhatsAppHelp } from "@/flatmates/frontend/components/WhatsAppHelp";
 
 /** The four canonical doors. We never ask "owner or tenant" — we ask what you're trying to do. */
 const SETUPS = [
-  { key: "need-room", icon: KeyRound, title: "I need a room or shared flat", sub: "Room Seeker · find somewhere you can actually live", to: "/flatmates/discover?tab=rooms", cta: "Find my place" },
-  { key: "have-room", icon: Users, title: "I have a room, need a flatmate", sub: "Replacement Host · fill your room with the right person", to: "/flatmates/publish?mode=replacement_room", cta: "Find a flatmate" },
-  { key: "own-property", icon: Building2, title: "I own a property, want occupants", sub: "Property Owner · fill your asset faster", to: "/flatmates/publish?mode=owner_room", cta: "Find tenants" },
-  { key: "managed", icon: Home, title: "I want Gharpayy to manage it", sub: "Managed Property · we run the property for you", to: "/flatmates/owner?mandate=1", cta: "Manage my property" },
+  { key: "need-room", icon: KeyRound, title: "I need a room or shared flat", sub: "Room Seeker · find somewhere you can actually live", to: "/flatmates/move", cta: "Find my place" },
+  { key: "have-room", icon: Users, title: "I have a room, need a flatmate", sub: "Replacement Host · fill your room with the right person", to: "/flatmates/host", cta: "Find a flatmate" },
+  { key: "own-property", icon: Building2, title: "I own a property, want occupants", sub: "Property Owner · fill your asset faster", to: "/flatmates/portfolio", cta: "Find tenants" },
+  { key: "managed", icon: Home, title: "I want Gharpayy to manage it", sub: "Managed Property · we run the property for you", to: "/flatmates/managed", cta: "Manage my property" },
 ];
 
 export default function FlatmatesHome() {
