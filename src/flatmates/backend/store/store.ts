@@ -58,6 +58,9 @@ export const Hides = makeDB<any>("hides");
 export const Notifs = makeDB<any>("notifs");
 export const Events = makeDB<any>("events");
 export const Reports = makeDB<any>("reports");
+// Ops layer (admin): action log + mission lifecycle
+export const OpsLog = makeDB<any>("opslog");
+export const MissionState = makeDB<any>("missionstate");
 
 /* ── Me (the current user's requirement + DNA) ──────── */
 const ME = K("me");
