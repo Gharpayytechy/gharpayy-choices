@@ -1,0 +1,888 @@
+// @ts-nocheck
+/**
+ * GHARPAYY FLATMATE + SHARED LIVING OS — CANONICAL MONGODB SCHEMA REGISTRY
+ * ------------------------------------------------------------------------
+ * Playbook §2 "Canonical data model and state machines".
+ *
+ * HARD RULE (playbook p.2): person, household, room and property are separate
+ * records. Never copy the same facts into four listings — link them. One
+ * canonical vacancy is discoverable through person / room / household /
+ * property search without becoming four conflicting records.
+ *
+ * Every collection below declares:
+ *   why        — the product reason it exists (playbook justification)
+ *   owns       — the facts it is the system of record for
+ *   neverStore — facts that belong to another collection
+ *   fields     — field name -> { type, req?, note?, enum? }
+ *   indexes    — mongo indexes required for the queries the product makes
+ *   states     — state machine (if the entity has one)
+ *   source     — WHAT WAY THE DATA COMES IN (playbook "what way data is coming")
+ *   access     — which access key/role may read or write it
+ *
+ * This registry is the single source of truth rendered in
+ * /flatmates/admin/schemas and exportable as JSON + Mongoose code.
+ */
+
+export type FieldDef = { type: string; req?: boolean; note?: string; enum?: string[]; ref?: string };
+export type CollectionDef = {
+  key: string;
+  collection: string;
+  title: string;
+  group: string;
+  why: string;
+  owns: string;
+  neverStore: string;
+  source: string;
+  access: { read: string[]; write: string[] };
+  fields: Record<string, FieldDef>;
+  indexes: string[];
+  states?: { name: string; from: string; to: string[]; trigger: string }[];
+  links?: string[];
+};
+
+const S = (type: string, note?: string, extra: Partial<FieldDef> = {}): FieldDef => ({ type, note, ...extra });
+const REQ = (type: string, note?: string, extra: Partial<FieldDef> = {}): FieldDef => ({ type, req: true, note, ...extra });
+
+const AUDIT = {
+  createdAt: REQ("Date", "Set on insert. Drives freshness clocks."),
+  updatedAt: REQ("Date", "Set on every write. Control Tower reads this."),
+  createdBy: S("ObjectId", "Person or ops user who created the record", { ref: "people" }),
+  lastConfirmedAt: S("Date", "Explicit human re-confirmation — different from updatedAt"),
+  source: S("String", "app | ops_console | whatsapp | inspection | import | system"),
+};
+
+export const SCHEMAS: CollectionDef[] = [
+  /* ───────────────────────── PEOPLE & DEMAND ───────────────────────── */
+  {
+    key: "person",
+    collection: "people",
+    title: "Person / Living Passport",
+    group: "Demand",
+    why: "The marketplace ranks living outcomes, not listings. A person's identity state, lifestyle passport and consent state are what make a match explainable and safe (playbook §7 Person / Living Passport).",
+    owns: "Identity status, contact, lifestyle passport, requirement pointer, consent and safety state.",
+    neverStore: "Property availability or household-wide rules copied as person text.",
+    source: "Progressive onboarding (10 steps), OTP verification provider, optional work/college verification, ops console corrections, WhatsApp assisted intake.",
+    access: { read: ["public:card", "mutual:contact", "ops:full"], write: ["self", "ops:trust"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      handle: REQ("String", "Stable public id used in URLs (p0, p1…)"),
+      firstName: REQ("String", "PUBLIC. Full name never public."),
+      lastName: S("String", "Mutual-only"),
+      photoUrl: S("String", "Public card"),
+      ageBand: REQ("String", "Public band, e.g. 24-27. Exact DOB is Gharpayy-only.", { enum: ["18-21", "22-24", "25-27", "28-31", "32+"] }),
+      gender: S("String", "Used only for lawful shared-home privacy constraints"),
+      occupationType: REQ("String", "", { enum: ["working", "student", "self_employed", "between_jobs"] }),
+      occupation: S("String", "Mutual-only detail"),
+      employer: S("String", "Mutual-only detail"),
+      college: S("String", "Mutual-only detail"),
+      city: REQ("String"),
+      homeArea: S("String"),
+      commuteAnchor: S("Object", "{ label, lat, lng, maxMinutes, mode } — office/college the search optimises for"),
+      geo: S("Object", "GeoJSON Point for radius search"),
+      passport: REQ("Object", "Lifestyle passport: sleep, workMode, cooking, food, smoking, alcohol, guests, cleanliness, chores, noise, social, pets"),
+      importance: REQ("Object", "Per-preference weight: must | strong | nice | ignore (playbook §8)"),
+      verificationLevel: REQ("String", "L0..L5 ladder", { enum: ["L0", "L1", "L2", "L3", "L4", "L5"] }),
+      verifications: S("Array<ObjectId>", "", { ref: "verifications" }),
+      trustScore: S("Number", "0-100 derived, never manually inflated"),
+      consents: REQ("Object", "{ purpose: { grantedAt, revokedAt, basis } } — DPDP Rules 2025"),
+      safetyState: REQ("String", "", { enum: ["clear", "watch", "restricted", "frozen"] }),
+      blockedPersonIds: S("Array<ObjectId>", "", { ref: "people" }),
+      responseSla: S("Object", "{ medianMinutes, replyRate } — feeds conversion readiness"),
+      lastActiveAt: REQ("Date"),
+      ...AUDIT,
+    },
+    indexes: [
+      "{ handle: 1 } unique",
+      "{ city: 1, homeArea: 1, verificationLevel: 1 }",
+      "{ geo: '2dsphere' }",
+      "{ lastActiveAt: -1 }",
+      "{ safetyState: 1, updatedAt: -1 }",
+    ],
+    links: ["requirements", "households", "tenancies", "verifications"],
+    states: [
+      { name: "draft", from: "draft", to: ["contact_verified"], trigger: "Mobile OTP passes" },
+      { name: "contact_verified", from: "contact_verified", to: ["published", "restricted"], trigger: "Requirement published" },
+      { name: "published", from: "published", to: ["matched", "paused", "restricted"], trigger: "Discoverable in demand feed" },
+      { name: "matched", from: "matched", to: ["moved_in", "published"], trigger: "Household accepted" },
+      { name: "moved_in", from: "moved_in", to: ["published"], trigger: "Tenancy created — north star event" },
+    ],
+  },
+  {
+    key: "requirement",
+    collection: "requirements",
+    title: "Requirement (qualified demand)",
+    group: "Demand",
+    why: "Hard feasibility comes before compatibility. The requirement is the contract the ranking engine gates against, and the object Flow Ops qualifies and re-confirms on a freshness clock.",
+    owns: "Budget bands, date window, zones, commute target, room type, duration, non-negotiables and freshness.",
+    neverStore: "Lifestyle passport (belongs to Person) or listing facts.",
+    source: "Onboarding wizard, /flatmates/requirement editor, home-page setup selector, WhatsApp intake by Flow Ops.",
+    access: { read: ["public:summary", "ops:full"], write: ["self", "ops:flow"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      personId: REQ("ObjectId", "", { ref: "people" }),
+      setup: REQ("String", "", { enum: ["find_room", "find_flatmate", "form_group", "rent_whole_flat", "list_room", "list_property"] }),
+      city: REQ("String"),
+      areas: REQ("Array<String>", "Preferred + acceptable adjacent micro-markets"),
+      commute: S("Object", "{ destination, lat, lng, maxMinutes, mode }"),
+      budgetIdeal: REQ("Number", "Rent only"),
+      budgetMaxTotal: REQ("Number", "TOTAL monthly: rent + maintenance + utilities share"),
+      depositCeiling: S("Number"),
+      moveInFrom: REQ("Date"),
+      moveInTo: REQ("Date", "Date window, not a single date — enables overlap gating"),
+      durationMonths: REQ("Number"),
+      roomTypes: REQ("Array<String>", "", { enum: ["private", "twin", "shared", "whole_flat", "ready_stay"] }),
+      nonNegotiables: REQ("Array<String>", "attached_bath | furnished | parking | pets | accessibility | night_shift"),
+      urgency: REQ("String", "", { enum: ["<=7d", "8-30d", "30d+"] }),
+      freshnessDueAt: REQ("Date", "Daily if <=7d, every 3 days for 8-30d (playbook §1)"),
+      status: REQ("String", "", { enum: ["draft", "live", "paused", "matched", "fulfilled", "expired"] }),
+      ...AUDIT,
+    },
+    indexes: [
+      "{ personId: 1, status: 1 }",
+      "{ city: 1, areas: 1, status: 1, budgetMaxTotal: 1 }",
+      "{ freshnessDueAt: 1, status: 1 }",
+      "{ moveInFrom: 1, moveInTo: 1 }",
+    ],
+    links: ["people", "matches", "missions"],
+  },
+
+  /* ───────────────────────── PROPERTY GRAPH ───────────────────────── */
+  {
+    key: "building",
+    collection: "buildings",
+    title: "Building / Society",
+    group: "Property graph",
+    why: "Society facts (gating, security, association rules, utilities) are shared by every unit inside it. Storing them per listing creates four conflicting truths.",
+    owns: "Gated state, towers, construction/occupancy years, security, association rules, utilities and shared amenities.",
+    neverStore: "Room rent or tenant deposit.",
+    source: "Ops supply survey, owner onboarding form, Gharpayy inspection visit, society RWA documents.",
+    access: { read: ["public:masked", "ops:full"], write: ["ops:supply"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      name: REQ("String"),
+      city: REQ("String"),
+      area: REQ("String"),
+      microMarket: S("String"),
+      addressExact: REQ("String", "NEVER public — masked micro-location only until confirmed visit"),
+      addressMasked: REQ("String", "Public form, e.g. 'Sector 2, HSR Layout'"),
+      geo: REQ("Object", "GeoJSON Point"),
+      gated: S("Boolean"),
+      towers: S("Array<Object>", "{ name, floors, lifts }"),
+      constructionYear: S("Number"),
+      security: S("Object", "{ guard24x7, cctv, visitorLog, gateApp }"),
+      associationRules: S("Array<String>", "Bachelor policy, move-in timing, noise, pet rules"),
+      utilities: S("Object", "{ waterSource, powerBackup, gasPipeline, meterType }"),
+      amenities: S("Array<String>"),
+      ...AUDIT,
+    },
+    indexes: ["{ city: 1, area: 1 }", "{ geo: '2dsphere' }", "{ name: 1, addressMasked: 1 } unique"],
+    links: ["units"],
+  },
+  {
+    key: "unit",
+    collection: "units",
+    title: "Unit / Flat",
+    group: "Property graph",
+    why: "The unit is where authority lives. Who may let it, on what tenancy model, is a unit-level truth that gates tours and payments (verification L3).",
+    owns: "BHK, floor, direction, usable layout, furnishing, owner authority, tenancy model and unit condition.",
+    neverStore: "Individual room availability.",
+    source: "Owner onboarding, authority document check, Gharpayy inspection, management mandate signing.",
+    access: { read: ["public:summary", "ops:full"], write: ["owner", "ops:supply"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      buildingId: REQ("ObjectId", "", { ref: "buildings" }),
+      unitNumber: REQ("String", "Gharpayy-only until confirmed visit"),
+      bhk: REQ("Number"),
+      floor: S("Number"),
+      facing: S("String"),
+      carpetAreaSqft: S("Number"),
+      furnishing: REQ("String", "", { enum: ["unfurnished", "semi", "full"] }),
+      ownerPersonId: REQ("ObjectId", "", { ref: "people" }),
+      authority: REQ("Object", "{ type: owner|tenant|mandate, evidenceRef, verifiedAt, allowsSublet, allowsReplacement }"),
+      tenancyModel: REQ("String", "", { enum: ["whole_flat", "room_wise", "managed", "owner_occupied"] }),
+      conditionGrade: S("String", "A|B|C|D from latest inspection"),
+      rentReady: S("Boolean", "Blocks listing when false"),
+      duplicateOfUnitId: S("ObjectId", "Set by dedupe — a duplicate never ranks", { ref: "units" }),
+      ...AUDIT,
+    },
+    indexes: [
+      "{ buildingId: 1, unitNumber: 1 } unique",
+      "{ ownerPersonId: 1 }",
+      "{ tenancyModel: 1, rentReady: 1 }",
+      "{ 'authority.verifiedAt': -1 }",
+    ],
+    links: ["buildings", "rooms", "households", "mandates", "tenancies"],
+  },
+  {
+    key: "room",
+    collection: "rooms",
+    title: "Room / Bed",
+    group: "Property graph",
+    why: "Permanent physical room facts change rarely; availability changes daily. Splitting Room from Vacancy is what stops stale listings from poisoning search.",
+    owns: "Room type, dimensions, bath/balcony, furniture, light/ventilation, occupancy capacity and condition.",
+    neverStore: "Candidate compatibility or payments.",
+    source: "Owner/host listing wizard, inspection photo+measure pass, floor-plan tagging.",
+    access: { read: ["public:full"], write: ["owner", "host", "ops:supply"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      unitId: REQ("ObjectId", "", { ref: "units" }),
+      label: REQ("String", "e.g. 'Master bedroom'"),
+      roomType: REQ("String", "", { enum: ["private", "twin", "triple", "shared", "bed"] }),
+      maxOccupancy: REQ("Number"),
+      currentOccupancy: REQ("Number"),
+      lockable: S("Boolean"),
+      areaBand: S("String"),
+      windows: S("Number"),
+      direction: S("String"),
+      daylight: S("String", "", { enum: ["bright", "moderate", "dim"] }),
+      ventilation: S("String"),
+      noiseExposure: S("String"),
+      balcony: S("Boolean"),
+      bathroom: REQ("String", "", { enum: ["attached", "shared", "common"] }),
+      furniture: S("Object", "{ bed, mattress, wardrobe, desk, chair, sideTable, curtains, storage, condition }"),
+      comfort: S("Object", "{ fan, ac, plugPoints, internetSignal, callSuitable, privacy, temperatureIssue }"),
+      media: S("Array<Object>", "{ url, kind, capturedAt, inspectionLabel, isExactRoom }"),
+      knownDefects: S("Array<String>", "Disclosure is mandatory before visit"),
+      ...AUDIT,
+    },
+    indexes: ["{ unitId: 1, label: 1 } unique", "{ roomType: 1, bathroom: 1 }"],
+    links: ["units", "vacancies"],
+  },
+  {
+    key: "vacancy",
+    collection: "vacancies",
+    title: "Vacancy (the canonical sellable object)",
+    group: "Property graph",
+    why: "ONE canonical vacancy discoverable via person, room, household or property search. Fresh truth beats listing count — a stale vacancy loses distribution and becomes unbookable until reconfirmed.",
+    owns: "Available-from date, price, deposit allocation, replacement reason, freshness, tourability and status.",
+    neverStore: "Permanent room facts.",
+    source: "Host replacement flow, owner listing flow, tenancy notice event, inspection confirmation, daily freshness ping (app + WhatsApp).",
+    access: { read: ["public:full"], write: ["owner", "host", "ops:supply", "system:freshness"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      roomId: REQ("ObjectId", "", { ref: "rooms" }),
+      unitId: REQ("ObjectId", "Denormalised for query speed only — unit is authoritative", { ref: "units" }),
+      householdId: S("ObjectId", "", { ref: "households" }),
+      inventoryType: REQ("String", "", { enum: ["replacement_vacancy", "occupied_shared_room", "whole_flat", "managed_inventory", "ready_stay"] }),
+      availableFrom: REQ("Date"),
+      certainty: REQ("String", "", { enum: ["confirmed", "likely", "tentative"] }),
+      replacementReason: S("String", "job relocation | lease end | conflict | upgrade"),
+      rent: REQ("Number"),
+      maintenanceShare: REQ("Number"),
+      utilitiesMethod: REQ("String", "", { enum: ["split_equal", "metered", "included", "fixed"] }),
+      utilitiesEstimate: REQ("Number"),
+      depositAmount: REQ("Number"),
+      depositHandover: S("String", "", { enum: ["to_owner", "to_outgoing_tenant", "to_gharpayy_escrow"] }),
+      totalMoveInCost: REQ("Number", "Computed — the only number the seeker is gated on"),
+      terms: REQ("Object", "{ minDurationMonths, lockIn, noticeDays, agreementForm, rentDueDay, escalationPct }"),
+      eligibility: S("Object", "Only narrow lawful occupancy constraints. Caste/religion/ethnicity filters are forbidden."),
+      viewingWindows: S("Array<Object>", "{ day, from, to }"),
+      tourable: REQ("Boolean", "False until L3 authority verified"),
+      freshConfirmedAt: REQ("Date"),
+      freshnessDueAt: REQ("Date", "24h for occupied rooms, 48h whole flat, daily in last 7 days before a replacement"),
+      status: REQ("String", "", { enum: ["draft", "live", "stale", "reserved", "filled", "withdrawn", "frozen"] }),
+      filledByPersonId: S("ObjectId", "", { ref: "people" }),
+      ...AUDIT,
+    },
+    indexes: [
+      "{ status: 1, freshnessDueAt: 1 }",
+      "{ unitId: 1, roomId: 1, status: 1 }",
+      "{ inventoryType: 1, availableFrom: 1, rent: 1 }",
+      "{ status: 1, availableFrom: 1, totalMoveInCost: 1 }",
+      "{ householdId: 1 }",
+    ],
+    states: [
+      { name: "draft", from: "draft", to: ["live", "withdrawn"], trigger: "L1 contact verified + required fields complete" },
+      { name: "live", from: "live", to: ["stale", "reserved", "withdrawn", "frozen"], trigger: "Published and inside freshness window" },
+      { name: "stale", from: "stale", to: ["live", "withdrawn"], trigger: "freshnessDueAt passed — hidden from search until reconfirmed" },
+      { name: "reserved", from: "reserved", to: ["filled", "live"], trigger: "Household vote + owner approval passed" },
+      { name: "filled", from: "filled", to: [], trigger: "Move-in recorded — creates Tenancy. NORTH STAR." },
+      { name: "frozen", from: "frozen", to: ["live", "withdrawn"], trigger: "High-severity safety report" },
+    ],
+    links: ["rooms", "units", "households", "matches", "visits", "tenancies"],
+  },
+
+  /* ───────────────────────── HOUSEHOLD ───────────────────────── */
+  {
+    key: "household",
+    collection: "households",
+    title: "Household",
+    group: "Living",
+    why: "A seeker joins people, not walls. Household culture, rules and the decision process are what determine whether a move-in actually survives (playbook §7 Household profile).",
+    owns: "Current occupants, culture, shared rules, expense split, decision owners and member consent.",
+    neverStore: "Exact property facts that belong to Building/Unit/Room.",
+    source: "Household questionnaire completed by members, per-member consent prompts, replacement flow, ops verification call.",
+    access: { read: ["public:consented_summary", "mutual:rich", "ops:full"], write: ["household_member", "ops:flow"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      unitId: REQ("ObjectId", "", { ref: "units" }),
+      memberIds: REQ("Array<ObjectId>", "", { ref: "people" }),
+      leavingMemberIds: S("Array<ObjectId>", "", { ref: "people" }),
+      rhythm: REQ("Object", "{ wake, sleep, wfhDays, shifts, travel, quietHours, socialLevel }"),
+      kitchen: REQ("Object", "{ vegPolicy, cookingFrequency, sharedGroceries, cook, storage, cleanliness }"),
+      homeCare: REQ("Object", "{ maid, choreSplit, cleaningStandard, dishes, laundry, waste, commonPurchases }"),
+      lifestyle: REQ("Object", "{ smoking, alcohol, parties, pets, guests, overnightGuests, partners, music }"),
+      money: REQ("Object", "{ utilitySplit, commonFund, dueDateBehaviour, billsShared, arrears }"),
+      rules: REQ("Object", "{ ownerRules, societyRules, nonNegotiables, flexible, unresolved }"),
+      decision: REQ("Object", "{ shortlisters, votingRule, veto, ownerApprovalRequired, responseDeadlineHours }"),
+      trust: S("Object", "{ addressState, authorityState, completedStays, disputes, cancellations, managed }"),
+      consentByMember: REQ("Object", "{ personId: { profileVisible, grantedAt } }"),
+      ...AUDIT,
+    },
+    indexes: ["{ unitId: 1 } unique", "{ memberIds: 1 }", "{ 'trust.managed': 1 }"],
+    links: ["units", "people", "vacancies", "votes"],
+  },
+
+  /* ───────────────────────── MATCH & CONVERSION ───────────────────────── */
+  {
+    key: "match",
+    collection: "matches",
+    title: "Match / Introduction",
+    group: "Conversion",
+    why: "Every recommendation must explain the strongest fit reasons and the most important conflict. The match record stores the explanation so ranking is auditable, not a black box.",
+    owns: "Gate results, score components, explanation, conflicts, missing data and mutual-intent state.",
+    neverStore: "Raw identity evidence or payment data.",
+    source: "Ranking engine run on requirement + vacancy pair, updated on every preference-importance change.",
+    access: { read: ["participants", "ops:flow"], write: ["system:ranking", "participants"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      requirementId: REQ("ObjectId", "", { ref: "requirements" }),
+      personId: REQ("ObjectId", "", { ref: "people" }),
+      vacancyId: S("ObjectId", "", { ref: "vacancies" }),
+      counterpartPersonId: S("ObjectId", "person↔person match", { ref: "people" }),
+      eligibilityGate: REQ("Object", "{ pass, failures[] } — never averaged into a score"),
+      feasibilityGate: REQ("Object", "{ pass, failures[]: budget|date|roomType|location|duration }"),
+      freshnessScore: REQ("Number"),
+      compatibilityScore: REQ("Number", "Only computed when both gates pass"),
+      conversionReadiness: REQ("Number"),
+      confidence: REQ("String", "", { enum: ["high", "needs_confirmation", "low"] }),
+      reasons: REQ("Array<String>", "Plain-language fit reasons shown on the card"),
+      discussPoints: REQ("Array<String>", "Most important conflict to discuss"),
+      missingData: REQ("Array<String>"),
+      intent: REQ("Object", "{ seekerInterestedAt, hostInterestedAt, mutualAt, declinedAt, declineReason }"),
+      hiddenReason: S("String", "price|date|location|room|household|trust|quality|solved — improves the feed"),
+      status: REQ("String", "", { enum: ["suggested", "interested", "mutual", "visit_scheduled", "selected", "declined", "expired"] }),
+      ...AUDIT,
+    },
+    indexes: [
+      "{ personId: 1, status: 1, updatedAt: -1 }",
+      "{ vacancyId: 1, status: 1 }",
+      "{ requirementId: 1, compatibilityScore: -1 }",
+      "{ status: 1, updatedAt: 1 } // SLA sweeps",
+    ],
+    links: ["requirements", "vacancies", "people", "visits", "threads"],
+  },
+  {
+    key: "visit",
+    collection: "visits",
+    title: "Visit / Tour",
+    group: "Conversion",
+    why: "Physical viewing is preferred; remote users need a live verified tour. Visit safety controls (itinerary, verified host, check-in/out, emergency contact) are product features, not policy text.",
+    owns: "Slot, attendees, mode, safety controls, outcome and post-visit prompts.",
+    neverStore: "Household private votes (see votes).",
+    source: "Seeker booking from a mutual match, host slot publishing, ops-assisted scheduling, live-tour recording.",
+    access: { read: ["participants", "ops:flow"], write: ["participants", "ops:flow"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      matchId: REQ("ObjectId", "", { ref: "matches" }),
+      vacancyId: REQ("ObjectId", "", { ref: "vacancies" }),
+      seekerPersonId: REQ("ObjectId", "", { ref: "people" }),
+      hostPersonId: REQ("ObjectId", "", { ref: "people" }),
+      mode: REQ("String", "", { enum: ["physical", "live_video", "recorded_walkthrough"] }),
+      scheduledAt: REQ("Date"),
+      addressReleasedAt: S("Date", "Exact address unlocks only for a confirmed visit"),
+      safety: REQ("Object", "{ itineraryShared, emergencyContact, checkInAt, checkOutAt, changeAlerts, postVisitPromptAt }"),
+      outcome: S("String", "", { enum: ["pending", "attended", "no_show_seeker", "no_show_host", "cancelled", "rescheduled"] }),
+      seekerFeedback: S("Object"),
+      hostFeedback: S("Object"),
+      ...AUDIT,
+    },
+    indexes: ["{ scheduledAt: 1, outcome: 1 }", "{ seekerPersonId: 1 }", "{ vacancyId: 1 }"],
+    links: ["matches", "vacancies", "votes"],
+  },
+  {
+    key: "vote",
+    collection: "household_votes",
+    title: "Household vote & owner approval",
+    group: "Conversion",
+    why: "Each flatmate's vote is private, conflicts are resolved explicitly, and owner approval is a separate authority gate. Without this the replacement flow becomes a group-chat argument.",
+    owns: "Private per-member votes, resolution, owner approval and deadline.",
+    neverStore: "Voter identity exposed to the candidate.",
+    source: "Post-visit private vote prompt to each member, owner approval request, ops nudge on deadline breach.",
+    access: { read: ["household_member:own", "ops:flow"], write: ["household_member", "owner"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      householdId: REQ("ObjectId", "", { ref: "households" }),
+      vacancyId: REQ("ObjectId", "", { ref: "vacancies" }),
+      candidatePersonId: REQ("ObjectId", "", { ref: "people" }),
+      votes: REQ("Array<Object>", "{ memberId, value: yes|no|abstain, note, votedAt } — never shown to the candidate"),
+      votingRule: REQ("String", "", { enum: ["majority", "unanimous", "lead_decides"] }),
+      vetoUsedBy: S("ObjectId", "", { ref: "people" }),
+      ownerApproval: REQ("Object", "{ required, status: pending|approved|rejected, decidedAt, evidenceRef }"),
+      deadlineAt: REQ("Date"),
+      result: REQ("String", "", { enum: ["pending", "accepted", "rejected", "expired"] }),
+      ...AUDIT,
+    },
+    indexes: ["{ vacancyId: 1, candidatePersonId: 1 } unique", "{ result: 1, deadlineAt: 1 }"],
+    links: ["households", "vacancies", "people"],
+  },
+  {
+    key: "group",
+    collection: "groups",
+    title: "Seeker group (form-a-household)",
+    group: "Conversion",
+    why: "When budget or room-type supply fails, forming a group into a whole flat is the recovery path — not a dead end.",
+    owns: "Members, pooled budget, target BHK/zone, formation checklist and shortlist.",
+    neverStore: "Unit facts.",
+    source: "Group formation flow, no-results recovery engine, ops-created supply mission groups.",
+    access: { read: ["members", "public:summary", "ops:full"], write: ["members", "ops:flow"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      name: REQ("String"),
+      leadPersonId: REQ("ObjectId", "", { ref: "people" }),
+      memberIds: REQ("Array<ObjectId>", "", { ref: "people" }),
+      city: REQ("String"),
+      area: REQ("String"),
+      pooledBudget: REQ("Number"),
+      targetBhk: REQ("Number"),
+      moveIn: REQ("Date"),
+      checklist: REQ("Object", "{ location, budget, moveIn, expectations, flats, visit }"),
+      shortlistUnitIds: S("Array<ObjectId>", "", { ref: "units" }),
+      compatibility: S("Number"),
+      status: REQ("String", "", { enum: ["forming", "searching", "visiting", "converted", "disbanded"] }),
+      ...AUDIT,
+    },
+    indexes: ["{ city: 1, area: 1, status: 1 }", "{ memberIds: 1 }"],
+    links: ["people", "units"],
+  },
+  {
+    key: "thread",
+    collection: "threads",
+    title: "Conversation thread",
+    group: "Conversion",
+    why: "No one pays because a chat started. Messages are moderated for scams, impersonation, harassment and hidden payment requests, and contact unlocks progressively.",
+    owns: "Participants, messages, moderation flags, contact-unlock state.",
+    neverStore: "Payment instructions outside the ledger.",
+    source: "Mutual match creation, ops intervention, WhatsApp handoff mirror.",
+    access: { read: ["participants", "ops:trust"], write: ["participants"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      matchId: S("ObjectId", "", { ref: "matches" }),
+      participantIds: REQ("Array<ObjectId>", "", { ref: "people" }),
+      subjectRef: S("Object", "{ kind: vacancy|person|group, id }"),
+      messages: REQ("Array<Object>", "{ fromId, body, at, flags[], redactions[] }"),
+      contactUnlocked: REQ("Boolean", "Only after mutual intent + consent"),
+      moderation: S("Object", "{ autoFlags, humanReviewedAt, action }"),
+      lastMessageAt: REQ("Date"),
+      ...AUDIT,
+    },
+    indexes: ["{ participantIds: 1, lastMessageAt: -1 }", "{ 'moderation.autoFlags': 1 }"],
+    links: ["matches", "people"],
+  },
+
+  /* ───────────────────────── PROPERTY MANAGEMENT OS ───────────────────────── */
+  {
+    key: "mandate",
+    collection: "mandates",
+    title: "Management mandate",
+    group: "Management OS",
+    why: "L5 Managed assurance requires a signed scope: fees, approvals, emergency cap, payout cycle, inspection cadence and exit terms. Without a mandate record, ops has no authority to spend or sign.",
+    owns: "Scope, commercial terms, authority, approvals, payout instructions, owner SLA and renewal.",
+    neverStore: "Public listing content.",
+    source: "Owner onboarding step 5 (mandate + commercial sheet signing), renewal workflow.",
+    access: { read: ["owner", "ops:pm", "finance"], write: ["ops:pm"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      unitId: REQ("ObjectId", "", { ref: "units" }),
+      ownerPersonId: REQ("ObjectId", "", { ref: "people" }),
+      scope: REQ("Array<String>", "listing | tenanting | rent_collection | maintenance | inspections | compliance | full"),
+      feeModel: REQ("Object", "{ type: pct|flat, value, onboardingFee, renewalFee }"),
+      emergencyApprovalCapInr: REQ("Number", "Ops may spend up to this without owner approval"),
+      approvalMatrix: REQ("Object", "{ severity: approver }"),
+      payout: REQ("Object", "{ cycleDay, payeeName, method, evidenceRequired }"),
+      inspectionCadence: REQ("String", "", { enum: ["monthly", "quarterly", "half_yearly"] }),
+      ownerSla: REQ("Object", "{ reportingDay, responseHours }"),
+      startAt: REQ("Date"),
+      endAt: REQ("Date"),
+      exitTerms: REQ("String"),
+      status: REQ("String", "", { enum: ["draft", "active", "notice", "expired", "terminated"] }),
+      ...AUDIT,
+    },
+    indexes: ["{ unitId: 1, status: 1 }", "{ ownerPersonId: 1 }", "{ endAt: 1, status: 1 }"],
+    links: ["units", "people", "ledger", "inspections"],
+  },
+  {
+    key: "tenancy",
+    collection: "tenancies",
+    title: "Tenancy",
+    group: "Management OS",
+    why: "The north star is a completed move-in with rent running. Tenancy is the record that proves it and drives renewal, notice and move-out settlement.",
+    owns: "Occupants, agreement, lock-in, notice, rent, deposit, move-in/out and compliance milestones.",
+    neverStore: "General property amenities.",
+    source: "Move-in event from a filled vacancy, agreement e-sign, ops correction, move-out settlement.",
+    access: { read: ["tenant:self", "owner", "ops:pm", "finance"], write: ["ops:pm"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      unitId: REQ("ObjectId", "", { ref: "units" }),
+      roomId: S("ObjectId", "Null for whole-flat tenancies", { ref: "rooms" }),
+      householdId: S("ObjectId", "", { ref: "households" }),
+      tenantPersonIds: REQ("Array<ObjectId>", "", { ref: "people" }),
+      vacancyId: S("ObjectId", "Provenance of the fill", { ref: "vacancies" }),
+      agreement: REQ("Object", "{ form, signedAt, eSignRef, docUrl, registered }"),
+      rentAmount: REQ("Number"),
+      rentDueDay: REQ("Number"),
+      escalationPct: S("Number"),
+      depositHeld: REQ("Number"),
+      depositHolder: REQ("String", "", { enum: ["owner", "outgoing_tenant", "gharpayy"] }),
+      lockInMonths: REQ("Number"),
+      noticeDays: REQ("Number"),
+      moveInAt: REQ("Date"),
+      moveOutAt: S("Date"),
+      noticeGivenAt: S("Date", "Triggers a replacement vacancy automatically"),
+      complianceMilestones: S("Array<Object>", "{ name, dueAt, doneAt }"),
+      status: REQ("String", "", { enum: ["active", "notice", "ended", "defaulted"] }),
+      ...AUDIT,
+    },
+    indexes: ["{ unitId: 1, status: 1 }", "{ tenantPersonIds: 1 }", "{ status: 1, noticeGivenAt: 1 }", "{ moveOutAt: 1 }"],
+    links: ["units", "rooms", "people", "ledger", "vacancies"],
+  },
+  {
+    key: "ledger",
+    collection: "ledger_entries",
+    title: "Payment ledger",
+    group: "Management OS",
+    why: "Before payment the product must show who receives money, their verified relationship to the property, purpose, refundable status, terms and receipt method. That is only possible with a real double-sided ledger.",
+    owns: "Rent, deposit, fees, owner payout, deductions, receipts, reversals and reconciliation.",
+    neverStore: "Unverified verbal claims.",
+    source: "Rent schedule generator, payment gateway webhook, ops manual receipt with evidence, owner payout run.",
+    access: { read: ["payer:self", "owner:own", "finance", "ops:pm"], write: ["finance", "system:payments"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      tenancyId: S("ObjectId", "", { ref: "tenancies" }),
+      unitId: REQ("ObjectId", "", { ref: "units" }),
+      mandateId: S("ObjectId", "", { ref: "mandates" }),
+      kind: REQ("String", "", { enum: ["rent", "deposit", "deposit_refund", "maintenance", "utility", "platform_fee", "management_fee", "vendor_cost", "owner_payout", "reversal"] }),
+      direction: REQ("String", "", { enum: ["inbound", "outbound"] }),
+      amount: REQ("Number"),
+      currency: REQ("String", "INR"),
+      dueAt: REQ("Date"),
+      paidAt: S("Date"),
+      payerPersonId: S("ObjectId", "", { ref: "people" }),
+      payeeName: REQ("String", "Shown to the payer BEFORE payment"),
+      payeeVerifiedRelationship: REQ("String", "owner | authorised_tenant | gharpayy_managed"),
+      purpose: REQ("String"),
+      refundable: REQ("Boolean"),
+      receiptUrl: S("String"),
+      evidenceRef: S("String"),
+      reconciledAt: S("Date"),
+      status: REQ("String", "", { enum: ["scheduled", "due", "overdue", "paid", "partially_paid", "reversed", "written_off"] }),
+      ...AUDIT,
+    },
+    indexes: [
+      "{ unitId: 1, dueAt: -1 }",
+      "{ tenancyId: 1, kind: 1, status: 1 }",
+      "{ status: 1, dueAt: 1 } // collection risk queue",
+      "{ kind: 1, paidAt: -1 }",
+    ],
+    links: ["tenancies", "units", "mandates"],
+  },
+  {
+    key: "inspection",
+    collection: "inspections",
+    title: "Inspection & condition baseline",
+    group: "Management OS",
+    why: "L4 Inspected means Gharpayy visited the exact unit/room and recorded time-bound condition and availability evidence. Baseline condition also protects the deposit settlement at move-out.",
+    owns: "Condition evidence, inventory variance, grade, defects, estimated cost and rent-ready date.",
+    neverStore: "Unrelated personal profile data.",
+    source: "Field ops inspection app (photo + checklist + timestamp + geo), move-in/move-out condition pass, quarterly cadence from the mandate.",
+    access: { read: ["owner", "ops:pm", "public:badge_only"], write: ["ops:field"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      unitId: REQ("ObjectId", "", { ref: "units" }),
+      roomIds: S("Array<ObjectId>", "", { ref: "rooms" }),
+      type: REQ("String", "", { enum: ["baseline", "periodic", "move_in", "move_out", "complaint", "listing_verification"] }),
+      inspectorId: REQ("ObjectId", "", { ref: "people" }),
+      conductedAt: REQ("Date"),
+      geoProof: S("Object", "Lat/lng captured on site"),
+      grade: REQ("String", "", { enum: ["A", "B", "C", "D"] }),
+      checklist: REQ("Array<Object>", "{ item, state, photoUrl, note }"),
+      inventory: S("Array<Object>", "{ asset, expectedQty, foundQty, condition }"),
+      defects: REQ("Array<Object>", "{ description, severity, estimatedCost, ownerApprovalNeeded }"),
+      safetyBlockers: S("Array<String>", "Any entry here blocks rent-ready and tourable"),
+      rentReadyDate: S("Date"),
+      ...AUDIT,
+    },
+    indexes: ["{ unitId: 1, conductedAt: -1 }", "{ type: 1, conductedAt: -1 }", "{ grade: 1 }"],
+    links: ["units", "rooms", "tickets"],
+  },
+  {
+    key: "ticket",
+    collection: "tickets",
+    title: "Service ticket (maintenance decision engine)",
+    group: "Management OS",
+    why: "Severity decides response time, approval path and spend authority. Without a ticket engine, maintenance becomes WhatsApp chaos and owner trust collapses.",
+    owns: "Issue severity, SLA clock, approval, vendor, cost and closure proof.",
+    neverStore: "Unrelated personal profile data.",
+    source: "Tenant report in app, inspection defect promotion, owner request, preventive schedule, Control Tower auto-raise.",
+    access: { read: ["tenant:own", "owner:own", "ops:pm"], write: ["ops:pm", "ops:field"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      unitId: REQ("ObjectId", "", { ref: "units" }),
+      roomId: S("ObjectId", "", { ref: "rooms" }),
+      raisedByPersonId: REQ("ObjectId", "", { ref: "people" }),
+      category: REQ("String", "plumbing | electrical | appliance | pest | civil | safety | cleaning | internet"),
+      severity: REQ("String", "", { enum: ["emergency", "critical", "standard", "cosmetic"] }),
+      slaDueAt: REQ("Date", "emergency 4h · critical 24h · standard 72h · cosmetic next cycle"),
+      approvalRequired: REQ("Boolean", "False when cost <= mandate emergency cap"),
+      approvalStatus: S("String", "", { enum: ["not_required", "pending", "approved", "rejected"] }),
+      vendor: S("Object", "{ name, phone, assignedAt }"),
+      estimatedCost: S("Number"),
+      actualCost: S("Number"),
+      chargeTo: S("String", "", { enum: ["owner", "tenant", "gharpayy", "split"] }),
+      closureProof: S("Array<String>", "Photos required to close"),
+      status: REQ("String", "", { enum: ["open", "assigned", "awaiting_approval", "in_progress", "resolved", "closed", "breached"] }),
+      ...AUDIT,
+    },
+    indexes: ["{ status: 1, slaDueAt: 1 }", "{ unitId: 1, status: 1 }", "{ severity: 1, status: 1 }"],
+    links: ["units", "inspections", "ledger"],
+  },
+
+  /* ───────────────────────── TRUST & CONTROL ───────────────────────── */
+  {
+    key: "verification",
+    collection: "verifications",
+    title: "Verification evidence (ladder L0–L5)",
+    group: "Trust",
+    why: "Trust is a layered evidence system, not a single blue tick. Store the verification RESULT and reference — never raw documents or full Aadhaar numbers (UIDAI offline e-KYC, DPDP Rules 2025).",
+    owns: "Level, method, provider reference, scope, verified-at and expiry.",
+    neverStore: "Raw identity documents, full Aadhaar number, XML/share code.",
+    source: "OTP provider, consent-based KYC provider, employer/college email domain check, authority document review by ops, field inspection.",
+    access: { read: ["ops:trust", "self:status_only", "public:badge_only"], write: ["system:verification", "ops:trust"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      subjectType: REQ("String", "", { enum: ["person", "unit", "household", "vacancy"] }),
+      subjectId: REQ("ObjectId"),
+      level: REQ("String", "", { enum: ["L0", "L1", "L2", "L3", "L4", "L5"] }),
+      method: REQ("String", "mobile_otp | offline_ekyc | work_email | college_email | authority_doc | field_inspection | mandate"),
+      providerRef: S("String", "Opaque reference only — no document payload"),
+      scope: REQ("String", "What exactly was verified"),
+      verifiedAt: REQ("Date"),
+      expiresAt: S("Date", "Verification decays; expiry demotes the badge"),
+      result: REQ("String", "", { enum: ["pass", "fail", "manual_review"] }),
+      ...AUDIT,
+    },
+    indexes: ["{ subjectType: 1, subjectId: 1, level: 1 }", "{ expiresAt: 1 }", "{ result: 1, updatedAt: -1 }"],
+    links: ["people", "units", "vacancies"],
+  },
+  {
+    key: "report",
+    collection: "safety_reports",
+    title: "Safety report & moderation case",
+    group: "Trust",
+    why: "Every listing has Report, Block and Safety Help. High-severity reports must be able to freeze contact, visits and payments pending review.",
+    owns: "Report, severity, protective action, review and appeal.",
+    neverStore: "Reporter identity exposed to the reported party.",
+    source: "In-app report button, automated message/ad moderation, ops escalation, post-visit safety prompt.",
+    access: { read: ["ops:trust"], write: ["any:create", "ops:trust"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      reporterPersonId: REQ("ObjectId", "Identity never disclosed", { ref: "people" }),
+      subjectType: REQ("String", "", { enum: ["person", "vacancy", "thread", "household"] }),
+      subjectId: REQ("ObjectId"),
+      category: REQ("String", "scam | impersonation | harassment | hidden_payment | unsafe_visit | fake_listing | discrimination"),
+      severity: REQ("String", "", { enum: ["low", "medium", "high", "critical"] }),
+      freezeApplied: REQ("Boolean", "Critical freezes contact, visits and payment"),
+      narrative: REQ("String"),
+      evidence: S("Array<String>"),
+      reviewedByOpsId: S("ObjectId"),
+      reviewSlaDueAt: REQ("Date"),
+      outcome: S("String", "", { enum: ["pending", "no_action", "warning", "content_removed", "account_restricted", "banned", "law_enforcement"] }),
+      appeal: S("Object", "{ filedAt, outcome }"),
+      ...AUDIT,
+    },
+    indexes: ["{ severity: 1, outcome: 1, reviewSlaDueAt: 1 }", "{ subjectType: 1, subjectId: 1 }"],
+    links: ["people", "vacancies", "threads"],
+  },
+  {
+    key: "consent",
+    collection: "consents",
+    title: "Consent & disclosure log",
+    group: "Trust",
+    why: "DPDP Rules 2025 require purpose-specific notice, a legal basis, minimisation, retention and grievance workflow. Progressive unlock of contact and address is only defensible when each unlock is logged.",
+    owns: "Purpose, basis, grant/revoke timestamps and every field disclosure event.",
+    neverStore: "The disclosed data itself.",
+    source: "Consent prompts at mutual intent, address release for a confirmed visit, ops access with a stated purpose.",
+    access: { read: ["self", "ops:trust", "dpo"], write: ["system:consent"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      personId: REQ("ObjectId", "", { ref: "people" }),
+      purpose: REQ("String", "share_contact | share_exact_address | share_household_profile | kyc | marketing"),
+      legalBasis: REQ("String", "", { enum: ["consent", "contract", "legitimate_use"] }),
+      grantedAt: REQ("Date"),
+      revokedAt: S("Date"),
+      disclosures: REQ("Array<Object>", "{ field, toPersonId, atypearl, reason }"),
+      retentionUntil: REQ("Date"),
+      ...AUDIT,
+    },
+    indexes: ["{ personId: 1, purpose: 1 }", "{ retentionUntil: 1 }"],
+    links: ["people"],
+  },
+  {
+    key: "mission",
+    collection: "supply_missions",
+    title: "Supply mission (no dead ends)",
+    group: "Control Tower",
+    why: "When a demand cluster has insufficient canonical inventory, the system creates a zone-budget-date-roomtype mission for operators instead of showing an empty result page.",
+    owns: "Demand cluster definition, target inventory, owner outreach and fill progress.",
+    neverStore: "Seeker personal data beyond the cluster shape.",
+    source: "No-results resolution engine, Control Tower demand clustering, ops manual creation.",
+    access: { read: ["ops:supply", "admin"], write: ["ops:supply"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      city: REQ("String"),
+      area: REQ("String"),
+      budgetBand: REQ("String"),
+      roomType: REQ("String"),
+      dateWindow: REQ("Object", "{ from, to }"),
+      demandCount: REQ("Number", "How many live requirements are blocked by this gap"),
+      supplyCount: REQ("Number"),
+      targetUnits: REQ("Number"),
+      ownerOutreach: S("Array<Object>", "{ ownerPersonId, contactedAt, outcome }"),
+      assigneeOpsId: S("ObjectId"),
+      dueAt: REQ("Date"),
+      status: REQ("String", "", { enum: ["open", "in_progress", "filled", "dropped"] }),
+      ...AUDIT,
+    },
+    indexes: ["{ status: 1, dueAt: 1 }", "{ city: 1, area: 1, roomType: 1 }"],
+    links: ["requirements", "units"],
+  },
+  {
+    key: "event",
+    collection: "events",
+    title: "Event stream (system of record for behaviour)",
+    group: "Control Tower",
+    why: "Every KPI, SLA breach, funnel stage and recovery action in the Control Tower is derived from an append-only event stream, so numbers can always be traced to what actually happened.",
+    owns: "Immutable behavioural and state-transition events.",
+    neverStore: "Mutable business state — this collection is append-only.",
+    source: "Emitted by every write path in the app, ops console, WhatsApp handoff and system jobs.",
+    access: { read: ["admin", "ops:analytics"], write: ["system:all"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      name: REQ("String", "requirement_published | vacancy_confirmed | interest_sent | mutual | visit_booked | vote_cast | moved_in | rent_paid | sla_breached | whatsapp_handoff"),
+      actorPersonId: S("ObjectId", "", { ref: "people" }),
+      actorRole: S("String"),
+      subject: S("Object", "{ kind, id }"),
+      props: S("Object", "Non-sensitive payload only"),
+      city: S("String"),
+      at: REQ("Date"),
+    },
+    indexes: ["{ name: 1, at: -1 }", "{ actorPersonId: 1, at: -1 }", "{ city: 1, at: -1 }", "{ at: -1 } // TTL candidate"],
+    links: ["people"],
+  },
+  {
+    key: "accessKey",
+    collection: "access_keys",
+    title: "Access key & role grant (admin control)",
+    group: "Control Tower",
+    why: "The admin must hold every access key in one place: who can read exact addresses, identity evidence, payment data and safety cases — with purpose, expiry and audit.",
+    owns: "Role, scopes, key metadata, purpose, expiry, rotation and audit trail.",
+    neverStore: "The raw secret. Store a hash and last-4 only.",
+    source: "Super-admin issues, rotates and revokes keys; every use writes an audit event.",
+    access: { read: ["admin"], write: ["admin"] },
+    fields: {
+      _id: REQ("ObjectId"),
+      label: REQ("String"),
+      role: REQ("String", "", { enum: ["super_admin", "ops_supply", "ops_flow", "ops_pm", "ops_field", "ops_trust", "finance", "analytics", "owner_portal", "service_integration"] }),
+      scopes: REQ("Array<String>", "read:person.public | read:person.pii | read:address.exact | write:vacancy | read:ledger | write:ledger | read:safety | admin:keys"),
+      keyHash: REQ("String", "Argon2id hash. Raw key shown exactly once at issue."),
+      last4: REQ("String"),
+      purpose: REQ("String", "Purpose limitation is mandatory"),
+      issuedToPersonId: S("ObjectId", "", { ref: "people" }),
+      expiresAt: REQ("Date"),
+      lastUsedAt: S("Date"),
+      rotatedFromId: S("ObjectId", "", { ref: "access_keys" }),
+      status: REQ("String", "", { enum: ["active", "expiring", "rotated", "revoked"] }),
+      ...AUDIT,
+    },
+    indexes: ["{ role: 1, status: 1 }", "{ expiresAt: 1 }", "{ last4: 1 }"],
+    links: ["people", "events"],
+  },
+];
+
+export const SCHEMA_GROUPS = [
+  "Demand",
+  "Property graph",
+  "Living",
+  "Conversion",
+  "Management OS",
+  "Trust",
+  "Control Tower",
+];
+
+export function schemaByKey(key: string) {
+  return SCHEMAS.find((s) => s.key === key);
+}
+
+export function schemaStats() {
+  return {
+    collections: SCHEMAS.length,
+    fields: SCHEMAS.reduce((n, s) => n + Object.keys(s.fields).length, 0),
+    indexes: SCHEMAS.reduce((n, s) => n + s.indexes.length, 0),
+    stateMachines: SCHEMAS.filter((s) => s.states?.length).length,
+  };
+}
+
+const MONGOOSE_TYPE: Record<string, string> = {
+  ObjectId: "Schema.Types.ObjectId",
+  String: "String",
+  Number: "Number",
+  Boolean: "Boolean",
+  Date: "Date",
+  Object: "Schema.Types.Mixed",
+};
+
+function mongooseType(t: string) {
+  if (t.startsWith("Array<")) {
+    const inner = t.slice(6, -1);
+    return `[${MONGOOSE_TYPE[inner] || "Schema.Types.Mixed"}]`;
+  }
+  return MONGOOSE_TYPE[t] || "Schema.Types.Mixed";
+}
+
+/** Renders a copy-pasteable Mongoose model for a collection. */
+export function mongooseSource(def: CollectionDef) {
+  const lines: string[] = [];
+  lines.push(`// ${def.title} — ${def.collection}`);
+  lines.push(`// WHY: ${def.why}`);
+  lines.push(`// SOURCE: ${def.source}`);
+  lines.push(`import { Schema, model } from "mongoose";`);
+  lines.push("");
+  lines.push(`const ${def.key}Schema = new Schema({`);
+  for (const [name, f] of Object.entries(def.fields)) {
+    if (name === "_id") continue;
+    const bits = [`type: ${mongooseType(f.type)}`];
+    if (f.req) bits.push("required: true");
+    if (f.ref) bits.push(`ref: "${f.ref}"`);
+    if (f.enum) bits.push(`enum: ${JSON.stringify(f.enum)}`);
+    lines.push(`  ${name}: { ${bits.join(", ")} },${f.note ? ` // ${f.note}` : ""}`);
+  }
+  lines.push(`}, { timestamps: true, collection: "${def.collection}" });`);
+  lines.push("");
+  for (const idx of def.indexes) {
+    const clean = idx.replace(/\/\/.*$/, "").trim();
+    const unique = clean.endsWith("unique");
+    const spec = clean.replace(/\s*unique$/, "");
+    lines.push(`${def.key}Schema.index(${spec}${unique ? ", { unique: true }" : ""});`);
+  }
+  lines.push("");
+  lines.push(`export const ${def.key[0].toUpperCase() + def.key.slice(1)} = model("${def.key}", ${def.key}Schema);`);
+  return lines.join("\n");
+}
+
+export function allMongooseSource() {
+  return SCHEMAS.map(mongooseSource).join("\n\n/* ─────────────────────────────── */\n\n");
+}
+
+export function schemaJson() {
+  return JSON.stringify(SCHEMAS, null, 2);
+}
