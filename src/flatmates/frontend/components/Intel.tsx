@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Sparkles, ShieldCheck, AlertTriangle } from "lucide-react";
 import { Pill } from "./Shell";
-import { trustTier } from "@/flatmates/backend/services/intel";
+import { trustTier, responseSla } from "@/flatmates/backend/services/intel";
 import { explain } from "@/flatmates/backend/store/match";
 
 export function TrustBadge({ entity, className }: any) {
@@ -44,5 +44,16 @@ export function DealbreakerFlags({ broken = [] }: any) {
         <Pill key={b} tone="red">Breaks: {b}</Pill>
       ))}
     </div>
+  );
+}
+
+/** The response guarantee, surfaced on every listing. */
+export function ResponsePill({ entity, className }: any) {
+  const sla = responseSla(entity || {});
+  return (
+    <Pill tone={sla.guaranteed ? "green" : "amber"} className={className}>
+      <ShieldCheck className="w-3 h-3" />
+      {sla.guaranteed ? "Answers every request" : `${sla.rate}% answered`}
+    </Pill>
   );
 }
