@@ -165,7 +165,9 @@ export function resolveNoResults(req: any, ranked: ReturnType<typeof rankVacanci
   const options = [
     binding === "price" && {
       key: "raise_or_shift",
-      title: `₹${Math.max(0, near[0]?.gap || 1500).toLocaleString("en-IN")} more unlocks ${near.length} homes`,
+      title: (near[0]?.gap ?? 0) > 0
+        ? `₹${Math.round(near[0].gap).toLocaleString("en-IN")} more on your total ceiling unlocks ${near.length} homes`
+        : `${near.length} homes already sit inside your budget — the block is your zone or date filter`,
       body: `Price is the binding constraint. Either lift your total ceiling slightly, or switch to ${cheapestArea?.area} where totals start at ₹${(cheapestArea?.min || 0).toLocaleString("en-IN")}.`,
       href: "/flatmates/requirement",
       cta: "Adjust budget or zone",
