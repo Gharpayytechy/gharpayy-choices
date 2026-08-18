@@ -26,7 +26,7 @@ export default function FlatmatesLogin() {
     <div className="min-h-[100dvh] bg-background text-foreground">
       <header className="sticky top-0 z-30 bg-background/85 backdrop-blur-xl border-b border-border">
         <div className="max-w-lg mx-auto px-4 h-14 flex items-center gap-3">
-          <Link href="/flatmates/welcome" className="w-9 h-9 -ml-2 grid place-items-center rounded-full hover:bg-muted">
+          <Link href="/flatmates" className="w-9 h-9 -ml-2 grid place-items-center rounded-full hover:bg-muted">
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <p className="font-display font-semibold tracking-tight flex-1">Log in</p>

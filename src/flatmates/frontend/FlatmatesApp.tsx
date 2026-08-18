@@ -1,7 +1,7 @@
 // @ts-nocheck
 /**
  * Flatmates FRONTEND — standalone app.
- * Self-contained wouter app mounted at /gharpayy. Every screen, component and
+ * Self-contained wouter app mounted at /flatmates. Every screen, component and
  * data port lives under src/flatmates/, independent of the main site.
  */
 import { useEffect } from "react";
@@ -139,7 +139,7 @@ export default function FlatmatesApp() {
       <TooltipProvider>
         <Toaster />
         <div className="fm-theme min-h-[100dvh]">
-          <WouterRouter base={typeof window !== "undefined" && window.location.pathname.startsWith("/gharpayy") ? "/gharpayy" : ""}>
+          <WouterRouter>
             <FlatmatesRoutes />
             <RoleSwitcher />
           </WouterRouter>

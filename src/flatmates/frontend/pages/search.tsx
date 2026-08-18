@@ -3,7 +3,9 @@ import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import { FMShell, Card, Pill, Section, money, shortDate } from "@/flatmates/frontend/components/Shell";
 import { getMe, useFM, People, Rooms, Flats, Groups } from "@/flatmates/backend/store/store";
-import { AREA_LIST, READY_STAYS } from "@/flatmates/backend/store/seed";
+import { READY_STAYS } from "@/flatmates/backend/store/seed";
+import { CITY_OPTIONS } from "@/flatmates/backend/store/locations";
+import { matchesQuery } from "@/flatmates/backend/services/search";
 import { scoreMatch } from "@/flatmates/backend/store/match";
 import { Search, MapPin, Building2, GraduationCap, Users, Home } from "lucide-react";
 
@@ -21,9 +23,8 @@ export default function FMSearch() {
   const data = useFM(() => ({ people: People.all(), rooms: Rooms.all(), flats: Flats.all(), groups: Groups.all() }));
 
   const results = useMemo(() => {
-    const t = q.trim().toLowerCase();
-    if (!t) return null;
-    const hit = (o: any) => JSON.stringify(o).toLowerCase().includes(t);
+    if (!q.trim()) return null;
+    const hit = (o: any) => matchesQuery(o, q);
     const rank = (a: any[]) => a.map((x) => ({ ...x, _s: scoreMatch(me, x).score })).sort((a, b) => b._s - a._s);
     return {
       rooms: rank(data.rooms.filter(hit)),
@@ -58,14 +59,14 @@ export default function FMSearch() {
           </Section>
           <Section title="Browse by micro-market" sub="Live supply in each area">
             <div className="grid grid-cols-2 gap-2">
-              {AREA_LIST.map((a) => {
+              {CITY_OPTIONS.flatMap((city) => city.areas.map((area) => ({ city: city.name, area }))).map(({city,a: unused,area: a}: any) => {
                 const n = data.rooms.filter((r: any) => r.area === a && r.status === "LIVE").length;
                 const p = data.people.filter((x: any) => x.area === a).length;
                 return (
-                  <button key={a} onClick={() => setQ(a)} className="text-left">
+                  <button key={`${city}-${a}`} onClick={() => setQ(a)} className="text-left">
                     <Card className="p-3">
                       <p className="text-sm font-semibold truncate">{a}</p>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">{n} rooms · {p} people</p>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">{city} · {n} rooms · {p} people</p>
                     </Card>
                   </button>
                 );
