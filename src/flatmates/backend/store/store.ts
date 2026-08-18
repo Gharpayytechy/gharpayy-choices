@@ -298,8 +298,7 @@ export const incomingRequests = () => {
 };
 export const outgoingRequests = () => {
   const me = getActorId();
-  return Interests.all().filter((i: any) => i.status === "pending" && i.direction !== "in" && i.actor !== undefined ? i.actor === me : true)
-    .filter((i: any) => i.status === "pending" && i.direction !== "in" && i.to !== me);
+  return Interests.all().filter((i: any) => i.status === "pending" && i.direction !== "in" && i.to !== me);
 };
 
 /** Requests that landed on the listings this account owns. */
