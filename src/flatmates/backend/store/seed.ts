@@ -64,8 +64,12 @@ export function seedFlatmates(force = false) {
     kind: "person",
   })));
 
+  const ROOM_OWNERS = ["host_neha", "owner_meera", "owner_rakesh"];
+  const FLAT_OWNERS = ["owner_rakesh", "owner_meera"];
+
   Rooms.replace(ROOMS.map((r, i) => ({
     id: "r" + i,
+    ownerActor: ROOM_OWNERS[i % ROOM_OWNERS.length],
     title: r[0], area: r[1], rent: r[2], deposit: r[3], roomType: r[4],
     genderPref: r[5], residents: r[6], address: r[7], verifiedAt: ago(r[8]),
     nearby: AREAS.filter((a) => a !== r[1]).slice(0, 2),
@@ -91,6 +95,7 @@ export function seedFlatmates(force = false) {
 
   Flats.replace(FLATS.map((f, i) => ({
     id: "f" + i,
+    ownerActor: FLAT_OWNERS[i % FLAT_OWNERS.length],
     title: f[0], area: f[1], rent: f[2], bhk: f[3], deposit: f[4], address: f[5],
     nearby: AREAS.filter((a) => a !== f[1]).slice(0, 2),
     availableFrom: iso(6 + i * 4), furnishing: i % 2 ? "Semi-furnished" : "Fully furnished",
