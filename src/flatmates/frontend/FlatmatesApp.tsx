@@ -103,6 +103,7 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/property" component={FMProperty} />
       <Route path="/flatmates/property/:id" component={FMProperty} />
       <Route path="/flatmates/post" component={FMPost} />
+      <Route path="/flatmates/publish" component={FMPublish} />
       <Route path="/flatmates/room/:id" component={FMRoom} />
       <Route path="/flatmates/person/:id" component={FMPerson} />
       <Route path="/flatmates/flat/:id" component={FMFlat} />
