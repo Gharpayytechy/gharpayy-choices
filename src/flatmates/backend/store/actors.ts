@@ -6,6 +6,7 @@
  * notifications and daily quota (scoped inside the store by actor id).
  */
 import { registerActorSeeds, getActorId, setActorId, useFM } from "./store";
+import { listAccounts, accountToActor, hydrateAccounts } from "./accounts";
 
 export type FMRole = "seeker" | "poster" | "owner" | "group" | "admin";
 
@@ -77,8 +78,11 @@ export const ROLE_LABEL: Record<FMRole, string> = {
 };
 
 registerActorSeeds(Object.fromEntries(ACTORS.map((a) => [a.id, a.seed])));
+hydrateAccounts();
 
-export const actorById = (id: string) => ACTORS.find((a) => a.id === id) || ACTORS[0];
+/** Signed-up accounts on this device first, then the built-in demo personas. */
+export const allActors = () => [...listAccounts().map(accountToActor), ...ACTORS];
+export const actorById = (id: string) => allActors().find((a: any) => a.id === id) || ACTORS[0];
 export const currentActor = () => actorById(getActorId());
 export const switchActor = (id: string) => setActorId(id);
 export const useActor = () => useFM(() => currentActor());

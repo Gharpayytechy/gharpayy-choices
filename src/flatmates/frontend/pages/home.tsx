@@ -46,7 +46,8 @@ export default function FlatmatesHome() {
             <div className="flex flex-wrap gap-2 mt-2.5">
               <Link href="/flatmates/guide" className="text-xs font-semibold text-primary">How to use it →</Link>
               <Link href="/flatmates/owner" className="text-xs font-semibold text-primary">Supply desk →</Link>
-              <Link href="/flatmates/admin" className="text-xs font-semibold text-primary">Admin →</Link>
+              <Link href="/flatmates/admin/super" className="text-xs font-semibold text-primary">Super admin →</Link>
+              <Link href="/flatmates/welcome" className="text-xs font-semibold text-primary">Start here / sign up →</Link>
             </div>
           </div>
         </div>

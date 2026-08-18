@@ -4,6 +4,7 @@
  * Self-contained wouter app mounted at /gharpayy. Every screen, component and
  * data port lives under src/flatmates/, independent of the main site.
  */
+import { useEffect } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/referral-app/components/ui/toaster";
@@ -38,13 +39,19 @@ import FMAgreement from "@/flatmates/frontend/pages/agreement";
 import FMPipeline from "@/flatmates/frontend/pages/pipeline";
 import FMOwner from "@/flatmates/frontend/pages/owner";
 import FMGuide from "@/flatmates/frontend/pages/guide";
+import FMWelcome from "@/flatmates/frontend/pages/welcome";
+import FMSignup from "@/flatmates/frontend/pages/signup";
+import FMLogin from "@/flatmates/frontend/pages/login";
 import { RoleSwitcher } from "@/flatmates/frontend/components/RoleSwitcher";
+import { seedFlatmates } from "@/flatmates/backend/store/seed";
+import { hydrateAccounts } from "@/flatmates/backend/store/accounts";
 
 import AdminCommand from "@/flatmates/frontend/admin/command";
 import AdminSupply from "@/flatmates/frontend/admin/supply";
 import AdminDemand from "@/flatmates/frontend/admin/demand";
 import AdminOwners from "@/flatmates/frontend/admin/owners";
 import AdminMissions from "@/flatmates/frontend/admin/missions";
+import AdminSuper from "@/flatmates/frontend/admin/super";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +78,8 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/admin/demand" component={AdminDemand} />
       <Route path="/flatmates/admin/owners" component={AdminOwners} />
       <Route path="/flatmates/admin/missions" component={AdminMissions} />
+      <Route path="/flatmates/admin/super" component={AdminSuper} />
+      <Route path="/flatmates/super-admin" component={AdminSuper} />
 
       {/* App */}
       <Route path="/flatmates" component={FMHome} />
@@ -109,6 +118,10 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/pipeline" component={FMPipeline} />
       <Route path="/flatmates/owner" component={FMOwner} />
       <Route path="/flatmates/guide" component={FMGuide} />
+      <Route path="/flatmates/welcome" component={FMWelcome} />
+      <Route path="/flatmates/signup" component={FMSignup} />
+      <Route path="/flatmates/join" component={FMSignup} />
+      <Route path="/flatmates/login" component={FMLogin} />
 
       <Route component={FlatmatesNotFound} />
     </Switch>
@@ -116,6 +129,9 @@ function FlatmatesRoutes() {
 }
 
 export default function FlatmatesApp() {
+  // Seed the marketplace and restore local accounts on any entry point, so a
+  // deep link (inbox, admin, a shared listing) is never an empty screen.
+  useEffect(() => { seedFlatmates(); hydrateAccounts(); }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

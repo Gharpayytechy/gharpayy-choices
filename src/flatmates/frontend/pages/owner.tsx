@@ -8,6 +8,7 @@ import {
 import { currentActor } from "@/flatmates/backend/store/actors";
 import { seedFlatmates } from "@/flatmates/backend/store/seed";
 import { CheckCircle2, XCircle, Eye, Plus, MessageCircle } from "lucide-react";
+import { waListMyProperty } from "@/lib/wa";
 
 /** Give every owner account a couple of real requests to act on. */
 function ensureOwnerRequests(actorId: string, listings: any[]) {
@@ -63,6 +64,22 @@ export default function OwnerDashboard() {
         <KPI label="Awaiting you" value={pending.length} tone={pending.length ? "primary" : "default"} hint="respond in 48h" />
         <KPI label="Chats open" value={accepted.length} tone="good" />
       </div>
+
+      <Card className="p-4 mb-6 border-primary/25 bg-primary/[0.05]">
+        <p className="font-semibold text-sm">Add a property</p>
+        <p className="text-xs text-muted-foreground mt-1 leading-5">
+          Post it yourself in two minutes, or send the details on WhatsApp and our team lists it for you.
+        </p>
+        <div className="flex flex-wrap gap-2 mt-3">
+          <Link href="/flatmates/post" className="h-10 px-4 rounded-xl bg-primary text-primary-foreground grid place-items-center text-sm font-semibold">
+            Add property in app
+          </Link>
+          <a href={waListMyProperty()} target="_blank" rel="noopener noreferrer"
+            className="h-10 px-4 rounded-xl bg-[#25D366] text-white grid place-items-center text-sm font-semibold">
+            List on WhatsApp
+          </a>
+        </div>
+      </Card>
 
       <Section title="Requests to your listings" eyebrow="Screening" sub="Nobody can message you until you accept. Decline is one tap and always gives a reason.">
         {pending.length === 0 ? (

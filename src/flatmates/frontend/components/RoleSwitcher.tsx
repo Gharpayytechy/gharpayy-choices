@@ -3,18 +3,22 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { Users, X, Check, ArrowRight } from "lucide-react";
 import { cn } from "@/referral-app/lib/utils";
-import { ACTORS, ROLE_LABEL, currentActor, switchActor } from "@/flatmates/backend/store/actors";
+import { allActors, ROLE_LABEL, currentActor, switchActor } from "@/flatmates/backend/store/actors";
 import { useFM } from "@/flatmates/backend/store/store";
+import { startSession, logOut, currentAccount, listAccounts } from "@/flatmates/backend/store/accounts";
 
 const ROLE_ORDER = ["seeker", "poster", "owner", "group", "admin"];
 
 export function RoleSwitcher() {
   const [open, setOpen] = useState(false);
   const actor = useFM(() => currentActor());
+  const account = useFM(() => currentAccount());
+  const actors = useFM(() => allActors());
+  const accounts = useFM(() => listAccounts());
   const [, navigate] = useLocation();
 
   const pick = (a: any) => {
-    switchActor(a.id);
+    if (a.isAccount) startSession(a.id); else switchActor(a.id);
     setOpen(false);
     setTimeout(() => navigate(a.home), 80);
   };
@@ -38,7 +42,7 @@ export function RoleSwitcher() {
             <div className="flex items-start justify-between mb-4">
               <div>
                 <h2 className="font-display text-xl font-bold tracking-tight">Switch account</h2>
-                <p className="text-sm text-muted-foreground">No login needed — jump into any side of the marketplace.</p>
+                <p className="text-sm text-muted-foreground">{accounts.length ? "Your account, plus demo personas for every side of the marketplace." : "Create your own account, or try any side of the marketplace instantly."}</p>
               </div>
               <button onClick={() => setOpen(false)} className="w-9 h-9 rounded-full bg-muted grid place-items-center">
                 <X className="w-4 h-4" />
@@ -49,7 +53,7 @@ export function RoleSwitcher() {
               <div key={role} className="mb-5">
                 <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground mb-2">{ROLE_LABEL[role]}</p>
                 <div className="space-y-2">
-                  {ACTORS.filter((a) => a.role === role).map((a) => {
+                  {actors.filter((a: any) => a.role === role).map((a) => {
                     const on = a.id === actor.id;
                     return (
                       <button
@@ -75,6 +79,18 @@ export function RoleSwitcher() {
                 </div>
               </div>
             ))}
+
+            <div className="grid grid-cols-2 gap-2 mb-3">
+              <button onClick={() => { setOpen(false); navigate("/flatmates/signup"); }}
+                className="h-10 rounded-xl bg-primary text-primary-foreground text-sm font-semibold">Create account</button>
+              {account ? (
+                <button onClick={() => { logOut(); setOpen(false); navigate("/flatmates/welcome"); }}
+                  className="h-10 rounded-xl border border-border text-sm font-semibold">Log out</button>
+              ) : (
+                <button onClick={() => { setOpen(false); navigate("/flatmates/login"); }}
+                  className="h-10 rounded-xl border border-border text-sm font-semibold">Log in</button>
+              )}
+            </div>
 
             <a href="/gharpayy/flatmates/guide" className="flex items-center justify-between rounded-2xl bg-foreground text-background px-4 py-3 text-sm font-semibold">
               What's ready & how to use it <ArrowRight className="w-4 h-4" />

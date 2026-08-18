@@ -34,7 +34,9 @@ export const setActorId = (id: string) => {
 };
 /** Actor profile defaults, registered by the actor catalogue (avoids a cycle). */
 let ACTOR_SEEDS: Record<string, any> = {};
-export const registerActorSeeds = (seeds: Record<string, any>) => { ACTOR_SEEDS = seeds; };
+export const registerActorSeeds = (seeds: Record<string, any>) => { ACTOR_SEEDS = { ...seeds, ...ACTOR_SEEDS }; };
+/** Register (or refresh) the profile defaults for a single account. */
+export const addActorSeed = (id: string, seed: any) => { ACTOR_SEEDS = { ...ACTOR_SEEDS, [id]: seed }; };
 
 function makeDB<T extends { id: string }>(name: string, scoped = false) {
   const key = K(name);
@@ -329,7 +331,7 @@ export const requestStatusFor = (refId: string) =>
 export const reply = (threadId: string, text: string, from = "me") => {
   const t = Threads.get(threadId);
   if (!t) return;
-  Threads.update(threadId, { messages: [...t.messages, { from, text, at: new Date().toISOString() }] });
+  Threads.update(threadId, { messages: [...(t.messages || []), { from, text, at: new Date().toISOString() }], lastAt: new Date().toISOString() });
   track("message_replied", { threadId });
 };
 

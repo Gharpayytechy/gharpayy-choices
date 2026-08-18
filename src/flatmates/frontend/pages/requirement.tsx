@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { FMShell, Card, Pill, Section, Btn, Meter, money } from "@/flatmates/frontend/components/Shell";
 import { getMe, setMe, useFM, Rooms, track } from "@/flatmates/backend/store/store";
 import { AREA_LIST } from "@/flatmates/backend/store/seed";
@@ -17,6 +18,7 @@ export default function FMRequirement() {
     roomType: me.roomType || "Private room", bathroom: me.bathroom || "Attached preferred", commute: me.commute || "30 min",
   });
   const set = (patch: any) => setDraft((d) => ({ ...d, ...patch }));
+  const [, nav] = useLocation();
 
   const impact = constraintImpact({ ...me, ...draft }, rooms);
   const matches = rooms.filter((r: any) => scoreMatch({ ...me, ...draft }, r).score >= 75).length;
@@ -26,7 +28,7 @@ export default function FMRequirement() {
   const save = () => {
     setMe(draft);
     track("requirement_updated", draft);
-    window.history.back();
+    nav("/flatmates/you");
   };
 
   const toggleArea = (a: string) =>

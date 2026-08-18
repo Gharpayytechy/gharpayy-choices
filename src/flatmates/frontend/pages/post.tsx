@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { FMShell, Card, Btn, Pill, Section, money } from "@/flatmates/frontend/components/Shell";
 import { parsePost, writeDescription, shareCopy } from "@/flatmates/backend/store/parse";
-import { Rooms, Flats, getMe, setMe, track, People } from "@/flatmates/backend/store/store";
+import { Rooms, Flats, getMe, setMe, track, People, getActorId } from "@/flatmates/backend/store/store";
 import { AREA_LIST } from "@/flatmates/backend/store/seed";
 import { ClipboardPaste, Home, Users, Search, Sparkles, Building2, Camera, Check } from "lucide-react";
 
@@ -66,10 +66,10 @@ function PastePost({ onDone }: any) {
       description: writeDescription(f), type: "ROOM_EXISTING", status: "LIVE",
       verifiedAt: new Date().toISOString(), verified: { phone: true, room: false },
       householdMembers: [], rules: {}, dna: {}, commuteKm: "1.5", responseScore: 80,
-      mine: true, kind: "room", nearby: [],
+      mine: true, kind: "room", nearby: [], ownerActor: getActorId(),
     });
     track("listing_published", { source: "paste" });
-    nav(`/flatmates/live/${room.id}`);
+    nav(`/flatmates/room/${room.id}`);
   };
 
   return (
@@ -128,10 +128,10 @@ function RoomWizard({ onDone }: any) {
       verified: { phone: true, room: d.photos.length > 0 }, householdMembers: d.members.filter((m: any) => m.name),
       rules: { smoking: d.smoking, guests: d.guests, cleaning: d.cleaning, pets: d.pets },
       dna: { smoking: d.smoking, food: d.food, guests: d.guests, cleanliness: "Normal", social: "Balanced" },
-      commuteKm: "1.8", responseScore: 85, mine: true, kind: "room", nearby: [],
+      commuteKm: "1.8", responseScore: 85, mine: true, kind: "room", nearby: [], ownerActor: getActorId(),
     });
     track("listing_published", { source: "wizard" });
-    nav(`/flatmates/live/${room.id}`);
+    nav(`/flatmates/room/${room.id}`);
   };
 
   return (
@@ -232,7 +232,7 @@ function FlatForm({ onDone }: any) {
       <div className="flex gap-2 mt-4">
         <Btn variant="secondary" onClick={onDone}>Back</Btn>
         <Btn className="flex-1" onClick={() => {
-          const f = Flats.create({ ...d, title: d.title || `${d.bhk}BHK in ${d.area}`, amenities: ["Lift", "Parking"], verified: { phone: true, owner: true }, verifiedAt: new Date().toISOString(), status: "LIVE", kind: "flat", roomType: "Entire flat", responseScore: 80, mine: true, nearby: [] });
+          const f = Flats.create({ ...d, title: d.title || `${d.bhk}BHK in ${d.area}`, amenities: ["Lift", "Parking"], verified: { phone: true, owner: true }, verifiedAt: new Date().toISOString(), status: "LIVE", kind: "flat", roomType: "Entire flat", responseScore: 80, mine: true, nearby: [], ownerActor: getActorId() });
           nav(`/flatmates/flat/${f.id}`);
         }}>List Flat</Btn>
       </div>

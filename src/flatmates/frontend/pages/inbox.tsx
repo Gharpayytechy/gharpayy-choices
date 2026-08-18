@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useState, useEffect } from "react";
-import { Link, useRoute } from "wouter";
+import { Link, useRoute, useLocation } from "wouter";
 import { FMShell, Card, Pill, Btn, Section } from "@/flatmates/frontend/components/Shell";
 import {
   Threads, useFM, reply, Interests,
@@ -8,6 +8,7 @@ import {
   sweepStaleRequests, ensureIncomingRequests,
 } from "@/flatmates/backend/store/store";
 import { requestHealth } from "@/flatmates/backend/services/intel";
+import { seedFlatmates } from "@/flatmates/backend/store/seed";
 import { Send, Check, X, Clock, ShieldCheck } from "lucide-react";
 
 const TABS = ["Requests", "Chats", "Rooms", "Groups", "Support"];
@@ -23,8 +24,9 @@ const ago = (iso: string) => {
 export default function Inbox() {
   const [tab, setTab] = useState("Requests");
   const [declining, setDeclining] = useState<string | null>(null);
+  const [, nav] = useLocation();
 
-  useEffect(() => { ensureIncomingRequests(); sweepStaleRequests(); }, []);
+  useEffect(() => { seedFlatmates(); ensureIncomingRequests(); sweepStaleRequests(); }, []);
 
   const threads = useFM(() => Threads.all());
   const incoming = useFM(() => incomingRequests());
@@ -103,7 +105,7 @@ export default function Inbox() {
                           className="flex-1 h-9 rounded-xl border border-slate-900/12 grid place-items-center text-xs font-semibold text-slate-600">
                           <span className="flex items-center gap-1"><X className="w-3.5 h-3.5" />Decline</span>
                         </button>
-                        <button onClick={() => acceptInterest(r.id)}
+                        <button onClick={() => { const t = acceptInterest(r.id); if (t) nav(`/flatmates/chat/${t.id}`); }}
                           className="flex-[2] h-9 rounded-xl bg-slate-900 text-white grid place-items-center text-xs font-semibold">
                           <span className="flex items-center gap-1"><Check className="w-3.5 h-3.5" />Accept & open chat</span>
                         </button>
@@ -204,7 +206,7 @@ export function Chat() {
       </div>
 
       <div className="space-y-2 mb-4">
-        {t.messages.map((m: any, i: number) => (
+        {(t.messages || []).map((m: any, i: number) => (
           <div key={i} className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-sm ${m.from === "me" ? "ml-auto bg-slate-900 text-white rounded-br-md" : "bg-white border border-slate-900/8 rounded-bl-md"}`}>
             {m.text}
           </div>
