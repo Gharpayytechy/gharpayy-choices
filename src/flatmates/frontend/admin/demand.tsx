@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AdminShell, Panel, Kpi, Tag } from "./AdminShell";
 import { repo, useFM, demandDesk, demandCohorts, money, opsActions } from "@/flatmates/backend";
+import { toast } from "@/referral-app/hooks/use-toast";
 
 const SEV: any = { blocked: "bad", "at-risk": "warn", healthy: "good" };
 
@@ -107,9 +108,9 @@ export default function AdminDemand() {
                 <p className="text-[10px] uppercase tracking-wide text-muted-foreground">cheapest</p>
               </div>
               <div className="flex gap-1.5">
-                <button onClick={() => opsActions.raiseBudget(p.id, 1500)} className="px-2.5 py-1.5 rounded-lg border border-border text-xs font-semibold">+₹1.5k budget</button>
-                <button onClick={() => opsActions.nudgeSeeker(p.id, p.unblock)} className="px-2.5 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-semibold">Nudge</button>
-                <button onClick={() => opsActions.log("demand", `Called ${p.name}`)} className="px-2.5 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold">Log call</button>
+                <button onClick={() => { opsActions.raiseBudget(p.id, 1500); toast(`${p.name || "Seeker"} budget raised by ₹1,500`); }} className="px-2.5 py-1.5 rounded-lg border border-border text-xs font-semibold">+₹1.5k budget</button>
+                <button onClick={() => { opsActions.nudgeSeeker(p.id, p.unblock); toast(`Nudge sent to ${p.name || "seeker"}`); }} className="px-2.5 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-semibold">Nudge</button>
+                <button onClick={() => { opsActions.log("demand", `Called ${p.name}`); toast(`Call logged for ${p.name || "seeker"}`); }} className="px-2.5 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold">Log call</button>
               </div>
             </div>
           ))}

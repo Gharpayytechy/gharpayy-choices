@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useState } from "react";
+import { toast } from "@/referral-app/hooks/use-toast";
 import { AdminShell, Panel } from "@/flatmates/frontend/admin/AdminShell";
 import { SCHEMAS, SCHEMA_GROUPS, schemaStats, mongooseSource, allMongooseSource, schemaJson } from "@/flatmates/backend/schemas/mongo";
 import { Copy, Download, Database } from "lucide-react";
@@ -23,8 +24,8 @@ export default function AdminSchemas() {
       sub={`${stats.collections} MongoDB collections · ${stats.fields} fields · ${stats.indexes} indexes · ${stats.stateMachines} state machines`}
       action={
         <div className="flex gap-2">
-          <button onClick={() => download("gharpayy-schemas.json", schemaJson(), "application/json")} className="h-9 px-3 rounded-xl border border-border text-xs font-semibold inline-flex items-center gap-1.5"><Download className="w-3.5 h-3.5" /> JSON</button>
-          <button onClick={() => download("gharpayy-models.ts", allMongooseSource())} className="h-9 px-3 rounded-xl bg-primary text-primary-foreground text-xs font-semibold inline-flex items-center gap-1.5"><Download className="w-3.5 h-3.5" /> Mongoose models</button>
+          <button onClick={() => { download("gharpayy-schemas.json", schemaJson(), "application/json"); toast("Schema JSON downloaded"); }} className="h-9 px-3 rounded-xl border border-border text-xs font-semibold inline-flex items-center gap-1.5"><Download className="w-3.5 h-3.5" /> JSON</button>
+          <button onClick={() => { download("gharpayy-models.ts", allMongooseSource()); toast("Mongoose models downloaded"); }} className="h-9 px-3 rounded-xl bg-primary text-primary-foreground text-xs font-semibold inline-flex items-center gap-1.5"><Download className="w-3.5 h-3.5" /> Mongoose models</button>
         </div>
       }
     >
@@ -115,7 +116,7 @@ export default function AdminSchemas() {
 
           {tab === "mongoose" && (
             <Panel title="Mongoose model" sub="Copy-paste ready" >
-              <button onClick={() => navigator.clipboard?.writeText(mongooseSource(def))} className="mb-2 h-8 px-3 rounded-lg border border-border text-xs font-semibold inline-flex items-center gap-1.5"><Copy className="w-3.5 h-3.5" /> Copy</button>
+              <button onClick={() => { navigator.clipboard?.writeText(mongooseSource(def)); toast("Model source copied to clipboard"); }} className="mb-2 h-8 px-3 rounded-lg border border-border text-xs font-semibold inline-flex items-center gap-1.5"><Copy className="w-3.5 h-3.5" /> Copy</button>
               <pre className="text-[11px] leading-relaxed bg-muted rounded-xl p-3 overflow-x-auto whitespace-pre">{mongooseSource(def)}</pre>
             </Panel>
           )}

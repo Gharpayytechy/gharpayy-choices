@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { AdminShell, Panel, Kpi, Tag } from "./AdminShell";
 import { repo, useFM, supplyDesk, money } from "@/flatmates/backend";
+import { toast } from "@/referral-app/hooks/use-toast";
 
 const HEALTH: any = { fresh: "good", aging: "warn", stale: "bad" };
 
@@ -19,10 +20,20 @@ export default function AdminSupply() {
     return true;
   });
 
-  const toggle = (r: any) =>
-    repo.rooms.update(r.id, { status: r.status === "LIVE" ? "PAUSED" : "LIVE" });
-  const reverify = (r: any) => repo.rooms.update(r.id, { verifiedAt: new Date().toISOString() });
-  const reprice = (r: any, d: number) => repo.rooms.update(r.id, { rent: Math.max(3000, r.rent + d) });
+  const toggle = (r: any) => {
+    const next = r.status === "LIVE" ? "PAUSED" : "LIVE";
+    repo.rooms.update(r.id, { status: next });
+    toast(next === "LIVE" ? `${r.title} is live again` : `${r.title} paused — hidden from seekers`);
+  };
+  const reverify = (r: any) => {
+    repo.rooms.update(r.id, { verifiedAt: new Date().toISOString() });
+    toast(`${r.title} re-verified just now`);
+  };
+  const reprice = (r: any, d: number) => {
+    const rent = Math.max(3000, r.rent + d);
+    repo.rooms.update(r.id, { rent });
+    toast(`${r.title} repriced to ${money(rent)}`);
+  };
 
   return (
     <AdminShell title="Supply desk" sub="Every bed, its freshness, its matchable demand, and the one lever to pull.">
