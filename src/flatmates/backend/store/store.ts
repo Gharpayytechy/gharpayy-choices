@@ -74,12 +74,12 @@ export const Rooms = makeDB<any>("rooms");
 export const Flats = makeDB<any>("flats");
 // GROUP = form-a-flat candidate households
 export const Groups = makeDB<any>("groups");
-export const Threads = makeDB<any>("threads");
-export const Interests = makeDB<any>("interests");
-export const Meetings = makeDB<any>("meetings");
-export const Saves = makeDB<any>("saves");
-export const Hides = makeDB<any>("hides");
-export const Notifs = makeDB<any>("notifs");
+export const Threads = makeDB<any>("threads", true);
+export const Interests = makeDB<any>("interests", true);
+export const Meetings = makeDB<any>("meetings", true);
+export const Saves = makeDB<any>("saves", true);
+export const Hides = makeDB<any>("hides", true);
+export const Notifs = makeDB<any>("notifs", true);
 export const Events = makeDB<any>("events");
 export const Reports = makeDB<any>("reports");
 // Ops layer (admin): action log + mission lifecycle
@@ -87,7 +87,7 @@ export const OpsLog = makeDB<any>("opslog");
 export const MissionState = makeDB<any>("missionstate");
 
 /* ── Me (the current user's requirement + DNA) ──────── */
-const ME = K("me");
+const ME = () => K("me__" + getActorId());
 export const defaultMe = () => ({
   id: "me",
   name: "",
@@ -126,9 +126,12 @@ export const defaultMe = () => ({
   published: false,
   createdAt: new Date().toISOString(),
 });
-export const getMe = () => load(ME, defaultMe());
-export const setMe = (patch: any) => { const m = { ...getMe(), ...patch }; save(ME, m); notify(); return m; };
-export const resetMe = () => { save(ME, defaultMe()); notify(); };
+export const getMe = () => {
+  const seed = ACTOR_SEEDS[getActorId()] || {};
+  return { ...defaultMe(), ...seed, ...load(ME(), {}) };
+};
+export const setMe = (patch: any) => { const m = { ...getMe(), ...patch }; save(ME(), m); notify(); return m; };
+export const resetMe = () => { save(ME(), {}); notify(); };
 
 /* ── Reactive hook ──────────────────────────────────── */
 export function useFM<T>(selector: () => T): T {
