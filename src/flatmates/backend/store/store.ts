@@ -331,7 +331,7 @@ export const requestStatusFor = (refId: string) =>
 export const reply = (threadId: string, text: string, from = "me") => {
   const t = Threads.get(threadId);
   if (!t) return;
-  Threads.update(threadId, { messages: [...t.messages, { from, text, at: new Date().toISOString() }] });
+  Threads.update(threadId, { messages: [...(t.messages || []), { from, text, at: new Date().toISOString() }], lastAt: new Date().toISOString() });
   track("message_replied", { threadId });
 };
 

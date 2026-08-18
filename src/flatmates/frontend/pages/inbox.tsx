@@ -204,7 +204,7 @@ export function Chat() {
       </div>
 
       <div className="space-y-2 mb-4">
-        {t.messages.map((m: any, i: number) => (
+        {(t.messages || []).map((m: any, i: number) => (
           <div key={i} className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-sm ${m.from === "me" ? "ml-auto bg-slate-900 text-white rounded-br-md" : "bg-white border border-slate-900/8 rounded-bl-md"}`}>
             {m.text}
           </div>
