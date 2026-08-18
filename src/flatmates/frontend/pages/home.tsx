@@ -25,7 +25,7 @@ export default function FlatmatesHome() {
   const [city, setCity] = useState(params.get("city") || "Bengaluru");
   const [area, setArea] = useState(params.get("area") || "");
   const [q, setQ] = useState("");
-  const [setup, setSetup] = useState(params.get("setup") || "find-room");
+  const [setup, setSetup] = useState(params.get("setup") || "need-room");
   const account = useFM(() => currentAccount());
   const data = useFM(() => ({ rooms: Rooms.all().filter((x:any)=>x.status === "LIVE"), people: People.all(), flats: Flats.all().filter((x:any)=>x.status === "LIVE") }));
   const cityInfo = cityByName(city);
