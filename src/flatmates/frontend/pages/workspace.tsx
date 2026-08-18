@@ -91,14 +91,27 @@ export default function FlatmatesWorkspace() {
   }
 
   if (!session) {
+    const start = persona.mode === "room_seeker"
+      ? { label: "Tell us what you need", to: "/flatmates/onboard", note: "2 minutes. No account needed to start — we only ask you to sign in when you want to contact someone." }
+      : { label: persona.primary.label, to: persona.primary.to, note: "Fill in your listing first. We only ask for an account at the last step, when it is ready to submit." };
     return (
       <FMShell title={persona.title} sub={persona.sub} back="/flatmates">
         <div className="rounded-2xl border border-border bg-card p-5">
-          <p className="text-sm font-semibold mb-1">Sign in to open your workspace</p>
-          <p className="text-sm text-muted-foreground mb-4">{persona.job}</p>
-          <Link href="/flatmates/publish" className="inline-flex h-11 px-4 items-center rounded-xl bg-primary text-primary-foreground text-sm font-bold">
-            Sign in <ArrowRight className="w-4 h-4 ml-2" />
+          <div className="flex items-start gap-3">
+            <span className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0"><Icon className="w-5 h-5" /></span>
+            <div>
+              <p className="text-sm font-semibold">{persona.job}</p>
+              <p className="text-xs text-muted-foreground mt-1">Success: {persona.success}</p>
+            </div>
+          </div>
+          <Link href={start.to} className="mt-4 inline-flex h-11 px-4 items-center rounded-xl bg-primary text-primary-foreground text-sm font-bold">
+            {start.label} <ArrowRight className="w-4 h-4 ml-2" />
           </Link>
+          <p className="text-xs text-muted-foreground mt-3">{start.note}</p>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Link href="/flatmates/discover" className="h-10 px-4 inline-flex items-center rounded-xl border border-border text-sm font-semibold">Browse what's live</Link>
+          <Link href="/flatmates/login" className="h-10 px-4 inline-flex items-center rounded-xl border border-border text-sm font-semibold">I already have an account</Link>
         </div>
       </FMShell>
     );
