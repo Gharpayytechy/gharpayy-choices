@@ -58,6 +58,8 @@ import AdminKeys from "@/flatmates/frontend/admin/keys";
 import AdminSchemas from "@/flatmates/frontend/admin/schemas";
 import FMPlaybook from "@/flatmates/frontend/pages/playbook";
 import FMProperty from "@/flatmates/frontend/pages/property";
+import FMPublish from "@/flatmates/frontend/pages/publish";
+import AdminModeration from "@/flatmates/frontend/admin/moderation";
 
 const queryClient = new QueryClient();
 
@@ -89,6 +91,7 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/admin/tower" component={AdminTower} />
       <Route path="/flatmates/admin/keys" component={AdminKeys} />
       <Route path="/flatmates/admin/schemas" component={AdminSchemas} />
+      <Route path="/flatmates/admin/moderation" component={AdminModeration} />
 
       {/* App */}
       <Route path="/flatmates" component={FMHome} />
@@ -100,6 +103,7 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/property" component={FMProperty} />
       <Route path="/flatmates/property/:id" component={FMProperty} />
       <Route path="/flatmates/post" component={FMPost} />
+      <Route path="/flatmates/publish" component={FMPublish} />
       <Route path="/flatmates/room/:id" component={FMRoom} />
       <Route path="/flatmates/person/:id" component={FMPerson} />
       <Route path="/flatmates/flat/:id" component={FMFlat} />
