@@ -24,8 +24,10 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SocietySlugRouteImport } from './routes/society.$slug'
 import { Route as PersonaIdRouteImport } from './routes/persona.$id'
+import { Route as GharpayyFlatmatesRouteImport } from './routes/gharpayy_.flatmates'
 import { Route as AreaSlugRouteImport } from './routes/area.$slug'
 import { Route as AppSplatRouteImport } from './routes/app.$'
+import { Route as GharpayyFlatmatesSplatRouteImport } from './routes/gharpayy_.flatmates.$'
 import { Route as GharpayyAreaSlugRouteImport } from './routes/gharpayy.area.$slug'
 import { Route as ApiPublicRefreshInsightsRouteImport } from './routes/api/public/refresh-insights'
 import { Route as ApiPublicInsightsJsonRouteImport } from './routes/api/public/insights.json'
@@ -105,6 +107,11 @@ const PersonaIdRoute = PersonaIdRouteImport.update({
   path: '/persona/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GharpayyFlatmatesRoute = GharpayyFlatmatesRouteImport.update({
+  id: '/gharpayy_/flatmates',
+  path: '/gharpayy/flatmates',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AreaSlugRoute = AreaSlugRouteImport.update({
   id: '/area/$slug',
   path: '/area/$slug',
@@ -114,6 +121,11 @@ const AppSplatRoute = AppSplatRouteImport.update({
   id: '/$',
   path: '/$',
   getParentRoute: () => AppRoute,
+} as any)
+const GharpayyFlatmatesSplatRoute = GharpayyFlatmatesSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => GharpayyFlatmatesRoute,
 } as any)
 const GharpayyAreaSlugRoute = GharpayyAreaSlugRouteImport.update({
   id: '/area/$slug',
@@ -148,10 +160,12 @@ export interface FileRoutesByFullPath {
   '/tools': typeof ToolsRoute
   '/app/$': typeof AppSplatRoute
   '/area/$slug': typeof AreaSlugRoute
+  '/gharpayy/flatmates': typeof GharpayyFlatmatesRouteWithChildren
   '/persona/$id': typeof PersonaIdRoute
   '/society/$slug': typeof SocietySlugRoute
   '/api/public/refresh-insights': typeof ApiPublicRefreshInsightsRoute
   '/gharpayy/area/$slug': typeof GharpayyAreaSlugRoute
+  '/gharpayy/flatmates/$': typeof GharpayyFlatmatesSplatRoute
   '/api/public/insights/json': typeof ApiPublicInsightsJsonRoute
 }
 export interface FileRoutesByTo {
@@ -170,10 +184,12 @@ export interface FileRoutesByTo {
   '/tools': typeof ToolsRoute
   '/app/$': typeof AppSplatRoute
   '/area/$slug': typeof AreaSlugRoute
+  '/gharpayy/flatmates': typeof GharpayyFlatmatesRouteWithChildren
   '/persona/$id': typeof PersonaIdRoute
   '/society/$slug': typeof SocietySlugRoute
   '/api/public/refresh-insights': typeof ApiPublicRefreshInsightsRoute
   '/gharpayy/area/$slug': typeof GharpayyAreaSlugRoute
+  '/gharpayy/flatmates/$': typeof GharpayyFlatmatesSplatRoute
   '/api/public/insights/json': typeof ApiPublicInsightsJsonRoute
 }
 export interface FileRoutesById {
@@ -193,10 +209,12 @@ export interface FileRoutesById {
   '/tools': typeof ToolsRoute
   '/app/$': typeof AppSplatRoute
   '/area/$slug': typeof AreaSlugRoute
+  '/gharpayy_/flatmates': typeof GharpayyFlatmatesRouteWithChildren
   '/persona/$id': typeof PersonaIdRoute
   '/society/$slug': typeof SocietySlugRoute
   '/api/public/refresh-insights': typeof ApiPublicRefreshInsightsRoute
   '/gharpayy/area/$slug': typeof GharpayyAreaSlugRoute
+  '/gharpayy_/flatmates/$': typeof GharpayyFlatmatesSplatRoute
   '/api/public/insights/json': typeof ApiPublicInsightsJsonRoute
 }
 export interface FileRouteTypes {
@@ -217,10 +235,12 @@ export interface FileRouteTypes {
     | '/tools'
     | '/app/$'
     | '/area/$slug'
+    | '/gharpayy/flatmates'
     | '/persona/$id'
     | '/society/$slug'
     | '/api/public/refresh-insights'
     | '/gharpayy/area/$slug'
+    | '/gharpayy/flatmates/$'
     | '/api/public/insights/json'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -239,10 +259,12 @@ export interface FileRouteTypes {
     | '/tools'
     | '/app/$'
     | '/area/$slug'
+    | '/gharpayy/flatmates'
     | '/persona/$id'
     | '/society/$slug'
     | '/api/public/refresh-insights'
     | '/gharpayy/area/$slug'
+    | '/gharpayy/flatmates/$'
     | '/api/public/insights/json'
   id:
     | '__root__'
@@ -261,10 +283,12 @@ export interface FileRouteTypes {
     | '/tools'
     | '/app/$'
     | '/area/$slug'
+    | '/gharpayy_/flatmates'
     | '/persona/$id'
     | '/society/$slug'
     | '/api/public/refresh-insights'
     | '/gharpayy/area/$slug'
+    | '/gharpayy_/flatmates/$'
     | '/api/public/insights/json'
   fileRoutesById: FileRoutesById
 }
@@ -283,6 +307,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ToolsRoute: typeof ToolsRoute
   AreaSlugRoute: typeof AreaSlugRoute
+  GharpayyFlatmatesRoute: typeof GharpayyFlatmatesRouteWithChildren
   PersonaIdRoute: typeof PersonaIdRoute
   SocietySlugRoute: typeof SocietySlugRoute
   ApiPublicRefreshInsightsRoute: typeof ApiPublicRefreshInsightsRoute
@@ -396,6 +421,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PersonaIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gharpayy_/flatmates': {
+      id: '/gharpayy_/flatmates'
+      path: '/gharpayy/flatmates'
+      fullPath: '/gharpayy/flatmates'
+      preLoaderRoute: typeof GharpayyFlatmatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/area/$slug': {
       id: '/area/$slug'
       path: '/area/$slug'
@@ -409,6 +441,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/$'
       preLoaderRoute: typeof AppSplatRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/gharpayy_/flatmates/$': {
+      id: '/gharpayy_/flatmates/$'
+      path: '/$'
+      fullPath: '/gharpayy/flatmates/$'
+      preLoaderRoute: typeof GharpayyFlatmatesSplatRouteImport
+      parentRoute: typeof GharpayyFlatmatesRoute
     }
     '/gharpayy/area/$slug': {
       id: '/gharpayy/area/$slug'
@@ -456,6 +495,17 @@ const GharpayyRouteWithChildren = GharpayyRoute._addFileChildren(
   GharpayyRouteChildren,
 )
 
+interface GharpayyFlatmatesRouteChildren {
+  GharpayyFlatmatesSplatRoute: typeof GharpayyFlatmatesSplatRoute
+}
+
+const GharpayyFlatmatesRouteChildren: GharpayyFlatmatesRouteChildren = {
+  GharpayyFlatmatesSplatRoute: GharpayyFlatmatesSplatRoute,
+}
+
+const GharpayyFlatmatesRouteWithChildren =
+  GharpayyFlatmatesRoute._addFileChildren(GharpayyFlatmatesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
@@ -471,6 +521,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ToolsRoute: ToolsRoute,
   AreaSlugRoute: AreaSlugRoute,
+  GharpayyFlatmatesRoute: GharpayyFlatmatesRouteWithChildren,
   PersonaIdRoute: PersonaIdRoute,
   SocietySlugRoute: SocietySlugRoute,
   ApiPublicRefreshInsightsRoute: ApiPublicRefreshInsightsRoute,
