@@ -59,6 +59,7 @@ import AdminSchemas from "@/flatmates/frontend/admin/schemas";
 import FMPlaybook from "@/flatmates/frontend/pages/playbook";
 import FMProperty from "@/flatmates/frontend/pages/property";
 import FMPublish from "@/flatmates/frontend/pages/publish";
+import FMWorkspace from "@/flatmates/frontend/pages/workspace";
 import AdminModeration from "@/flatmates/frontend/admin/moderation";
 
 const queryClient = new QueryClient();
