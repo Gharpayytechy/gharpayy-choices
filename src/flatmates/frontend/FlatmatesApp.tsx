@@ -58,6 +58,8 @@ import AdminKeys from "@/flatmates/frontend/admin/keys";
 import AdminSchemas from "@/flatmates/frontend/admin/schemas";
 import FMPlaybook from "@/flatmates/frontend/pages/playbook";
 import FMProperty from "@/flatmates/frontend/pages/property";
+import FMPublish from "@/flatmates/frontend/pages/publish";
+import AdminModeration from "@/flatmates/frontend/admin/moderation";
 
 const queryClient = new QueryClient();
 
