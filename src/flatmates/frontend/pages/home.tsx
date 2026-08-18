@@ -7,10 +7,12 @@ import { getMe, setMe, useFM, People, Rooms, Flats, Groups, Notifs, Threads, isH
 import { seedFlatmates, READY_STAYS } from "@/flatmates/backend/store/seed";
 import { scoreMatch, resolutionRoutes } from "@/flatmates/backend/store/match";
 import { ArrowRight, Sparkles, Activity, Zap, Sliders, HandCoins, FileText, LayoutGrid } from "lucide-react";
+import { currentActor } from "@/flatmates/backend/store/actors";
 
 export default function FlatmatesHome() {
   useEffect(() => { seedFlatmates(); }, []);
   const me = useFM(() => getMe());
+  const actor = useFM(() => currentActor());
   const data = useFM(() => ({
     people: People.all(), rooms: Rooms.all(), flats: Flats.all(), groups: Groups.all(),
     threads: Threads.all(), notifs: Notifs.all(),
@@ -32,6 +34,24 @@ export default function FlatmatesHome() {
 
   return (
     <FMShell title="Gharpayy Flatmates" sub="Direct to owner · expert-led · no brokerage" tab="home">
+      <Card className="p-4 mb-4 border-primary/25 bg-primary/[0.05]">
+        <div className="flex items-start gap-3">
+          <span className="text-xl leading-none">{actor.emoji}</span>
+          <div className="min-w-0">
+            <p className="font-display font-semibold tracking-tight">You're browsing as {actor.label} · {actor.tagline}</p>
+            <p className="text-xs text-muted-foreground mt-1 leading-5">
+              Every role is ready — seekers, flatmate posters, owners, group leads and the admin control tower. Tap the account button
+              (bottom right) to switch instantly; each account keeps its own requirement, requests and chats.
+            </p>
+            <div className="flex flex-wrap gap-2 mt-2.5">
+              <Link href="/flatmates/guide" className="text-xs font-semibold text-primary">How to use it →</Link>
+              <Link href="/flatmates/owner" className="text-xs font-semibold text-primary">Supply desk →</Link>
+              <Link href="/flatmates/admin" className="text-xs font-semibold text-primary">Admin →</Link>
+            </div>
+          </div>
+        </div>
+      </Card>
+
       <div className="rounded-3xl bg-foreground text-background p-5 mb-4 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.18]" style={{ background: "radial-gradient(ellipse 70% 60% at 80% 0%, var(--primary), transparent 70%)" }} />
         <div className="relative">
