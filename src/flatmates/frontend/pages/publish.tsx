@@ -83,26 +83,6 @@ export default function FlatmatesPublish() {
     return <FMShell title="Publish a listing" back="/flatmates"><p className="text-sm text-muted-foreground">Loading…</p></FMShell>;
   }
 
-  if (!session) {
-    return (
-      <FMShell title="Publish a listing" sub="Sign in — anonymous posting is disabled" back="/flatmates">
-        <div className="rounded-2xl border border-border bg-card p-4">
-          <p className="text-sm text-muted-foreground mb-3">
-            Every listing is tied to a verified identity. That single rule removes most spam before it exists.
-          </p>
-          <input className={`${inp} mb-2`} placeholder="Full name (for sign up)" value={authForm.name} onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })} />
-          <input className={`${inp} mb-2`} placeholder="Email" type="email" value={authForm.email} onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })} />
-          <input className={`${inp} mb-3`} placeholder="Password" type="password" value={authForm.password} onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })} />
-          {authMsg && <p className="text-xs text-destructive mb-2">{authMsg}</p>}
-          <div className="flex gap-2">
-            <button onClick={() => signIn("in")} className="flex-1 h-11 rounded-xl bg-primary text-primary-foreground text-sm font-semibold">Log in</button>
-            <button onClick={() => signIn("up")} className="flex-1 h-11 rounded-xl border border-border text-sm font-semibold">Create account</button>
-          </div>
-        </div>
-      </FMShell>
-    );
-  }
-
   return (
     <FMShell title="Publish a listing" sub="Reviewed before it reaches anyone" back="/flatmates">
       {/* Quality meter */}
