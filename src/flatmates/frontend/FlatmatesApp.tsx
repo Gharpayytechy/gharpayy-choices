@@ -91,6 +91,7 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/admin/tower" component={AdminTower} />
       <Route path="/flatmates/admin/keys" component={AdminKeys} />
       <Route path="/flatmates/admin/schemas" component={AdminSchemas} />
+      <Route path="/flatmates/admin/moderation" component={AdminModeration} />
 
       {/* App */}
       <Route path="/flatmates" component={FMHome} />
