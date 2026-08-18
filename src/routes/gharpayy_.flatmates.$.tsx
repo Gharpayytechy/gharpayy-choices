@@ -1,11 +1,9 @@
 // @ts-nocheck
-import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
-
-const FlatmatesApp = lazy(() => import("@/flatmates/frontend/FlatmatesApp"));
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/gharpayy_/flatmates/$")({
   ssr: false,
+  beforeLoad: ({ location }) => { throw redirect({ href: location.pathname.replace("/gharpayy/flatmates", "/flatmates") + location.searchStr, statusCode: 301 }); },
   head: () => ({
     meta: [
       { title: "Flatmates · Discover rooms, people and groups" },
@@ -16,13 +14,5 @@ export const Route = createFileRoute("/gharpayy_/flatmates/$")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: FlatmatesSplatRoute,
+  component: () => null,
 });
-
-function FlatmatesSplatRoute() {
-  return (
-    <Suspense fallback={<div className="min-h-screen grid place-items-center text-muted-foreground">Loading Flatmates…</div>}>
-      <FlatmatesApp />
-    </Suspense>
-  );
-}

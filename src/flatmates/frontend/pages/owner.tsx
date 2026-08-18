@@ -9,6 +9,7 @@ import { currentActor } from "@/flatmates/backend/store/actors";
 import { seedFlatmates } from "@/flatmates/backend/store/seed";
 import { CheckCircle2, XCircle, Eye, Plus, MessageCircle } from "lucide-react";
 import { waListMyProperty } from "@/lib/wa";
+import { WhatsAppHelp } from "@/flatmates/frontend/components/WhatsAppHelp";
 
 /** Give every owner account a couple of real requests to act on. */
 function ensureOwnerRequests(actorId: string, listings: any[]) {
@@ -74,8 +75,8 @@ export default function OwnerDashboard() {
           <Link href="/flatmates/post" className="h-10 px-4 rounded-xl bg-primary text-primary-foreground grid place-items-center text-sm font-semibold">
             Add property in app
           </Link>
-          <a href={waListMyProperty()} target="_blank" rel="noopener noreferrer"
-            className="h-10 px-4 rounded-xl bg-[#25D366] text-white grid place-items-center text-sm font-semibold">
+           <a href={waListMyProperty()} target="_blank" rel="noopener noreferrer"
+             className="h-10 px-4 rounded-xl bg-success text-primary-foreground grid place-items-center text-sm font-semibold">
             List on WhatsApp
           </a>
         </div>
@@ -83,7 +84,7 @@ export default function OwnerDashboard() {
 
       <Section title="Requests to your listings" eyebrow="Screening" sub="Nobody can message you until you accept. Decline is one tap and always gives a reason.">
         {pending.length === 0 ? (
-          <Card className="p-5 text-sm text-muted-foreground">No requests waiting. New ones land here the moment a seeker applies.</Card>
+          <Card className="p-5"><p className="text-sm text-muted-foreground">No requests waiting. New ones land here the moment a seeker applies.</p><WhatsAppHelp module="Owner requests" action="Help me get qualified property leads" reference={actor.id} className="mt-3"/></Card>
         ) : (
           <div className="space-y-3">
             {pending.map((r: any) => (

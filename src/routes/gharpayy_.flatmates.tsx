@@ -1,11 +1,9 @@
 // @ts-nocheck
-import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
-
-const FlatmatesApp = lazy(() => import("@/flatmates/frontend/FlatmatesApp"));
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/gharpayy_/flatmates")({
   ssr: false,
+  beforeLoad: () => { throw redirect({ href: "/flatmates", statusCode: 301 }); },
   head: () => ({
     meta: [
       { title: "Gharpayy Flatmates · Find your room & flatmate" },
@@ -16,13 +14,5 @@ export const Route = createFileRoute("/gharpayy_/flatmates")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: FlatmatesIndexRoute,
+  component: () => null,
 });
-
-function FlatmatesIndexRoute() {
-  return (
-    <Suspense fallback={<div className="min-h-screen grid place-items-center text-muted-foreground">Loading Flatmates…</div>}>
-      <FlatmatesApp />
-    </Suspense>
-  );
-}

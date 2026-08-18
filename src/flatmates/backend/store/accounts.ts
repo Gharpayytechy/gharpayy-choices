@@ -48,7 +48,7 @@ export const hydrateAccounts = () => {
   read().forEach((a) => addActorSeed(a.id, a.seed));
 };
 
-export const signUp = ({ name, email, password, role, areas = [], budgetMax = 22000, phone = "" }: any) => {
+export const signUp = ({ name, email, password, role, areas = [], budgetMax = 22000, phone = "", city = "Bengaluru", setup = "" }: any) => {
   const mail = normalizeEmail(email);
   if (!name?.trim()) return { ok: false, error: "Enter your name." };
   if (!/^\S+@\S+\.\S+$/.test(mail)) return { ok: false, error: "Enter a valid email address." };
@@ -70,6 +70,8 @@ export const signUp = ({ name, email, password, role, areas = [], budgetMax = 22
       name: name.trim(),
       intent: meta.intent,
       areas,
+      city,
+      setup,
       budgetMax,
       budgetIdeal: Math.max(6000, Math.round(budgetMax * 0.85)),
       onboarded: false,
