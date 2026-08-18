@@ -125,3 +125,52 @@
   background-size: 32px 32px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 80%);
 }
+
+/* ── Flatmates marketplace theme (scoped) ─────────────────────────
+   Warm sand + deep teal + terracotta. Applies only inside .fm-theme
+   so the main Gharpayy site keeps its blue/yellow identity. */
+.fm-theme {
+  --radius: 1rem;
+  --background: hsl(36 33% 95%);
+  --foreground: hsl(196 40% 18%);
+  --card: hsl(40 42% 98%);
+  --card-foreground: hsl(196 40% 18%);
+  --popover: hsl(40 42% 98%);
+  --popover-foreground: hsl(196 40% 18%);
+  --ink: hsl(196 40% 18%);
+  --primary: hsl(171 55% 30%);
+  --primary-foreground: hsl(40 42% 98%);
+  --secondary: hsl(29 77% 68%);
+  --secondary-foreground: hsl(196 40% 18%);
+  --muted: hsl(35 26% 90%);
+  --muted-foreground: hsl(195 18% 44%);
+  --accent: hsl(14 72% 62%);
+  --accent-foreground: hsl(40 42% 98%);
+  --destructive: hsl(5 66% 48%);
+  --success: hsl(160 60% 34%);
+  --warning: hsl(29 77% 58%);
+  --info: hsl(171 55% 30%);
+  --border: hsl(34 25% 84%);
+  --input: hsl(34 25% 82%);
+  --ring: hsl(171 55% 34%);
+  --cta: hsl(29 77% 68%);
+  --cta-foreground: hsl(196 40% 18%);
+  --shadow-card: 0 8px 26px rgba(30, 73, 75, 0.07);
+  --shadow-pop: 0 20px 55px rgba(30, 73, 75, 0.14);
+  --shadow-glow: 0 10px 26px rgba(24, 96, 88, 0.22);
+  background-color: var(--background);
+  color: var(--foreground);
+}
+.fm-theme .fm-shell-grid {
+  background-image: linear-gradient(hsl(34 25% 84% / .36) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(34 25% 84% / .36) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+.fm-lift { transition: transform .22s ease, box-shadow .22s ease, background-color .22s ease; }
+.fm-lift:hover { transform: translateY(-3px); box-shadow: var(--shadow-pop); }
+.fm-appear { animation: fm-appear .55s cubic-bezier(.22,1,.36,1) both; }
+.fm-appear-1 { animation-delay: .08s; }
+.fm-appear-2 { animation-delay: .16s; }
+.fm-pulse-dot { animation: fm-pulse-dot 2.2s ease-in-out infinite; }
+@keyframes fm-appear { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes fm-pulse-dot { 0%,100% { transform: scale(1); opacity: .7; } 50% { transform: scale(1.22); opacity: 1; } }
