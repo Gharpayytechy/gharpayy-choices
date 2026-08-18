@@ -36,6 +36,9 @@ import FMDeals from "@/flatmates/frontend/pages/deals";
 import FMMoveout from "@/flatmates/frontend/pages/moveout";
 import FMAgreement from "@/flatmates/frontend/pages/agreement";
 import FMPipeline from "@/flatmates/frontend/pages/pipeline";
+import FMOwner from "@/flatmates/frontend/pages/owner";
+import FMGuide from "@/flatmates/frontend/pages/guide";
+import { RoleSwitcher } from "@/flatmates/frontend/components/RoleSwitcher";
 
 import AdminCommand from "@/flatmates/frontend/admin/command";
 import AdminSupply from "@/flatmates/frontend/admin/supply";
@@ -104,6 +107,8 @@ function FlatmatesRoutes() {
       <Route path="/flatmates/moveout" component={FMMoveout} />
       <Route path="/flatmates/agreement" component={FMAgreement} />
       <Route path="/flatmates/pipeline" component={FMPipeline} />
+      <Route path="/flatmates/owner" component={FMOwner} />
+      <Route path="/flatmates/guide" component={FMGuide} />
 
       <Route component={FlatmatesNotFound} />
     </Switch>
@@ -115,9 +120,12 @@ export default function FlatmatesApp() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <WouterRouter base="/gharpayy">
-          <FlatmatesRoutes />
-        </WouterRouter>
+        <div className="fm-theme min-h-[100dvh]">
+          <WouterRouter base="/gharpayy">
+            <FlatmatesRoutes />
+            <RoleSwitcher />
+          </WouterRouter>
+        </div>
       </TooltipProvider>
     </QueryClientProvider>
   );

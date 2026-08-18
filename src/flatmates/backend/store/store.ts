@@ -18,15 +18,39 @@ const listeners = new Set<() => void>();
 export const subscribe = (fn: () => void) => { listeners.add(fn); return () => { listeners.delete(fn); }; };
 export const notify = () => listeners.forEach((f) => f());
 
-function makeDB<T extends { id: string }>(name: string) {
+/* ── Multi-user: the "acting" account ────────────────────
+   No auth for now. A single switch decides whose eyes you see the
+   marketplace through: any seeker, any poster/owner, a group lead or ops. */
+const ACTOR = K("actor");
+export const DEFAULT_ACTOR = "seeker_aarav";
+export const getActorId = (): string => {
+  if (typeof localStorage === "undefined") return DEFAULT_ACTOR;
+  try { return localStorage.getItem(ACTOR) || DEFAULT_ACTOR; } catch { return DEFAULT_ACTOR; }
+};
+export const setActorId = (id: string) => {
+  if (typeof localStorage !== "undefined") { try { localStorage.setItem(ACTOR, id); } catch {} }
+  notify();
+  return id;
+};
+/** Actor profile defaults, registered by the actor catalogue (avoids a cycle). */
+let ACTOR_SEEDS: Record<string, any> = {};
+export const registerActorSeeds = (seeds: Record<string, any>) => { ACTOR_SEEDS = seeds; };
+
+function makeDB<T extends { id: string }>(name: string, scoped = false) {
   const key = K(name);
+  const mine = (r: any) => {
+    if (!scoped) return true;
+    const me = getActorId();
+    return !r.actor || r.actor === me || r.to === me;
+  };
   return {
     key,
-    all(): T[] { return load(key); },
+    all(): T[] { return load(key).filter(mine); },
+    allRaw(): T[] { return load(key); },
     get(id: string): T | undefined { return load(key).find((x: any) => x.id === id); },
     create(data: any): T {
       const all = load(key);
-      const row = { id: uid(), createdAt: new Date().toISOString(), ...data };
+      const row = { id: uid(), createdAt: new Date().toISOString(), ...(scoped ? { actor: getActorId() } : {}), ...data };
       all.unshift(row); save(key, all); notify(); return row;
     },
     update(id: string, patch: any) {
@@ -50,12 +74,12 @@ export const Rooms = makeDB<any>("rooms");
 export const Flats = makeDB<any>("flats");
 // GROUP = form-a-flat candidate households
 export const Groups = makeDB<any>("groups");
-export const Threads = makeDB<any>("threads");
-export const Interests = makeDB<any>("interests");
-export const Meetings = makeDB<any>("meetings");
-export const Saves = makeDB<any>("saves");
-export const Hides = makeDB<any>("hides");
-export const Notifs = makeDB<any>("notifs");
+export const Threads = makeDB<any>("threads", true);
+export const Interests = makeDB<any>("interests", true);
+export const Meetings = makeDB<any>("meetings", true);
+export const Saves = makeDB<any>("saves", true);
+export const Hides = makeDB<any>("hides", true);
+export const Notifs = makeDB<any>("notifs", true);
 export const Events = makeDB<any>("events");
 export const Reports = makeDB<any>("reports");
 // Ops layer (admin): action log + mission lifecycle
@@ -63,7 +87,7 @@ export const OpsLog = makeDB<any>("opslog");
 export const MissionState = makeDB<any>("missionstate");
 
 /* ── Me (the current user's requirement + DNA) ──────── */
-const ME = K("me");
+const ME = () => K("me__" + getActorId());
 export const defaultMe = () => ({
   id: "me",
   name: "",
@@ -102,9 +126,12 @@ export const defaultMe = () => ({
   published: false,
   createdAt: new Date().toISOString(),
 });
-export const getMe = () => load(ME, defaultMe());
-export const setMe = (patch: any) => { const m = { ...getMe(), ...patch }; save(ME, m); notify(); return m; };
-export const resetMe = () => { save(ME, defaultMe()); notify(); };
+export const getMe = () => {
+  const seed = ACTOR_SEEDS[getActorId()] || {};
+  return { ...defaultMe(), ...seed, ...load(ME(), {}) };
+};
+export const setMe = (patch: any) => { const m = { ...getMe(), ...patch }; save(ME(), m); notify(); return m; };
+export const resetMe = () => { save(ME(), {}); notify(); };
 
 /* ── Reactive hook ──────────────────────────────────── */
 export function useFM<T>(selector: () => T): T {
@@ -143,20 +170,20 @@ export const hideItem = (kind: string, refId: string, reason: string) => {
 export const isHidden = (refId: string) => Hides.all().some((h: any) => h.refId === refId);
 
 /* ── Daily state: top-10 picks + request quota ─────── */
-const DAILY = K("daily");
+const DAILY = () => K("daily__" + getActorId());
 export const todayKey = () => new Date().toISOString().slice(0, 10);
 export const DAILY_PICK_LIMIT = 10;
 export const DAILY_REQUEST_LIMIT = 5;
 
 const blankDaily = () => ({ date: todayKey(), picks: [] as string[], used: 0 });
 export const getDaily = () => {
-  const d = load(DAILY, null);
+  const d = load(DAILY(), null);
   if (!d || d.date !== todayKey()) return blankDaily();
   return d;
 };
 const setDaily = (patch: any) => {
   const next = { ...getDaily(), ...patch, date: todayKey() };
-  save(DAILY, next);
+  save(DAILY(), next);
   notify();
   return next;
 };
@@ -172,6 +199,12 @@ export const quota = () => {
  * Interest is a REQUEST, not a chat. No thread exists until the recipient
  * accepts — this is what stops anyone from texting anyone.
  */
+/** Who owns a piece of supply (used to route requests to the right account). */
+export const ownerActorOf = (kind: string, refId: string): string | undefined => {
+  const row = kind === "room" ? Rooms.get(refId) : kind === "flat" ? Flats.get(refId) : kind === "person" ? People.get(refId) : undefined;
+  return row?.ownerActor;
+};
+
 export const sendInterest = (kind: string, refId: string, title: string, reasons: string[], note: string) => {
   const q = quota();
   if (!q.remaining) return { ok: false, reason: "quota", interest: null, thread: null, mutual: false };
@@ -182,6 +215,7 @@ export const sendInterest = (kind: string, refId: string, title: string, reasons
     kind, refId, title, reasons, note,
     direction: "out",
     status: "pending",
+    to: ownerActorOf(kind, refId),
     at: new Date().toISOString(),
   });
   setDaily({ used: getDaily().used + 1 });
@@ -258,8 +292,18 @@ export const sweepStaleRequests = () => {
   return closed;
 };
 
-export const incomingRequests = () => Interests.all().filter((i: any) => i.direction === "in" && i.status === "pending");
-export const outgoingRequests = () => Interests.all().filter((i: any) => i.direction !== "in" && i.status === "pending");
+export const incomingRequests = () => {
+  const me = getActorId();
+  return Interests.all().filter((i: any) => i.status === "pending" && (i.direction === "in" || (i.to === me && i.actor !== me)));
+};
+export const outgoingRequests = () => {
+  const me = getActorId();
+  return Interests.all().filter((i: any) => i.status === "pending" && i.direction !== "in" && i.to !== me);
+};
+
+/** Requests that landed on the listings this account owns. */
+export const requestsForMyListings = () =>
+  Interests.all().filter((i: any) => i.to === getActorId() && i.actor !== getActorId());
 
 /** Seed a few incoming requests so accept/decline is usable on day one. */
 export const ensureIncomingRequests = () => {
