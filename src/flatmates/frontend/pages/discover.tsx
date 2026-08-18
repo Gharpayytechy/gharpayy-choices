@@ -48,7 +48,7 @@ export default function Discover() {
     () => dailyPicks({ rooms, people, flats }, { me, dealbreakers: dbs, strict }),
     [rooms, people, flats, me, dbs, strict],
   );
-  const q = useFM(() => quota());
+  const reqQuota = useFM(() => quota());
 
   const total = tab === "rooms" ? rooms.length : tab === "people" ? people.length : tab === "flats" ? flats.length : tab === "groups" ? db.groups.length : rooms.length + people.length + flats.length;
 
@@ -159,7 +159,7 @@ export default function Discover() {
             </p>
             <div className="flex gap-2 mt-3">
               <span className="px-2.5 h-7 rounded-full bg-white/10 text-xs font-semibold grid place-items-center">
-                {q.remaining} of {q.limit} requests left
+                {reqQuota.remaining} of {reqQuota.limit} requests left
               </span>
               <span className="px-2.5 h-7 rounded-full bg-emerald-500/20 text-emerald-200 text-xs font-semibold grid place-items-center">
                 100% answered within 48h
