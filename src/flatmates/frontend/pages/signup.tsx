@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link, useLocation, useSearch } from "wouter";
 import { Card, Btn } from "@/flatmates/frontend/components/Shell";
 import { signUp, ROLE_META } from "@/flatmates/backend/store/accounts";
+import { supabase } from "@/integrations/supabase/client";
 import { AREA_LIST } from "@/flatmates/backend/store/seed";
 import { track } from "@/flatmates/backend/store/store";
 import { ArrowLeft, Check } from "lucide-react";
@@ -26,10 +27,20 @@ export default function FlatmatesSignup() {
   const [busy, setBusy] = useState(false);
   const set = (patch: any) => setForm((f) => ({ ...f, ...patch }));
 
-  const submit = (e: any) => {
+  const submit = async (e: any) => {
     e?.preventDefault?.();
     setError("");
     setBusy(true);
+    const { error: authErr } = await supabase.auth.signUp({
+      email: form.email.trim().toLowerCase(),
+      password: form.password,
+      options: { emailRedirectTo: window.location.origin, data: { full_name: form.name } },
+    });
+    if (authErr && !/already registered/i.test(authErr.message)) {
+      setBusy(false);
+      setError(authErr.message);
+      return;
+    }
     const res = signUp({ ...form, role, areas, city, setup });
     setBusy(false);
     if (!res.ok) { setError(res.error); return; }
