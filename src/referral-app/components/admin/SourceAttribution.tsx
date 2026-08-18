@@ -62,11 +62,11 @@ export function SourceAttribution({ leads }: { leads: LeadLike[] }) {
               className="w-full text-left group"
             >
               <div className="flex items-center justify-between text-xs mb-1">
-                <span className="font-semibold text-slate-700 truncate group-hover:text-orange-600">{r.label}</span>
+                <span className="font-semibold text-slate-700 truncate group-hover:text-blue-800">{r.label}</span>
                 <span className="font-mono font-bold text-slate-900 ml-2">{r.count}</span>
               </div>
               <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
-                <div className="h-full bg-blue-500 group-hover:bg-orange-500 transition-colors" style={{ width: `${(r.count / max) * 100}%` }} />
+                <div className="h-full bg-blue-500 group-hover:bg-blue-700 transition-colors" style={{ width: `${(r.count / max) * 100}%` }} />
               </div>
             </button>
           ))}

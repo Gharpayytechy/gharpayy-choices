@@ -184,9 +184,9 @@ export default function ManagerAddPropertyPage() {
           </div>
 
           {/* Referral Bonus */}
-          <div className="bg-orange-50 border border-orange-100 rounded-2xl p-5">
-            <h2 className="font-bold text-orange-900 mb-2">Extra Referral Bonus (Optional)</h2>
-            <p className="text-orange-700 text-sm mb-3">Offer extra cash on top of the standard ₹500 to attract more referrers to your PG.</p>
+          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5">
+            <h2 className="font-bold text-blue-900 mb-2">Extra Referral Bonus (Optional)</h2>
+            <p className="text-blue-800 text-sm mb-3">Offer extra cash on top of the standard ₹500 to attract more referrers to your PG.</p>
             <div className="flex items-center gap-3">
               <span className="text-slate-600 font-medium">₹</span>
               <Input type="number" placeholder="0" value={referralBonus} onChange={e => setReferralBonus(e.target.value)}

@@ -15,7 +15,7 @@ const AREA_EMOJIS: Record<string, string> = {
 };
 
 const AREA_COLORS = [
-  "from-orange-50 to-orange-100 border-orange-200",
+  "from-blue-50 to-blue-100 border-blue-200",
   "from-blue-50 to-blue-100 border-blue-200",
   "from-purple-50 to-purple-100 border-purple-200",
   "from-green-50 to-green-100 border-green-200",

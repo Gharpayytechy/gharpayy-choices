@@ -149,11 +149,11 @@ export default function PgDetailPage() {
                 className="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold text-sm"><CalendarCheck className="w-4 h-4"/> Visit</button>
             </div>
             {property.referralBonus > 0 && (
-              <div className="mt-4 bg-orange-50 border border-orange-100 rounded-xl p-3 flex items-center gap-3">
+              <div className="mt-4 bg-blue-50 border border-blue-100 rounded-xl p-3 flex items-center gap-3">
                 <span className="text-2xl">💰</span>
                 <div>
-                  <p className="font-bold text-orange-800 text-sm">+₹{property.referralBonus} Referral Bonus</p>
-                  <p className="text-orange-600 text-xs">Earn extra on top of standard ₹500 for successful bookings here</p>
+                  <p className="font-bold text-blue-900 text-sm">+₹{property.referralBonus} Referral Bonus</p>
+                  <p className="text-blue-800 text-xs">Earn extra on top of standard ₹500 for successful bookings here</p>
                 </div>
               </div>
             )}
@@ -184,12 +184,12 @@ export default function PgDetailPage() {
         )}
 
         {/* Share + Refer */}
-        <div className="bg-orange-50 border border-orange-100 rounded-2xl p-5">
-          <h2 className="font-bold text-orange-900 mb-1">Refer this PG, earn ₹{500 + (property.referralBonus || 0)}</h2>
-          <p className="text-orange-700 text-sm mb-4">Know someone looking for a PG? Share your link and earn when they move in.</p>
+        <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5">
+          <h2 className="font-bold text-blue-900 mb-1">Refer this PG, earn ₹{500 + (property.referralBonus || 0)}</h2>
+          <p className="text-blue-800 text-sm mb-4">Know someone looking for a PG? Share your link and earn when they move in.</p>
           <div className="flex gap-2">
-            <input readOnly value={shareLink} className="flex-1 px-3 py-2 bg-white border border-orange-200 rounded-lg text-sm text-slate-600 truncate" />
-            <button onClick={handleCopy} className="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-bold transition-colors">
+            <input readOnly value={shareLink} className="flex-1 px-3 py-2 bg-white border border-blue-200 rounded-lg text-sm text-slate-600 truncate" />
+            <button onClick={handleCopy} className="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-bold transition-colors">
               {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               {copied ? "Copied!" : "Copy"}
             </button>
@@ -252,7 +252,7 @@ export default function PgDetailPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {nearbyProperties.slice(0, 4).map(p => (
                 <div key={p.id} onClick={() => setLocation(`/pg/${p.id}`)}
-                  className="bg-white border border-slate-100 rounded-xl p-4 cursor-pointer hover:border-orange-200 transition-all">
+                  className="bg-white border border-slate-100 rounded-xl p-4 cursor-pointer hover:border-blue-200 transition-all">
                   <div className="flex justify-between items-start">
                     <div>
                       <p className="font-bold text-slate-800">{p.name}</p>

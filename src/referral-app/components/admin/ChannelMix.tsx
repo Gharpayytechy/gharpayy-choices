@@ -9,7 +9,7 @@ export function ChannelMix({ leads }: { leads: LeadLike[] }) {
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-4">
-        <Radio className="w-4 h-4 text-orange-400" />
+        <Radio className="w-4 h-4 text-sky-400" />
         <h3 className="text-base font-bold text-white">Channels · what actually works</h3>
       </div>
       <div className="space-y-2.5">
@@ -22,7 +22,7 @@ export function ChannelMix({ leads }: { leads: LeadLike[] }) {
                 <span className="font-mono text-slate-400 shrink-0">{d.leads} leads · {d.conversion}%</span>
               </div>
               <div className="h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                <div className="h-full rounded-full bg-gradient-to-r from-orange-500 to-pink-500" style={{ width: `${(d.leads / max) * 100}%` }} />
+                <div className="h-full rounded-full bg-gradient-to-r from-blue-700 to-pink-500" style={{ width: `${(d.leads / max) * 100}%` }} />
               </div>
             </div>
             <div className="text-right shrink-0">

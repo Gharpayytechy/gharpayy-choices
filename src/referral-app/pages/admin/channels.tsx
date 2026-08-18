@@ -41,7 +41,7 @@ export default function AdminChannels() {
               <div className="text-[11px] text-slate-400">{r.blurb}</div>
               <div className="grid grid-cols-3 gap-1 pt-2 border-t border-slate-800 text-center">
                 <div><div className="text-xs font-bold text-blue-400">₹{r.payoutOnLead}</div><div className="text-[9px] text-slate-500 uppercase">Lead</div></div>
-                <div><div className="text-xs font-bold text-orange-400">₹{r.payoutOnTour}</div><div className="text-[9px] text-slate-500 uppercase">Tour</div></div>
+                <div><div className="text-xs font-bold text-sky-400">₹{r.payoutOnTour}</div><div className="text-[9px] text-slate-500 uppercase">Tour</div></div>
                 <div><div className="text-xs font-bold text-green-400">₹{r.payoutOnBooking}</div><div className="text-[9px] text-slate-500 uppercase">Booking</div></div>
               </div>
               {r.topEarner && (

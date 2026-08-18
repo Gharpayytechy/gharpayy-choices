@@ -43,12 +43,12 @@ export default function LeaderboardPage() {
         <div className={cn(
           "mb-8 p-8 rounded-3xl text-center relative overflow-hidden",
           isGuard ? "bg-zinc-900 border border-zinc-800" : 
-          isStudent ? "bg-orange-50 border border-orange-100" : 
+          isStudent ? "bg-blue-50 border border-blue-100" : 
           "bg-slate-900 border border-slate-800"
         )}>
           <Trophy className={cn(
             "w-24 h-24 mx-auto mb-4 opacity-20 absolute -top-4 -right-4",
-            isGuard ? "text-green-500" : isStudent ? "text-orange-500" : "text-white"
+            isGuard ? "text-green-500" : isStudent ? "text-blue-700" : "text-white"
           )} />
           
           <h1 className={cn(
@@ -60,7 +60,7 @@ export default function LeaderboardPage() {
           
           <p className={cn(
             "font-medium relative z-10",
-            isGuard ? "text-zinc-400" : isStudent ? "text-orange-700" : "text-slate-400"
+            isGuard ? "text-zinc-400" : isStudent ? "text-blue-800" : "text-slate-400"
           )}>
             {isGuard ? "Sabse zyada refer karne wale boss log" : 
              isStudent ? "See who's helping the most friends find homes" : 
@@ -83,7 +83,7 @@ export default function LeaderboardPage() {
                   "flex items-center gap-4 p-4 rounded-2xl border transition-all",
                   isMe ? (
                     isGuard ? "bg-green-500/10 border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.1)]" :
-                    isStudent ? "bg-white border-orange-300 shadow-md shadow-orange-500/10 ring-2 ring-orange-500" :
+                    isStudent ? "bg-white border-sky-300 shadow-md shadow-blue-700/10 ring-2 ring-blue-700" :
                     "bg-primary/5 border-primary/30 shadow-sm ring-1 ring-primary/50"
                   ) : "bg-card border-border hover:border-primary/30"
                 )}

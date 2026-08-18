@@ -9,7 +9,7 @@ export function TierMix({ leads }: { leads: LeadLike[] }) {
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
       <div className="flex items-center gap-2 mb-4">
-        <Crown className="w-4 h-4 text-orange-400" />
+        <Crown className="w-4 h-4 text-sky-400" />
         <h3 className="text-base font-bold text-white">Pricing tier mix</h3>
         <span className="text-[10px] text-slate-500 ml-auto">where revenue lives</span>
       </div>

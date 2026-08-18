@@ -72,9 +72,9 @@ export default function ActivityPage() {
             <p className="text-2xl font-black text-green-600">₹{totalEarned}</p>
             <p className="text-xs text-green-700 font-medium mt-1">Total from activity</p>
           </div>
-          <div className="bg-orange-50 border border-orange-100 rounded-2xl p-4 text-center">
-            <p className="text-2xl font-black text-orange-600">{totalXp} XP</p>
-            <p className="text-xs text-orange-700 font-medium mt-1">XP this period</p>
+          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-center">
+            <p className="text-2xl font-black text-blue-800">{totalXp} XP</p>
+            <p className="text-xs text-blue-800 font-medium mt-1">XP this period</p>
           </div>
         </div>
 
@@ -125,7 +125,7 @@ export default function ActivityPage() {
                       </div>
                       <div className="text-right shrink-0">
                         {a.amount && <p className="font-black text-green-600 text-sm">+₹{a.amount}</p>}
-                        {a.xp && <p className="font-bold text-orange-500 text-xs">+{a.xp} XP</p>}
+                        {a.xp && <p className="font-bold text-blue-700 text-xs">+{a.xp} XP</p>}
                       </div>
                     </motion.div>
                   ))}

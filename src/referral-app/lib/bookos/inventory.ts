@@ -93,7 +93,7 @@ export const ROOM_STATUS_COLOR: Record<CommercialStatus, string> = {
   quoted: "bg-blue-400",
   booked: "bg-violet-500",
   occupied: "bg-rose-500",
-  notice: "bg-orange-500",
+  notice: "bg-blue-700",
 };
 export const ROOM_STATUS_LABEL: Record<CommercialStatus, string> = {
   available: "Vacant", reserved: "Reserved", quoted: "Quoted",

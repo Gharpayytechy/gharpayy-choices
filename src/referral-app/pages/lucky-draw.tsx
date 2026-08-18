@@ -117,7 +117,7 @@ export default function LuckyDrawPage() {
                 onClick={handleSpin}
                 disabled={!canSpin || spinning || loading}
                 className={`w-20 h-20 rounded-full border-4 border-white font-black text-sm shadow-xl flex flex-col items-center justify-center transition-all
-                  ${canSpin && !spinning ? "bg-orange-500 hover:bg-orange-600 text-white scale-100 hover:scale-105" : "bg-slate-300 text-slate-500 cursor-not-allowed"}`}
+                  ${canSpin && !spinning ? "bg-blue-700 hover:bg-blue-800 text-white scale-100 hover:scale-105" : "bg-slate-300 text-slate-500 cursor-not-allowed"}`}
               >
                 {spinning ? <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.5 }}><Star className="w-6 h-6" /></motion.div>
                   : <>✨<br />SPIN</>}
@@ -150,7 +150,7 @@ export default function LuckyDrawPage() {
             <motion.div
               initial={{ scale: 0.5, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.5, opacity: 0 }}
-              className="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl p-6 text-white text-center shadow-xl"
+              className="bg-gradient-to-br from-yellow-400 to-blue-700 rounded-2xl p-6 text-white text-center shadow-xl"
             >
               <p className="text-5xl mb-2">🎉</p>
               <h3 className="text-2xl font-black">{winner.prize}</h3>

@@ -232,7 +232,7 @@ export default function SquadBattlesPage() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs font-bold text-orange-600">
+                  <p className="text-xs font-bold text-blue-800">
                     🏆 {battle.winnerTeamId === battle.challengerTeamId ? battle.challengerTeamName : battle.defenderTeamName} wins
                   </p>
                   <p className="text-xs text-muted-foreground">+{battle.prizeXp} XP</p>

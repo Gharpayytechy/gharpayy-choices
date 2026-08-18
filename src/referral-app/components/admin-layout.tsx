@@ -37,7 +37,7 @@ export function AdminLayout({ children, title }: { children: React.ReactNode; ti
       <aside className="hidden md:flex flex-col w-60 bg-slate-900 text-white border-r border-slate-800 shrink-0">
         <div className="p-5 border-b border-slate-800">
           <h1 className="text-lg font-bold font-display text-white flex items-center gap-2">
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-pink-600 flex items-center justify-center text-sm font-black">G</span>
+            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-700 to-pink-600 flex items-center justify-center text-sm font-black">G</span>
             <span className="leading-tight">
               Gharpayy
               <span className="block text-[10px] font-medium text-slate-400 uppercase tracking-wider">Ops Cockpit</span>
@@ -52,7 +52,7 @@ export function AdminLayout({ children, title }: { children: React.ReactNode; ti
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 location === item.href || location.startsWith(item.href + "/")
-                  ? "bg-orange-500/20 text-orange-400"
+                  ? "bg-blue-700/20 text-sky-400"
                   : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
               )}
             >
@@ -76,7 +76,7 @@ export function AdminLayout({ children, title }: { children: React.ReactNode; ti
         {/* Mobile Header */}
         <header className="md:hidden bg-slate-900 text-white p-4 flex items-center justify-between border-b border-slate-800 sticky top-0 z-30">
           <h1 className="text-base font-bold font-display flex items-center gap-2">
-            <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-orange-500 to-pink-600 flex items-center justify-center text-xs font-black">G</span>
+            <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-700 to-pink-600 flex items-center justify-center text-xs font-black">G</span>
             Ops Cockpit
           </h1>
           <button onClick={handleLogout} className="p-1.5 text-slate-400 hover:text-white">
@@ -93,7 +93,7 @@ export function AdminLayout({ children, title }: { children: React.ReactNode; ti
               className={cn(
                 "shrink-0 min-w-[68px] flex flex-col items-center justify-center gap-1 px-3 py-2 text-[10px] font-bold border-b-2 transition-colors",
                 location === item.href || location.startsWith(item.href + "/")
-                  ? "border-orange-500 text-orange-400 bg-orange-500/10"
+                  ? "border-blue-700 text-sky-400 bg-blue-700/10"
                   : "border-transparent text-slate-400 hover:text-slate-200"
               )}
             >

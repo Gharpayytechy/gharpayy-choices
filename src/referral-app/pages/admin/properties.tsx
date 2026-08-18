@@ -93,7 +93,7 @@ export default function AdminProperties() {
                     {p.referralBonus > 0 && (
                       <>
                         <span>·</span>
-                        <span className="text-orange-400">+₹{p.referralBonus} referral bonus</span>
+                        <span className="text-sky-400">+₹{p.referralBonus} referral bonus</span>
                       </>
                     )}
                   </div>

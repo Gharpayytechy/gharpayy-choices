@@ -7,7 +7,7 @@ import { SwitchCamera, X, Check } from "lucide-react";
 
 const ROLES = [
   { id: "GUARD",        emoji: "🛡️", label: "Daily Worker",   bg: "bg-zinc-800 text-white",          ring: "ring-zinc-500" },
-  { id: "STUDENT",      emoji: "🎓", label: "Student",         bg: "bg-orange-50 text-orange-900",    ring: "ring-orange-400" },
+  { id: "STUDENT",      emoji: "🎓", label: "Student",         bg: "bg-blue-50 text-blue-900",    ring: "ring-sky-400" },
   { id: "EARNER",       emoji: "💼", label: "Side Hustler",    bg: "bg-slate-50 text-slate-900",      ring: "ring-slate-400" },
   { id: "PG_MANAGER",   emoji: "🏠", label: "PG Manager",      bg: "bg-blue-50 text-blue-900",        ring: "ring-blue-400" },
   { id: "BROKER",       emoji: "🤝", label: "Broker",          bg: "bg-slate-800 text-white",         ring: "ring-green-400" },

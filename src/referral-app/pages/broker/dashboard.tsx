@@ -105,7 +105,7 @@ export default function BrokerDashboard() {
             </div>
             <div>
               <p className="text-white/60 text-xs mb-1">Pending</p>
-              <p className="text-3xl font-black text-orange-400">₹{d.pendingEarnings.toLocaleString()}</p>
+              <p className="text-3xl font-black text-sky-400">₹{d.pendingEarnings.toLocaleString()}</p>
             </div>
             <div>
               <p className="text-white/60 text-xs mb-1">Proj. Monthly</p>

@@ -12,14 +12,14 @@ export default function RoomDetail() {
   const me = useFM(() => getMe());
   const r = useFM(() => Rooms.get(params?.id));
   const saved = useFM(() => isSaved("room", params?.id));
-  if (!r) return <FMShell title="Room" back="/flatmates/discover"><Card className="p-6 text-center"><p className="font-semibold">This room just got filled.</p><Link href="/flatmates/discover" className="text-orange-600 text-sm font-semibold mt-2 inline-block">See 14 similar rooms →</Link></Card></FMShell>;
+  if (!r) return <FMShell title="Room" back="/flatmates/discover"><Card className="p-6 text-center"><p className="font-semibold">This room just got filled.</p><Link href="/flatmates/discover" className="text-blue-800 text-sm font-semibold mt-2 inline-block">See 14 similar rooms →</Link></Card></FMShell>;
 
   const ex = explain(me, r);
   const total = r.rent + (r.maintenance || 0) + (r.utilities || 0);
 
   return (
     <FMShell title={r.area + " · " + r.roomType} back="/flatmates/discover" tab="discover">
-      <div className="h-44 rounded-2xl bg-gradient-to-br from-slate-200 via-slate-100 to-orange-50 relative mb-4">
+      <div className="h-44 rounded-2xl bg-gradient-to-br from-slate-200 via-slate-100 to-blue-50 relative mb-4">
         <div className="absolute bottom-3 left-3 flex gap-1.5">
           <Pill tone="green"><ShieldCheck className="w-3 h-3" />{freshness(r.verifiedAt)}</Pill>
           {r.type === "ROOM_REPLACEMENT" && <Pill tone="orange">Replacement</Pill>}
@@ -64,7 +64,7 @@ export default function RoomDetail() {
           <div className="space-y-2">
             {(r.householdMembers || []).map((m: any, i: number) => (
               <div key={i} className="flex items-center gap-3">
-                <span className="w-9 h-9 rounded-full bg-orange-100 grid place-items-center text-sm font-bold text-orange-700">{m.name?.[0]}</span>
+                <span className="w-9 h-9 rounded-full bg-blue-100 grid place-items-center text-sm font-bold text-blue-800">{m.name?.[0]}</span>
                 <div className="text-sm"><b>{m.name}</b> · {m.age} · {m.work}</div>
               </div>
             ))}
@@ -105,14 +105,14 @@ export default function RoomDetail() {
         <Card className="p-4">
           <VerifiedRow v={r.verified} />
           <p className="text-xs text-slate-500 mt-2">Never pay a deposit before visiting and verifying the property. Gharpayy will never ask for cash transfers to individuals.</p>
-          <Link href="/flatmates/safety" className="text-xs font-semibold text-orange-600 mt-1.5 inline-block">Safety centre →</Link>
+          <Link href="/flatmates/safety" className="text-xs font-semibold text-blue-800 mt-1.5 inline-block">Safety centre →</Link>
         </Card>
       </Section>
 
       <div className="h-4" />
       <div className="fixed bottom-16 inset-x-0 z-30 bg-white/95 backdrop-blur border-t border-slate-900/10">
         <div className="max-w-2xl mx-auto px-4 py-2.5 flex gap-2">
-          <button onClick={() => toggleSave("room", r.id)} className={`h-11 px-3 rounded-xl border text-sm font-semibold ${saved ? "border-orange-300 text-orange-600 bg-orange-50" : "border-slate-900/12"}`}>{saved ? "Saved" : "Save"}</button>
+          <button onClick={() => toggleSave("room", r.id)} className={`h-11 px-3 rounded-xl border text-sm font-semibold ${saved ? "border-sky-300 text-blue-800 bg-blue-50" : "border-slate-900/12"}`}>{saved ? "Saved" : "Save"}</button>
           <Link href={`/flatmates/schedule?title=${encodeURIComponent(r.title)}&room=${r.id}`} className="h-11 px-3 rounded-xl border border-slate-900/12 grid place-items-center text-sm font-semibold">Visit</Link>
           <Link href={`/flatmates/interest/room/${r.id}`} className="flex-1 h-11 rounded-xl bg-slate-900 text-white grid place-items-center text-sm font-semibold">I'm Interested</Link>
         </div>

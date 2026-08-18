@@ -136,7 +136,7 @@ export default function PgBrowsePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.04 }}
                 onClick={() => { track("view", { source: "listings", area: p.area, propertyId: p.id, propertyName: p.name }); setLocation(`/pg/${p.id}`); }}
-                className="bg-white border border-slate-100 rounded-2xl p-4 cursor-pointer hover:shadow-md hover:border-orange-100 transition-all group"
+                className="bg-white border border-slate-100 rounded-2xl p-4 cursor-pointer hover:shadow-md hover:border-blue-100 transition-all group"
               >
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
@@ -167,7 +167,7 @@ export default function PgBrowsePage() {
                       </div>
                     )}
                     {p.referralBonus > 0 && (
-                      <Badge className="bg-orange-500 text-white text-[10px]">+₹{p.referralBonus} bonus</Badge>
+                      <Badge className="bg-blue-700 text-white text-[10px]">+₹{p.referralBonus} bonus</Badge>
                     )}
                     <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-primary transition-colors" />
                   </div>

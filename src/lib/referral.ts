@@ -5,10 +5,10 @@
 export type ReferralPersona = "STUDENT" | "EARNER" | "GUARD" | "BROKER";
 
 export const PERSONAS: { id: ReferralPersona; label: string; vibe: string; emoji: string; color: string }[] = [
-  { id: "STUDENT",  label: "Student",          vibe: "Refer your hostel-mates & juniors",  emoji: "🎓", color: "from-orange-400 to-orange-600" },
-  { id: "EARNER",   label: "Working pro",      vibe: "Refer office colleagues & friends",  emoji: "💼", color: "from-amber-400 to-orange-500" },
-  { id: "GUARD",    label: "Guard / staff",    vibe: "Building staff · paisa kamao easy",  emoji: "🛡️", color: "from-orange-500 to-rose-500" },
-  { id: "BROKER",   label: "Broker / partner", vibe: "Bulk leads, monthly settlement",     emoji: "🤝", color: "from-orange-300 to-amber-500" },
+  { id: "STUDENT",  label: "Student",          vibe: "Refer your hostel-mates & juniors",  emoji: "🎓", color: "from-sky-400 to-blue-800" },
+  { id: "EARNER",   label: "Working pro",      vibe: "Refer office colleagues & friends",  emoji: "💼", color: "from-amber-400 to-blue-700" },
+  { id: "GUARD",    label: "Guard / staff",    vibe: "Building staff · paisa kamao easy",  emoji: "🛡️", color: "from-blue-700 to-rose-500" },
+  { id: "BROKER",   label: "Broker / partner", vibe: "Bulk leads, monthly settlement",     emoji: "🤝", color: "from-sky-300 to-amber-500" },
 ];
 
 export const PROPERTY_TYPES = [
@@ -37,7 +37,7 @@ export const PAYOUT = {
 export const LEVELS = [
   { id: "BEGINNER", label: "Rookie",    min: 0,    color: "bg-secondary text-foreground" },
   { id: "EXPLORER", label: "Explorer",  min: 100,  color: "bg-blue-100 text-blue-700" },
-  { id: "HUSTLER",  label: "Hustler",   min: 300,  color: "bg-orange-100 text-orange-700" },
+  { id: "HUSTLER",  label: "Hustler",   min: 300,  color: "bg-blue-100 text-blue-800" },
   { id: "PRO",      label: "Pro",       min: 700,  color: "bg-purple-100 text-purple-700" },
   { id: "LEGEND",   label: "Legend",    min: 1500, color: "bg-yellow-100 text-yellow-800" },
 ];

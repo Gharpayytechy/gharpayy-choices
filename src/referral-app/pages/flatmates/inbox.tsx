@@ -33,7 +33,7 @@ export default function Inbox() {
             return (
               <Link key={t.id} href={`/flatmates/chat/${t.id}`}>
                 <Card className="p-3.5 flex gap-3 items-center">
-                  <span className="w-10 h-10 rounded-full bg-orange-100 grid place-items-center font-bold text-orange-700">{t.title[0]}</span>
+                  <span className="w-10 h-10 rounded-full bg-blue-100 grid place-items-center font-bold text-blue-800">{t.title[0]}</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="font-semibold text-sm truncate">{t.title}</p>

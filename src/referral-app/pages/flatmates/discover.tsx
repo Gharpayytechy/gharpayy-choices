@@ -123,7 +123,7 @@ export default function Discover() {
                   <li key={i.label}>• <b>{i.label}</b> removes {i.removedPct}% of options</li>
                 ))}
               </ul>
-              <Link href="/flatmates/start" className="text-xs font-semibold text-orange-600 mt-2 inline-block">Adjust requirement →</Link>
+              <Link href="/flatmates/start" className="text-xs font-semibold text-blue-800 mt-2 inline-block">Adjust requirement →</Link>
             </Card>
             <EmptyRoutes title="No strong existing-room match yet" body="Three other routes solve the same problem."
               routes={resolutionRoutes(me, { rooms: 0, people: people.length, ready: READY_STAYS.length })} />

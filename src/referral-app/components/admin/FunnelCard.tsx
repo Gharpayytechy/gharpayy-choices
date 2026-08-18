@@ -22,7 +22,7 @@ export function FunnelCard({ leads, title = "Lead funnel" }: { leads: LeadLike[]
               </div>
               <div className="h-3 rounded-full bg-slate-100 overflow-hidden">
                 <div
-                  className={`h-full rounded-full ${s.isLeak ? "bg-red-500" : "bg-orange-500"}`}
+                  className={`h-full rounded-full ${s.isLeak ? "bg-red-500" : "bg-blue-700"}`}
                   style={{ width: `${pct}%` }}
                 />
               </div>

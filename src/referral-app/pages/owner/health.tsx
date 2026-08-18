@@ -7,7 +7,7 @@ import { RoomsXDB, useInventoryStore, propertyHealth } from "@/referral-app/lib/
 function badge(score: number) {
   if (score >= 85) return { label: "Elite", c: "bg-emerald-100 text-emerald-800 border-emerald-200" };
   if (score >= 70) return { label: "Healthy", c: "bg-amber-100 text-amber-800 border-amber-200" };
-  if (score >= 50) return { label: "Watch", c: "bg-orange-100 text-orange-800 border-orange-200" };
+  if (score >= 50) return { label: "Watch", c: "bg-blue-100 text-blue-900 border-blue-200" };
   return { label: "At Risk", c: "bg-rose-100 text-rose-800 border-rose-200" };
 }
 
@@ -54,7 +54,7 @@ export default function OwnerHealth() {
                 <Metric label="Response" weight="10%"/>
                 <Metric label="Conversion" weight="10%"/>
               </div>
-              {vacancyRisk > 0 && <div className="mt-3 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-lg p-2">⚠️ {vacancyRisk} rooms on notice — vacancy risk next month</div>}
+              {vacancyRisk > 0 && <div className="mt-3 text-xs text-blue-800 bg-blue-50 border border-blue-200 rounded-lg p-2">⚠️ {vacancyRisk} rooms on notice — vacancy risk next month</div>}
             </div>
           );
         })}

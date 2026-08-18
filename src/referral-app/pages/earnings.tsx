@@ -81,10 +81,10 @@ export default function EarningsPage() {
           </div>
           <div className="bg-card border border-border rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Clock className="w-4 h-4 text-orange-500" />
+              <Clock className="w-4 h-4 text-blue-700" />
               <p className="text-xs font-bold text-muted-foreground uppercase">Pending Payout</p>
             </div>
-            <p className="text-2xl font-black text-orange-600">₹{dashboard.referrer.pendingEarnings.toLocaleString()}</p>
+            <p className="text-2xl font-black text-blue-800">₹{dashboard.referrer.pendingEarnings.toLocaleString()}</p>
             <p className="text-xs text-muted-foreground mt-1">Processing within 48h</p>
           </div>
           <div className="bg-card border border-border rounded-2xl p-4">

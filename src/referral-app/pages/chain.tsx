@@ -31,7 +31,7 @@ export default function ChainPage() {
   const statusColor = (s: string) => ({
     BOOKED: "bg-green-100 text-green-700 border-green-200",
     VERIFIED: "bg-blue-100 text-blue-700 border-blue-200",
-    PENDING: "bg-orange-100 text-orange-700 border-orange-200",
+    PENDING: "bg-blue-100 text-blue-800 border-blue-200",
   }[s] || "bg-slate-100 text-slate-600");
 
   const statusIcon = (s: string) => ({ BOOKED: "🏠", VERIFIED: "✅", PENDING: "⏳" }[s] || "·");
@@ -85,15 +85,15 @@ export default function ChainPage() {
         )}
 
         {/* Your earnings from chain */}
-        <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-2xl p-5">
+        <div className="bg-gradient-to-br from-blue-50 to-amber-50 border border-blue-200 rounded-2xl p-5">
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-sm font-bold text-orange-700 uppercase tracking-wide">Total Chain Earnings</p>
-              <p className="text-4xl font-black text-orange-600 mt-1">₹{data?.stats.totalChainEarnings?.toLocaleString() || 0}</p>
+              <p className="text-sm font-bold text-blue-800 uppercase tracking-wide">Total Chain Earnings</p>
+              <p className="text-4xl font-black text-blue-800 mt-1">₹{data?.stats.totalChainEarnings?.toLocaleString() || 0}</p>
             </div>
             <div className="text-4xl">💰</div>
           </div>
-          <p className="text-xs text-orange-600 mt-3">₹50 per verification + ₹500 per booking</p>
+          <p className="text-xs text-blue-800 mt-3">₹50 per verification + ₹500 per booking</p>
         </div>
 
         {/* Root node - you */}

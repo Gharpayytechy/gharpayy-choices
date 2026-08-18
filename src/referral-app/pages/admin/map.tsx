@@ -95,7 +95,7 @@ export default function AdminMap() {
                 {(Object.keys(TILES) as (keyof typeof TILES)[]).map((k) => (
                   <button key={k} onClick={() => setTile(k)}
                     className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider transition ${
-                      tile === k ? "bg-orange-500 text-white" : "text-slate-400 hover:text-white"
+                      tile === k ? "bg-blue-700 text-white" : "text-slate-400 hover:text-white"
                     }`}>{TILES[k].label}</button>
                 ))}
               </div>
@@ -105,7 +105,7 @@ export default function AdminMap() {
                 <Toggle on={layers.zones} onClick={() => setLayers((s) => ({ ...s, zones: !s.zones }))} label="Zones" />
                 <Toggle on={layers.hot} onClick={() => setLayers((s) => ({ ...s, hot: !s.hot }))} label="Heat" />
               </div>
-              <div className="pointer-events-auto ml-auto bg-orange-500 text-white rounded-xl px-3 py-1.5 text-xs font-black flex items-center gap-1.5">
+              <div className="pointer-events-auto ml-auto bg-blue-700 text-white rounded-xl px-3 py-1.5 text-xs font-black flex items-center gap-1.5">
                 <Flame className="w-3.5 h-3.5" /> {pins.length} live pins
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function AdminMap() {
           {/* Sidebar */}
           <div className="space-y-3">
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2">
-              <div className="text-[10px] font-black uppercase tracking-widest text-orange-400">Filter</div>
+              <div className="text-[10px] font-black uppercase tracking-widest text-sky-400">Filter</div>
               <select value={zoneFilter} onChange={(e) => setZoneFilter(e.target.value)} className="w-full bg-slate-800 text-slate-100 text-xs font-bold rounded-lg px-2 py-2 border border-slate-700">
                 <option value="ALL">All 5 zones</option>
                 {GHARPAYY_ZONES.map((z) => <option key={z.slug} value={z.slug}>{z.display}</option>)}
@@ -136,12 +136,12 @@ export default function AdminMap() {
             </div>
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-3">
-              <div className="text-[10px] font-black uppercase tracking-widest text-orange-400 mb-2">Zone heat (click to focus)</div>
+              <div className="text-[10px] font-black uppercase tracking-widest text-sky-400 mb-2">Zone heat (click to focus)</div>
               <div className="space-y-1.5">
                 {zoneAggs.sort((a, b) => b.open - a.open).map(({ zone, open, booked, total }) => (
                   <button key={zone.slug} onClick={() => setZoneFilter(zone.slug)}
                     className={`w-full text-left flex items-center gap-2 p-2 rounded-lg border transition ${
-                      zoneFilter === zone.slug ? "border-orange-500 bg-orange-500/10" : "border-slate-800 hover:border-slate-600 bg-slate-950"
+                      zoneFilter === zone.slug ? "border-blue-700 bg-blue-700/10" : "border-slate-800 hover:border-slate-600 bg-slate-950"
                     }`}>
                     <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: zone.color }} />
                     <div className="min-w-0 flex-1">
@@ -169,7 +169,7 @@ export default function AdminMap() {
             <div className="bg-slate-900 border border-slate-700 rounded-t-2xl md:rounded-2xl w-full md:max-w-md p-5 m-0 md:m-4 space-y-3" onClick={(e) => e.stopPropagation()}>
               <div className="flex items-start justify-between">
                 <div className="min-w-0">
-                  <div className="text-[10px] uppercase font-black text-orange-400 tracking-widest">{active.zone.display}</div>
+                  <div className="text-[10px] uppercase font-black text-sky-400 tracking-widest">{active.zone.display}</div>
                   <div className="text-lg font-black text-white truncate">{active.lead.leadName}</div>
                   <div className="text-xs text-slate-400 truncate">{active.lead.area} · {active.lead.personaId || "-"} · {(active.lead.tier && TIER_BY_ID[active.lead.tier]?.name) || "Classics"}</div>
                 </div>
@@ -182,7 +182,7 @@ export default function AdminMap() {
               <div className="grid grid-cols-3 gap-2 pt-1">
                 <a href={`tel:${active.lead.leadPhone}`} className="px-2 py-2.5 rounded-lg bg-blue-500/20 text-blue-400 text-xs font-black text-center inline-flex items-center justify-center gap-1.5"><Phone className="w-3 h-3" /> Call</a>
                 <a href={`https://wa.me/${(active.lead.leadPhone || "").replace(/\D/g, "")}`} target="_blank" rel="noreferrer" className="px-2 py-2.5 rounded-lg bg-green-500/20 text-green-400 text-xs font-black text-center inline-flex items-center justify-center gap-1.5"><MessageCircle className="w-3 h-3" /> WhatsApp</a>
-                <button onClick={() => setLocation(`/admin/leads/${active.lead.id}`)} className="px-2 py-2.5 rounded-lg bg-orange-500/20 text-orange-400 text-xs font-black inline-flex items-center justify-center gap-1.5"><ExternalLink className="w-3 h-3" /> Open</button>
+                <button onClick={() => setLocation(`/admin/leads/${active.lead.id}`)} className="px-2 py-2.5 rounded-lg bg-blue-700/20 text-sky-400 text-xs font-black inline-flex items-center justify-center gap-1.5"><ExternalLink className="w-3 h-3" /> Open</button>
               </div>
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function AdminMap() {
 
 function Toggle({ on, onClick, label }: any) {
   return (
-    <button onClick={onClick} className={`px-2 py-0.5 rounded-md transition ${on ? "bg-orange-500 text-white" : "text-slate-500 hover:text-slate-200"}`}>{label}</button>
+    <button onClick={onClick} className={`px-2 py-0.5 rounded-md transition ${on ? "bg-blue-700 text-white" : "text-slate-500 hover:text-slate-200"}`}>{label}</button>
   );
 }
 

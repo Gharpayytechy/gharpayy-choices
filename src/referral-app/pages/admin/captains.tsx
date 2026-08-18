@@ -48,7 +48,7 @@ export default function AdminCaptains() {
           {rows.map(({ expert, open, booked, breaches, reply, total, winRate }) => (
             <div key={expert.id} className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-pink-600 text-white flex items-center justify-center text-lg font-black">{expert.initial}</div>
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-700 to-pink-600 text-white flex items-center justify-center text-lg font-black">{expert.initial}</div>
                 <div className="flex-1 min-w-0">
                   <div className="font-black text-white">{expert.name}</div>
                   <div className="text-[11px] text-slate-400 truncate">{expert.title}</div>
@@ -83,7 +83,7 @@ function Cell({ value, label, tone }: any) {
   const map: any = {
     blue: "bg-blue-500/10 text-blue-400",
     green: "bg-green-500/10 text-green-400",
-    orange: "bg-orange-500/10 text-orange-400",
+    orange: "bg-blue-700/10 text-sky-400",
     red: "bg-red-500/10 text-red-400",
     slate: "bg-slate-800 text-slate-300",
   };

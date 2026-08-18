@@ -137,7 +137,7 @@ export default function CorporateDashboard() {
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }} animate={{ width: `${pct}%` }}
-                        className={`h-full rounded-full ${pct >= 75 ? "bg-green-500" : pct >= 50 ? "bg-blue-500" : "bg-orange-500"}`}
+                        className={`h-full rounded-full ${pct >= 75 ? "bg-green-500" : pct >= 50 ? "bg-blue-500" : "bg-blue-700"}`}
                       />
                     </div>
                   </div>
@@ -187,7 +187,7 @@ export default function CorporateDashboard() {
                 <div className="flex items-center gap-1">
                   {hire.status === "HOUSED"
                     ? <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full font-bold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Housed</span>
-                    : <span className="text-xs px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full font-bold flex items-center gap-1"><Clock className="w-3 h-3" /> Searching</span>
+                    : <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full font-bold flex items-center gap-1"><Clock className="w-3 h-3" /> Searching</span>
                   }
                 </div>
               </div>

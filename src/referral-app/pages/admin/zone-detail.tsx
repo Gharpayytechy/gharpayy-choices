@@ -50,12 +50,12 @@ export default function AdminZoneDetail() {
           <img src={zone.heroImage} alt={zone.display} className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-950/60 to-transparent" />
           <div className="absolute inset-0 p-5 md:p-7 flex flex-col justify-end">
-            <div className="text-[10px] uppercase tracking-widest text-orange-300 font-bold">Gharpayy</div>
+            <div className="text-[10px] uppercase tracking-widest text-sky-300 font-bold">Gharpayy</div>
             <h1 className="text-3xl md:text-4xl font-black text-white">{zone.name}</h1>
             <div className="text-sm text-white/80 mt-1">{zone.tagline}</div>
             <div className="text-xs text-white/60 mt-2 flex items-center gap-2 flex-wrap">
               <MapPin className="w-3 h-3" /> {zone.landmarks.join(" · ")}
-              <span className="text-orange-300">| {zone.amenity}</span>
+              <span className="text-sky-300">| {zone.amenity}</span>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default function AdminZoneDetail() {
         {/* Expert card */}
         {expert && (
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center gap-4 flex-wrap">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 to-pink-600 text-white flex items-center justify-center text-xl font-black shrink-0">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-700 to-pink-600 text-white flex items-center justify-center text-xl font-black shrink-0">
               {expert.initial}
             </div>
             <div className="flex-1 min-w-0">
@@ -93,7 +93,7 @@ export default function AdminZoneDetail() {
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-base font-bold text-white">Leads in {zone.display} ({matchedLeads.length})</h3>
-            <button onClick={() => setLocation(`/admin/leads?zone=${slug}`)} className="text-xs text-orange-400 hover:underline">Open in pipeline →</button>
+            <button onClick={() => setLocation(`/admin/leads?zone=${slug}`)} className="text-xs text-sky-400 hover:underline">Open in pipeline →</button>
           </div>
           {matchedLeads.length === 0 ? (
             <p className="text-sm text-slate-500 italic">No leads yet for this zone.</p>
@@ -110,7 +110,7 @@ export default function AdminZoneDetail() {
                   <span className="px-2 py-0.5 rounded-full bg-slate-800 text-[10px] font-bold text-slate-300">{l.status}</span>
                   <button
                     onClick={() => setLocation(`/admin/leads/${l.id}`)}
-                    className="text-[11px] font-bold text-orange-400 hover:underline shrink-0"
+                    className="text-[11px] font-bold text-sky-400 hover:underline shrink-0"
                   >
                     Open
                   </button>
@@ -124,9 +124,9 @@ export default function AdminZoneDetail() {
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-orange-400" /> Properties in {zone.display} ({matchedProps.length})
+              <Building2 className="w-4 h-4 text-sky-400" /> Properties in {zone.display} ({matchedProps.length})
             </h3>
-            <button onClick={() => setLocation("/admin/properties")} className="text-xs text-orange-400 hover:underline">All properties →</button>
+            <button onClick={() => setLocation("/admin/properties")} className="text-xs text-sky-400 hover:underline">All properties →</button>
           </div>
           {matchedProps.length === 0 ? (
             <p className="text-sm text-slate-500 italic">No properties listed yet.</p>
@@ -142,7 +142,7 @@ export default function AdminZoneDetail() {
                     <div className="text-[11px] text-slate-500 truncate">{p.area} · {p.gender} · {p.availableRooms}/{p.totalRooms} free</div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div className="text-sm font-black text-orange-400">₹{(p.monthlyRent / 1000).toFixed(0)}k</div>
+                    <div className="text-sm font-black text-sky-400">₹{(p.monthlyRent / 1000).toFixed(0)}k</div>
                     <div className="text-[10px] text-slate-500">{p.totalReviews} reviews</div>
                   </div>
                 </div>
@@ -160,7 +160,7 @@ function Kpi({ label, value, hint, tone }: any) {
     blue: "text-blue-400 bg-blue-500/10 border-blue-500/20",
     green: "text-green-400 bg-green-500/10 border-green-500/20",
     red: "text-red-400 bg-red-500/10 border-red-500/20",
-    orange: "text-orange-400 bg-orange-500/10 border-orange-500/20",
+    orange: "text-sky-400 bg-blue-700/10 border-blue-700/20",
     slate: "text-slate-300 bg-slate-800/40 border-slate-700",
   };
   return (

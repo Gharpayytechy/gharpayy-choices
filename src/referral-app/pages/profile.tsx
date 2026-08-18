@@ -8,7 +8,7 @@ import { useToast } from "@/referral-app/hooks/use-toast";
 
 const PERSONA_LABELS: Record<string, { emoji: string; label: string; color: string; bg: string }> = {
   GUARD:        { emoji: "🛡️", label: "Daily Worker",   color: "text-zinc-700",   bg: "from-zinc-800 to-zinc-900" },
-  STUDENT:      { emoji: "🎓", label: "College Student", color: "text-orange-700", bg: "from-orange-400 to-orange-600" },
+  STUDENT:      { emoji: "🎓", label: "College Student", color: "text-blue-800", bg: "from-sky-400 to-blue-800" },
   EARNER:       { emoji: "💼", label: "Side Hustler",    color: "text-blue-700",   bg: "from-blue-500 to-blue-700" },
   PG_MANAGER:   { emoji: "🏠", label: "PG Manager",      color: "text-teal-700",   bg: "from-teal-500 to-teal-700" },
   BROKER:       { emoji: "🤝", label: "Broker / Agent",  color: "text-slate-700",  bg: "from-slate-700 to-slate-900" },
@@ -63,7 +63,7 @@ export default function PublicProfilePage() {
   if (isLoading) {
     return (
       <div className="min-h-[100dvh] bg-[#FBFBFC] flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-blue-700 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function PublicProfilePage() {
         <p className="text-4xl mb-4">🏠</p>
         <h1 className="text-2xl font-black font-display text-slate-800 mb-2">Profile not found</h1>
         <p className="text-slate-500 mb-6">This referral code doesn't exist.</p>
-        <button onClick={() => setLocation("/")} className="px-6 py-3 bg-orange-500 text-white font-bold rounded-full">
+        <button onClick={() => setLocation("/")} className="px-6 py-3 bg-blue-700 text-white font-bold rounded-full">
           Go to Gharpayy →
         </button>
       </div>
@@ -128,7 +128,7 @@ export default function PublicProfilePage() {
             <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">Bookings</p>
           </div>
           <div>
-            <p className="text-2xl font-black text-orange-500">{referrer.xp}</p>
+            <p className="text-2xl font-black text-blue-700">{referrer.xp}</p>
             <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">XP</p>
           </div>
         </motion.div>
@@ -151,23 +151,23 @@ export default function PublicProfilePage() {
 
         {/* Value Prop */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-          className="bg-orange-50 border border-orange-100 rounded-2xl p-5">
+          className="bg-blue-50 border border-blue-100 rounded-2xl p-5">
           <div className="flex items-start gap-3 mb-3">
             <span className="text-3xl">🏠</span>
             <div>
-              <h2 className="font-black text-orange-900 text-lg leading-tight">
+              <h2 className="font-black text-blue-900 text-lg leading-tight">
                 Looking for a PG in Bangalore?
               </h2>
-              <p className="text-orange-700 text-sm mt-1">
+              <p className="text-blue-800 text-sm mt-1">
                 {referrer.name.split(" ")[0]} will help you find verified, affordable PGs in top areas · Koramangala, HSR, Indiranagar & more.
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-xs text-orange-600 font-medium">
-            <Star className="w-3.5 h-3.5 fill-orange-400 text-orange-400" />
+          <div className="flex items-center gap-2 text-xs text-blue-800 font-medium">
+            <Star className="w-3.5 h-3.5 fill-sky-400 text-sky-400" />
             Verified listings only
             <span className="mx-1">·</span>
-            <Zap className="w-3.5 h-3.5 text-orange-400" />
+            <Zap className="w-3.5 h-3.5 text-sky-400" />
             Fast matching
           </div>
         </motion.div>
@@ -175,7 +175,7 @@ export default function PublicProfilePage() {
         {/* Primary CTA */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
           <a href={referralLink}
-            className="flex items-center justify-center gap-3 w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-black text-lg rounded-2xl shadow-lg shadow-orange-200 transition-all active:scale-95">
+            className="flex items-center justify-center gap-3 w-full py-4 bg-blue-700 hover:bg-blue-800 text-white font-black text-lg rounded-2xl shadow-lg shadow-blue-200 transition-all active:scale-95">
             Book via {referrer.name.split(" ")[0]} <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>
@@ -204,7 +204,7 @@ export default function PublicProfilePage() {
         <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
           <ExternalLink className="w-4 h-4 text-slate-400 shrink-0" />
           <span className="text-xs text-slate-500 truncate flex-1">{referralLink}</span>
-          <button onClick={handleCopy} className="text-orange-500 text-xs font-bold shrink-0">
+          <button onClick={handleCopy} className="text-blue-700 text-xs font-bold shrink-0">
             {copied ? "✓" : "Copy"}
           </button>
         </div>
@@ -225,14 +225,14 @@ export default function PublicProfilePage() {
             Know someone looking for a PG? Refer them and earn big. Join {referrer.name.split(" ")[0]} on Gharpayy.
           </p>
           <a href={joinLink}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-colors text-sm">
+            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-700 text-white font-bold rounded-xl hover:bg-blue-800 transition-colors text-sm">
             Start Earning Too <ArrowRight className="w-4 h-4" />
           </a>
         </motion.div>
 
         {/* Footer */}
         <p className="text-center text-xs text-slate-400">
-          Powered by <span className="font-bold text-orange-500">Gharpayy</span> · PG Referral Platform, Bangalore
+          Powered by <span className="font-bold text-blue-700">Gharpayy</span> · PG Referral Platform, Bangalore
         </p>
 
       </div>

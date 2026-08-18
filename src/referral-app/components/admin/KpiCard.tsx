@@ -19,7 +19,7 @@ export function KpiCard({
     blue: { bg: "bg-blue-50", fg: "text-blue-600" },
     amber: { bg: "bg-amber-50", fg: "text-amber-600" },
     green: { bg: "bg-green-50", fg: "text-green-600" },
-    orange: { bg: "bg-orange-50", fg: "text-orange-600" },
+    orange: { bg: "bg-blue-50", fg: "text-blue-800" },
     red: { bg: "bg-red-50", fg: "text-red-600" },
     primary: { bg: "bg-primary/10", fg: "text-primary" },
   };

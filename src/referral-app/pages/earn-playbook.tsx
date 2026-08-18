@@ -25,16 +25,16 @@ export default function EarnPlaybookPage() {
           <ArrowLeft className="w-3 h-3" /> All channels
         </Link>
 
-        <div className="bg-gradient-to-br from-orange-500/20 to-pink-500/10 border border-orange-500/30 rounded-2xl p-6">
+        <div className="bg-gradient-to-br from-blue-700/20 to-pink-500/10 border border-blue-700/30 rounded-2xl p-6">
           <div className="text-4xl">{rule.emoji}</div>
           <h1 className="text-2xl md:text-3xl font-black mt-2">{rule.title}</h1>
           <p className="text-sm text-slate-300 mt-2">{rule.blurb}</p>
           <div className="grid grid-cols-3 gap-2 mt-4 text-center">
             <div className="bg-black/30 rounded-lg py-2"><div className="text-base font-black text-blue-400">₹{rule.payoutOnLead}</div><div className="text-[10px] text-slate-400 uppercase">Per lead</div></div>
-            <div className="bg-black/30 rounded-lg py-2"><div className="text-base font-black text-orange-400">₹{rule.payoutOnTour}</div><div className="text-[10px] text-slate-400 uppercase">Per tour</div></div>
+            <div className="bg-black/30 rounded-lg py-2"><div className="text-base font-black text-sky-400">₹{rule.payoutOnTour}</div><div className="text-[10px] text-slate-400 uppercase">Per tour</div></div>
             <div className="bg-black/30 rounded-lg py-2"><div className="text-base font-black text-green-400">₹{rule.payoutOnBooking}</div><div className="text-[10px] text-slate-400 uppercase">Per booking</div></div>
           </div>
-          <div className="mt-3 text-xs text-orange-300 font-bold">~₹{expectedMonthlyEarning(rule, 8).toLocaleString()}/month at 8 leads/mo</div>
+          <div className="mt-3 text-xs text-sky-300 font-bold">~₹{expectedMonthlyEarning(rule, 8).toLocaleString()}/month at 8 leads/mo</div>
         </div>
 
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
@@ -63,7 +63,7 @@ export default function EarnPlaybookPage() {
             className="inline-flex items-center justify-center w-full gap-2 px-4 py-3 rounded-full bg-green-500 hover:bg-green-600 text-white font-black text-sm">
             <MessageCircle className="w-4 h-4" /> Share on WhatsApp
           </a>
-          <Link href={`/persona-kit/${persona.id}`} className="block text-center text-xs text-orange-400 hover:underline">
+          <Link href={`/persona-kit/${persona.id}`} className="block text-center text-xs text-sky-400 hover:underline">
             Open full persona kit (opener · follow-up · objections) →
           </Link>
         </div>

@@ -36,7 +36,7 @@ export default function ManagerPropertiesPage() {
             <p className="text-slate-500 text-sm">{(properties || []).length} PGs listed</p>
           </div>
           <button onClick={() => setLocation("/manager/properties/new")}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl font-bold text-sm hover:bg-orange-600 transition-colors">
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl font-bold text-sm hover:bg-blue-800 transition-colors">
             <Plus className="w-4 h-4" /> Add PG
           </button>
         </div>
@@ -51,7 +51,7 @@ export default function ManagerPropertiesPage() {
             <h2 className="text-xl font-bold text-slate-700 mb-2">No properties listed</h2>
             <p className="text-slate-500 mb-6">Add your PG to get leads from the Gharpayy network</p>
             <button onClick={() => setLocation("/manager/properties/new")}
-              className="px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-orange-600 transition-colors">
+              className="px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-blue-800 transition-colors">
               + List your PG
             </button>
           </div>

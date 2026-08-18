@@ -135,16 +135,16 @@ export default function ReferPage() {
               <p className="text-2xl font-mono font-bold tracking-tight text-primary">{successData.id}</p>
             </div>
             {/* Expert routing card */}
-            <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-2xl p-4 mb-6 text-left">
-              <p className="text-[11px] uppercase tracking-widest text-orange-700 font-bold mb-2">Lead routed to</p>
+            <div className="bg-gradient-to-br from-blue-50 to-amber-50 border border-blue-200 rounded-2xl p-4 mb-6 text-left">
+              <p className="text-[11px] uppercase tracking-widest text-blue-800 font-bold mb-2">Lead routed to</p>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center text-lg font-black">
+                <div className="w-12 h-12 rounded-full bg-blue-700 text-white flex items-center justify-center text-lg font-black">
                   {successData.expert.initial}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-foreground text-base">{successData.expert.name}</p>
                   <p className="text-xs text-muted-foreground truncate">{successData.expert.title}</p>
-                  <p className="text-[11px] text-orange-700 font-semibold mt-0.5">{successData.expert.responseSla}</p>
+                  <p className="text-[11px] text-blue-800 font-semibold mt-0.5">{successData.expert.responseSla}</p>
                 </div>
               </div>
               <a
@@ -158,14 +158,14 @@ export default function ReferPage() {
             </div>
             <div className="space-y-4 mb-8 text-left">
               <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-sm font-bold mt-0.5">1</div>
+                <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-sm font-bold mt-0.5">1</div>
                 <div>
                   <p className="font-bold text-foreground">Earn ₹50</p>
                   <p className="text-sm text-muted-foreground">When lead is verified</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-sm font-bold mt-0.5">2</div>
+                <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-sm font-bold mt-0.5">2</div>
                 <div>
                   <p className="font-bold text-foreground">Earn ₹500</p>
                   <p className="text-sm text-muted-foreground">When they move in to their new home</p>
@@ -202,7 +202,7 @@ export default function ReferPage() {
                   {PROPERTY_TYPES.map(pt => (
                     <button type="button" key={pt.value}
                       onClick={() => { setSelectedType(pt.value); form.setValue("propertyType", pt.value); }}
-                      className={`py-2 px-1 rounded-xl text-xs font-bold transition-all ${selectedType === pt.value ? "bg-orange-500 text-white" : "bg-zinc-800 text-zinc-400 border border-zinc-700"}`}>
+                      className={`py-2 px-1 rounded-xl text-xs font-bold transition-all ${selectedType === pt.value ? "bg-blue-700 text-white" : "bg-zinc-800 text-zinc-400 border border-zinc-700"}`}>
                       {pt.label}
                     </button>
                   ))}
@@ -251,8 +251,8 @@ export default function ReferPage() {
 
         {/* Context banner · shown when arriving from Insights */}
         {(ctx.area || ctx.persona || ctx.expert) && (
-          <div className="mb-5 rounded-2xl border border-orange-200 bg-orange-50/70 p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center font-black">
+          <div className="mb-5 rounded-2xl border border-blue-200 bg-blue-50/70 p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-blue-700 text-white flex items-center justify-center font-black">
               {ctxCaptain.initial}
             </div>
             <div className="flex-1 min-w-0 text-sm">

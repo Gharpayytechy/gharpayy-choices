@@ -90,7 +90,7 @@ export default function AdminLeads() {
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <span className="rounded-lg bg-slate-50 p-2"><b>ID</b><br />{lead.referralId}</span>
-                <span className="rounded-lg bg-orange-50 p-2"><b>Owner</b><br />{lead.assignedAgentName || "Unassigned"}</span>
+                <span className="rounded-lg bg-blue-50 p-2"><b>Owner</b><br />{lead.assignedAgentName || "Unassigned"}</span>
                 <span className="rounded-lg bg-slate-50 p-2"><b>Area</b><br />{lead.area || "Any"}</span>
                 <span className="rounded-lg bg-slate-50 p-2"><b>Timeline</b><br />{lead.moveInTimeline.replace('_', ' ')}</span>
               </div>
@@ -149,7 +149,7 @@ export default function AdminLeads() {
                         {lead.referrerName || "Unknown"}
                       </TableCell>
                       <TableCell className="text-sm text-slate-600">
-                        {lead.assignedAgentName || <span className="text-orange-600 font-bold">Unassigned</span>}
+                        {lead.assignedAgentName || <span className="text-blue-800 font-bold">Unassigned</span>}
                       </TableCell>
                       <TableCell className="text-sm text-slate-600">
                         {lead.moveInTimeline.replace('_', ' ')}
