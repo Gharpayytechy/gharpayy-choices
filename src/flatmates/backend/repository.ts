@@ -15,14 +15,17 @@ import {
   Meetings,
   Notifs,
   Events,
+  Reports,
+  OpsLog,
+  MissionState,
   getMe,
   setMe,
   subscribe,
   notify,
   track,
   useFM,
-} from "@/referral-app/lib/flatmates/store";
-import { seedFlatmates, READY_STAYS, AREA_LIST } from "@/referral-app/lib/flatmates/seed";
+} from "@/flatmates/backend/store/store";
+import { seedFlatmates, READY_STAYS, AREA_LIST } from "@/flatmates/backend/store/seed";
 
 export const repo = {
   people: People,
@@ -34,6 +37,9 @@ export const repo = {
   meetings: Meetings,
   notifs: Notifs,
   events: Events,
+  reports: Reports,
+  opsLog: OpsLog,
+  missionState: MissionState,
   me: { get: getMe, set: setMe },
   ready: () => READY_STAYS,
   areas: () => AREA_LIST,

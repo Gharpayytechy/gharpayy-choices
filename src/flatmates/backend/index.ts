@@ -9,3 +9,15 @@ export {
   missions,
   money,
 } from "./services/market";
+export {
+  funnel,
+  bottleneck,
+  healthScore,
+  alerts,
+  demandCohorts,
+  trustBoard,
+  ownerPortfolios,
+  missionBoard,
+  opsActions,
+  opsLog,
+} from "./services/ops";
