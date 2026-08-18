@@ -18,6 +18,7 @@ import { Route as PersonaQuizRouteImport } from './routes/persona-quiz'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as ListingsRouteImport } from './routes/listings'
 import { Route as GharpayyRouteImport } from './routes/gharpayy'
+import { Route as FlatmatesRouteImport } from './routes/flatmates'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as AreasRouteImport } from './routes/areas'
 import { Route as AppRouteImport } from './routes/app'
@@ -25,6 +26,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SocietySlugRouteImport } from './routes/society.$slug'
 import { Route as PersonaIdRouteImport } from './routes/persona.$id'
 import { Route as GharpayyFlatmatesRouteImport } from './routes/gharpayy_.flatmates'
+import { Route as FlatmatesSplatRouteImport } from './routes/flatmates.$'
 import { Route as AreaSlugRouteImport } from './routes/area.$slug'
 import { Route as AppSplatRouteImport } from './routes/app.$'
 import { Route as GharpayyFlatmatesSplatRouteImport } from './routes/gharpayy_.flatmates.$'
@@ -77,6 +79,11 @@ const GharpayyRoute = GharpayyRouteImport.update({
   path: '/gharpayy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FlatmatesRoute = FlatmatesRouteImport.update({
+  id: '/flatmates',
+  path: '/flatmates',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CompareRoute = CompareRouteImport.update({
   id: '/compare',
   path: '/compare',
@@ -111,6 +118,11 @@ const GharpayyFlatmatesRoute = GharpayyFlatmatesRouteImport.update({
   id: '/gharpayy_/flatmates',
   path: '/gharpayy/flatmates',
   getParentRoute: () => rootRouteImport,
+} as any)
+const FlatmatesSplatRoute = FlatmatesSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => FlatmatesRoute,
 } as any)
 const AreaSlugRoute = AreaSlugRouteImport.update({
   id: '/area/$slug',
@@ -149,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/areas': typeof AreasRoute
   '/compare': typeof CompareRoute
+  '/flatmates': typeof FlatmatesRouteWithChildren
   '/gharpayy': typeof GharpayyRouteWithChildren
   '/listings': typeof ListingsRoute
   '/map': typeof MapRoute
@@ -160,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/tools': typeof ToolsRoute
   '/app/$': typeof AppSplatRoute
   '/area/$slug': typeof AreaSlugRoute
+  '/flatmates/$': typeof FlatmatesSplatRoute
   '/gharpayy/flatmates': typeof GharpayyFlatmatesRouteWithChildren
   '/persona/$id': typeof PersonaIdRoute
   '/society/$slug': typeof SocietySlugRoute
@@ -173,6 +187,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppRouteWithChildren
   '/areas': typeof AreasRoute
   '/compare': typeof CompareRoute
+  '/flatmates': typeof FlatmatesRouteWithChildren
   '/gharpayy': typeof GharpayyRouteWithChildren
   '/listings': typeof ListingsRoute
   '/map': typeof MapRoute
@@ -184,6 +199,7 @@ export interface FileRoutesByTo {
   '/tools': typeof ToolsRoute
   '/app/$': typeof AppSplatRoute
   '/area/$slug': typeof AreaSlugRoute
+  '/flatmates/$': typeof FlatmatesSplatRoute
   '/gharpayy/flatmates': typeof GharpayyFlatmatesRouteWithChildren
   '/persona/$id': typeof PersonaIdRoute
   '/society/$slug': typeof SocietySlugRoute
@@ -198,6 +214,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/areas': typeof AreasRoute
   '/compare': typeof CompareRoute
+  '/flatmates': typeof FlatmatesRouteWithChildren
   '/gharpayy': typeof GharpayyRouteWithChildren
   '/listings': typeof ListingsRoute
   '/map': typeof MapRoute
@@ -209,6 +226,7 @@ export interface FileRoutesById {
   '/tools': typeof ToolsRoute
   '/app/$': typeof AppSplatRoute
   '/area/$slug': typeof AreaSlugRoute
+  '/flatmates/$': typeof FlatmatesSplatRoute
   '/gharpayy_/flatmates': typeof GharpayyFlatmatesRouteWithChildren
   '/persona/$id': typeof PersonaIdRoute
   '/society/$slug': typeof SocietySlugRoute
@@ -224,6 +242,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/areas'
     | '/compare'
+    | '/flatmates'
     | '/gharpayy'
     | '/listings'
     | '/map'
@@ -235,6 +254,7 @@ export interface FileRouteTypes {
     | '/tools'
     | '/app/$'
     | '/area/$slug'
+    | '/flatmates/$'
     | '/gharpayy/flatmates'
     | '/persona/$id'
     | '/society/$slug'
@@ -248,6 +268,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/areas'
     | '/compare'
+    | '/flatmates'
     | '/gharpayy'
     | '/listings'
     | '/map'
@@ -259,6 +280,7 @@ export interface FileRouteTypes {
     | '/tools'
     | '/app/$'
     | '/area/$slug'
+    | '/flatmates/$'
     | '/gharpayy/flatmates'
     | '/persona/$id'
     | '/society/$slug'
@@ -272,6 +294,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/areas'
     | '/compare'
+    | '/flatmates'
     | '/gharpayy'
     | '/listings'
     | '/map'
@@ -283,6 +306,7 @@ export interface FileRouteTypes {
     | '/tools'
     | '/app/$'
     | '/area/$slug'
+    | '/flatmates/$'
     | '/gharpayy_/flatmates'
     | '/persona/$id'
     | '/society/$slug'
@@ -297,6 +321,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AreasRoute: typeof AreasRoute
   CompareRoute: typeof CompareRoute
+  FlatmatesRoute: typeof FlatmatesRouteWithChildren
   GharpayyRoute: typeof GharpayyRouteWithChildren
   ListingsRoute: typeof ListingsRoute
   MapRoute: typeof MapRoute
@@ -379,6 +404,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GharpayyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/flatmates': {
+      id: '/flatmates'
+      path: '/flatmates'
+      fullPath: '/flatmates'
+      preLoaderRoute: typeof FlatmatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/compare': {
       id: '/compare'
       path: '/compare'
@@ -427,6 +459,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/gharpayy/flatmates'
       preLoaderRoute: typeof GharpayyFlatmatesRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/flatmates/$': {
+      id: '/flatmates/$'
+      path: '/$'
+      fullPath: '/flatmates/$'
+      preLoaderRoute: typeof FlatmatesSplatRouteImport
+      parentRoute: typeof FlatmatesRoute
     }
     '/area/$slug': {
       id: '/area/$slug'
@@ -483,6 +522,18 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface FlatmatesRouteChildren {
+  FlatmatesSplatRoute: typeof FlatmatesSplatRoute
+}
+
+const FlatmatesRouteChildren: FlatmatesRouteChildren = {
+  FlatmatesSplatRoute: FlatmatesSplatRoute,
+}
+
+const FlatmatesRouteWithChildren = FlatmatesRoute._addFileChildren(
+  FlatmatesRouteChildren,
+)
+
 interface GharpayyRouteChildren {
   GharpayyAreaSlugRoute: typeof GharpayyAreaSlugRoute
 }
@@ -511,6 +562,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AreasRoute: AreasRoute,
   CompareRoute: CompareRoute,
+  FlatmatesRoute: FlatmatesRouteWithChildren,
   GharpayyRoute: GharpayyRouteWithChildren,
   ListingsRoute: ListingsRoute,
   MapRoute: MapRoute,
