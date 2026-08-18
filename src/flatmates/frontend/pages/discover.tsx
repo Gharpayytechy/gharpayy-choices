@@ -3,24 +3,24 @@ import { useState, useEffect, useMemo } from "react";
 import { Link, useSearch } from "wouter";
 import { FMShell, Card, Btn, Pill, money, EmptyRoutes, Section } from "@/flatmates/frontend/components/Shell";
 import { PersonCard, RoomCard, FlatCard, GroupCard, ReadyCard } from "@/flatmates/frontend/components/Cards";
-import { getMe, useFM, People, Rooms, Flats, Groups, isHidden, hideItem, track } from "@/flatmates/backend/store/store";
+import { getMe, useFM, People, Rooms, Flats, Groups, isHidden, hideItem, track, quota, DAILY_PICK_LIMIT, sweepStaleRequests } from "@/flatmates/backend/store/store";
 import { seedFlatmates, READY_STAYS, AREA_LIST } from "@/flatmates/backend/store/seed";
 import { scoreMatch, resolutionRoutes, constraintImpact } from "@/flatmates/backend/store/match";
-import { rankFeed, feedInsight, DEALBREAKERS } from "@/flatmates/backend/services/intel";
+import { rankFeed, feedInsight, DEALBREAKERS, dailyPicks } from "@/flatmates/backend/services/intel";
 import { SlidersHorizontal, Map as MapIcon, Search, X } from "lucide-react";
 
-const TABS = [["all", "For You"], ["rooms", "Rooms"], ["people", "People"], ["groups", "Groups"], ["flats", "Flats"]];
+const TABS = [["today", "Today's 10"], ["all", "Everything"], ["rooms", "Rooms"], ["people", "People"], ["groups", "Groups"], ["flats", "Flats"]];
 
 export default function Discover() {
   const search = useSearch();
-  const initial = new URLSearchParams(search).get("tab") || "all";
+  const initial = new URLSearchParams(search).get("tab") || "today";
   const [tab, setTab] = useState(initial);
   const [q, setQ] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [dbs, setDbs] = useState<string[]>([]);
   const [strict, setStrict] = useState(false);
   const [f, setF] = useState<any>({ maxRent: 0, area: "", roomType: "", verifiedOnly: false, freshOnly: false, sort: "match" });
-  useEffect(() => { seedFlatmates(); }, []);
+  useEffect(() => { seedFlatmates(); sweepStaleRequests(); }, []);
 
   const me = useFM(() => getMe());
   const db = useFM(() => ({ people: People.all(), rooms: Rooms.all(), flats: Flats.all(), groups: Groups.all() }));
@@ -44,6 +44,12 @@ export default function Discover() {
   const rooms = useMemo(() => apply(db.rooms.filter((r: any) => r.status === "LIVE")), [db, q, f, me, dbs, strict]);
   const people = useMemo(() => apply(db.people), [db, q, f, me, dbs, strict]);
   const flats = useMemo(() => apply(db.flats), [db, q, f, me, dbs, strict]);
+  const daily = useMemo(
+    () => dailyPicks({ rooms, people, flats }, { me, dealbreakers: dbs, strict }),
+    [rooms, people, flats, me, dbs, strict],
+  );
+  const reqQuota = useFM(() => quota());
+
   const total = tab === "rooms" ? rooms.length : tab === "people" ? people.length : tab === "flats" ? flats.length : tab === "groups" ? db.groups.length : rooms.length + people.length + flats.length;
 
   const impact = constraintImpact(me, db.rooms);
@@ -138,6 +144,49 @@ export default function Discover() {
             <Btn className="flex-[2]" onClick={() => setShowFilters(false)}>Show {total} Matches</Btn>
           </div>
         </Card>
+      )}
+
+      {tab === "today" && (
+        <>
+          <Card className="p-4 mb-4 bg-slate-900 text-white border-slate-900">
+            <p className="text-xs font-semibold uppercase tracking-wide text-white/60">Your picks for today</p>
+            <h3 className="font-display text-xl font-semibold tracking-tight mt-1">
+              {daily.picks.length} of {DAILY_PICK_LIMIT} best matches
+            </h3>
+            <p className="text-sm text-white/70 mt-1">
+              Chosen from {daily.poolSize} live options. This exact set stays put all day and refreshes in ~{daily.refreshInHours}h —
+              so listings get a handful of genuine requests instead of hundreds of pings.
+            </p>
+            <div className="flex gap-2 mt-3">
+              <span className="px-2.5 h-7 rounded-full bg-white/10 text-xs font-semibold grid place-items-center">
+                {reqQuota.remaining} of {reqQuota.limit} requests left
+              </span>
+              <span className="px-2.5 h-7 rounded-full bg-emerald-500/20 text-emerald-200 text-xs font-semibold grid place-items-center">
+                100% answered within 48h
+              </span>
+            </div>
+          </Card>
+
+          {!daily.picks.length ? (
+            <EmptyRoutes title="No picks yet" body="Tell us what you need and we'll pick your ten tomorrow morning."
+              routes={resolutionRoutes(me, { rooms: rooms.length, people: people.length, ready: READY_STAYS.length })} />
+          ) : (
+            <div className="space-y-3 mb-6">
+              {daily.picks.map((x: any, i: number) => (
+                <div key={x.id} className="relative">
+                  <span className="absolute -left-1 -top-1 z-10 w-6 h-6 rounded-full bg-slate-900 text-white text-[11px] font-bold grid place-items-center">{i + 1}</span>
+                  {x._type === "room" ? <RoomCard me={me} r={x} />
+                    : x._type === "person" ? <PersonCard me={me} p={x} />
+                    : <FlatCard me={me} f={x} />}
+                </div>
+              ))}
+            </div>
+          )}
+
+          <Section title="Ready now">
+            <div className="space-y-3">{READY_STAYS.map((s) => <ReadyCard key={s.id} s={s} />)}</div>
+          </Section>
+        </>
       )}
 
       {(tab === "all" || tab === "rooms") && (

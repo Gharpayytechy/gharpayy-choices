@@ -4,7 +4,7 @@ import { FMShell, Card, Pill, Btn, timeAgo } from "@/flatmates/frontend/componen
 import { useFM, Notifs } from "@/flatmates/backend/store/store";
 import { Bell, Sparkles, CalendarDays, Home, Users } from "lucide-react";
 
-const ICON: any = { match: Sparkles, visit: CalendarDays, supply: Home, household: Home, mutual: Users, interest: Users };
+const ICON: any = { match: Sparkles, visit: CalendarDays, supply: Home, household: Home, mutual: Users, interest: Users, request: Users, declined: Users };
 
 export default function FMNotifications() {
   const all = useFM(() => Notifs.all());

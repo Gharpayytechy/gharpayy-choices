@@ -142,28 +142,145 @@ export const hideItem = (kind: string, refId: string, reason: string) => {
 };
 export const isHidden = (refId: string) => Hides.all().some((h: any) => h.refId === refId);
 
+/* ── Daily state: top-10 picks + request quota ─────── */
+const DAILY = K("daily");
+export const todayKey = () => new Date().toISOString().slice(0, 10);
+export const DAILY_PICK_LIMIT = 10;
+export const DAILY_REQUEST_LIMIT = 5;
+
+const blankDaily = () => ({ date: todayKey(), picks: [] as string[], used: 0 });
+export const getDaily = () => {
+  const d = load(DAILY, null);
+  if (!d || d.date !== todayKey()) return blankDaily();
+  return d;
+};
+const setDaily = (patch: any) => {
+  const next = { ...getDaily(), ...patch, date: todayKey() };
+  save(DAILY, next);
+  notify();
+  return next;
+};
+export const setDailyPicks = (ids: string[]) => setDaily({ picks: ids.slice(0, DAILY_PICK_LIMIT) });
+
+export const quota = () => {
+  const d = getDaily();
+  return { limit: DAILY_REQUEST_LIMIT, used: d.used, remaining: Math.max(0, DAILY_REQUEST_LIMIT - d.used) };
+};
+
+/* ── Requests (accept / reject gating) ─────────────── */
+/**
+ * Interest is a REQUEST, not a chat. No thread exists until the recipient
+ * accepts — this is what stops anyone from texting anyone.
+ */
 export const sendInterest = (kind: string, refId: string, title: string, reasons: string[], note: string) => {
-  const i = Interests.create({ kind, refId, title, reasons, note, status: "sent", at: new Date().toISOString() });
+  const q = quota();
+  if (!q.remaining) return { ok: false, reason: "quota", interest: null, thread: null, mutual: false };
+  if (Interests.all().some((i: any) => i.refId === refId && i.direction !== "in"))
+    return { ok: false, reason: "duplicate", interest: null, thread: null, mutual: false };
+
+  const i = Interests.create({
+    kind, refId, title, reasons, note,
+    direction: "out",
+    status: "pending",
+    at: new Date().toISOString(),
+  });
+  setDaily({ used: getDaily().used + 1 });
   track("interest_sent", { kind, refId });
-  // simulate the other side reciprocating for demo liquidity
-  const mutual = Math.random() > 0.45;
+  pushNotif({
+    type: "request",
+    title: "Request sent · " + title,
+    body: "They decide whether to open the chat. You'll know either way within 48 hours.",
+    link: "/flatmates/inbox",
+  });
+  if (typeof window !== "undefined") {
+    setTimeout(() => {
+      const still = Interests.get(i.id);
+      if (!still || still.status !== "pending") return;
+      if (Math.random() > 0.35) acceptInterest(i.id, "them");
+      else declineInterest(i.id, "Already filled", "them");
+    }, 5000 + Math.random() * 4000);
+  }
+  return { ok: true, interest: i, thread: null, mutual: false };
+};
+
+export const acceptInterest = (id: string, by = "me") => {
+  const i = Interests.get(id);
+  if (!i || i.status !== "pending") return null;
+  const incoming = i.direction === "in";
   const t = Threads.create({
-    kind, refId, title, mutual,
+    kind: i.kind,
+    refId: i.refId,
+    title: i.title,
+    mutual: true,
+    accepted: true,
     messages: [
-      { from: "me", text: note || "Hi! I'm interested — is this still available?", at: new Date().toISOString() },
-      ...(mutual ? [{ from: "them", text: "Hey! Yes it is. Want to see it this week?", at: new Date().toISOString() }] : []),
+      { from: incoming ? "them" : "me", text: i.note || "Hi! I'm interested — is this still available?", at: i.at || new Date().toISOString() },
+      { from: incoming ? "me" : "them", text: "Accepted — happy to talk. What would you like to know?", at: new Date().toISOString() },
     ],
   });
+  Interests.update(id, { status: "accepted", threadId: t.id, respondedAt: new Date().toISOString(), respondedBy: by });
+  track("request_accepted", { id, kind: i.kind, refId: i.refId });
   pushNotif({
-    type: mutual ? "mutual" : "interest",
-    title: mutual ? "It's mutual · " + title : "Interest sent · " + title,
-    body: mutual ? "You both want to explore this. Start the chat." : "They'll be notified. Most people reply within a day.",
+    type: "mutual",
+    title: "Request accepted · " + i.title,
+    body: "The chat is open now. Say hello.",
     link: `/flatmates/chat/${t.id}`,
   });
-  return { interest: i, thread: t, mutual };
+  return t;
+};
+
+export const declineInterest = (id: string, reason = "Not a fit", by = "me") => {
+  const i = Interests.get(id);
+  if (!i || i.status !== "pending") return null;
+  Interests.update(id, { status: "declined", reason, respondedAt: new Date().toISOString(), respondedBy: by });
+  track("request_declined", { id, reason });
+  pushNotif({
+    type: "declined",
+    title: "Request declined · " + i.title,
+    body: `${reason}. Your daily picks refresh tomorrow with new options.`,
+    link: "/flatmates/discover",
+  });
+  return true;
+};
+
+/** Nobody is left hanging: pending requests older than 48h auto-close. */
+export const sweepStaleRequests = () => {
+  const now = Date.now();
+  let closed = 0;
+  Interests.all().forEach((i: any) => {
+    if (i.status !== "pending") return;
+    const age = now - +new Date(i.at || i.createdAt || now);
+    if (age > 48 * 3600000) {
+      Interests.update(i.id, { status: "expired", reason: "No response in 48h", respondedAt: new Date().toISOString() });
+      closed++;
+    }
+  });
+  return closed;
+};
+
+export const incomingRequests = () => Interests.all().filter((i: any) => i.direction === "in" && i.status === "pending");
+export const outgoingRequests = () => Interests.all().filter((i: any) => i.direction !== "in" && i.status === "pending");
+
+/** Seed a few incoming requests so accept/decline is usable on day one. */
+export const ensureIncomingRequests = () => {
+  if (Interests.all().some((i: any) => i.direction === "in")) return;
+  People.all().slice(0, 3).forEach((p: any, idx: number) => {
+    Interests.create({
+      kind: "person",
+      refId: p.id,
+      title: p.name,
+      direction: "in",
+      status: "pending",
+      reasons: ["Same location", "Budget alignment"],
+      note: idx === 0 ? "Hi! Saw your requirement — I'm looking in the same area from next month." : "Would love to connect about sharing a place.",
+      at: new Date(Date.now() - (idx + 1) * 5 * 3600000).toISOString(),
+    });
+  });
 };
 
 export const interestSentTo = (refId: string) => Interests.all().some((i: any) => i.refId === refId);
+export const requestStatusFor = (refId: string) =>
+  Interests.all().find((i: any) => i.refId === refId)?.status || null;
 
 export const reply = (threadId: string, text: string, from = "me") => {
   const t = Threads.get(threadId);
