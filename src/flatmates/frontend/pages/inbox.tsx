@@ -31,7 +31,6 @@ export default function Inbox() {
   const incoming = useFM(() => incomingRequests());
   const outgoing = useFM(() => outgoingRequests());
   const health = useFM(() => requestHealth());
-  useEffect(() => { console.log("DBG inbox", { incoming: incomingRequests().length, all: Interests.allRaw().length, threads: Threads.all().length }); });
 
   // Chats only exist for accepted requests — nobody can text you before that.
   const accepted = threads.filter((t: any) => t.accepted !== false);
