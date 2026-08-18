@@ -7,16 +7,21 @@ import { signUp, ROLE_META } from "@/flatmates/backend/store/accounts";
 import { AREA_LIST } from "@/flatmates/backend/store/seed";
 import { track } from "@/flatmates/backend/store/store";
 import { ArrowLeft, Check } from "lucide-react";
+import { CITY_OPTIONS, cityByName } from "@/flatmates/backend/store/locations";
+import { WhatsAppHelp } from "@/flatmates/frontend/components/WhatsAppHelp";
 
 const ROLES = ["seeker", "poster", "owner", "group"];
 
 export default function FlatmatesSignup() {
   const search = useSearch();
   const preset = new URLSearchParams(search || "").get("role");
+  const setup = new URLSearchParams(search || "").get("setup") || "";
+  const presetCity = new URLSearchParams(search || "").get("city") || "Bengaluru";
   const [, nav] = useLocation();
   const [role, setRole] = useState(ROLE_META[preset] ? preset : "seeker");
   const [form, setForm] = useState({ name: "", email: "", phone: "", password: "", budgetMax: 22000 });
   const [areas, setAreas] = useState<string[]>([]);
+  const [city, setCity] = useState(presetCity);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const set = (patch: any) => setForm((f) => ({ ...f, ...patch }));
@@ -25,7 +30,7 @@ export default function FlatmatesSignup() {
     e?.preventDefault?.();
     setError("");
     setBusy(true);
-    const res = signUp({ ...form, role, areas });
+    const res = signUp({ ...form, role, areas, city, setup });
     setBusy(false);
     if (!res.ok) { setError(res.error); return; }
     track("account_created", { role });
@@ -39,7 +44,7 @@ export default function FlatmatesSignup() {
     <div className="min-h-[100dvh] bg-background text-foreground">
       <header className="sticky top-0 z-30 bg-background/85 backdrop-blur-xl border-b border-border">
         <div className="max-w-lg mx-auto px-4 h-14 flex items-center gap-3">
-          <Link href="/flatmates/welcome" className="w-9 h-9 -ml-2 grid place-items-center rounded-full hover:bg-muted">
+          <Link href="/flatmates" className="w-9 h-9 -ml-2 grid place-items-center rounded-full hover:bg-muted">
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <p className="font-display font-semibold tracking-tight flex-1">Create your account</p>
@@ -87,9 +92,12 @@ export default function FlatmatesSignup() {
             </Field>
           )}
 
+          <Field label="City">
+            <select className={inp} value={city} onChange={(e)=>{setCity(e.target.value);setAreas([])}}>{CITY_OPTIONS.map(c=><option key={c.name}>{c.name}</option>)}</select>
+          </Field>
           <Field label="Areas you care about">
             <div className="flex flex-wrap gap-2">
-              {AREA_LIST.slice(0, 10).map((a: string) => {
+              {cityByName(city).areas.slice(0, 10).map((a: string) => {
                 const on = areas.includes(a);
                 return (
                   <button type="button" key={a} onClick={() => toggleArea(a)}
@@ -108,6 +116,7 @@ export default function FlatmatesSignup() {
           )}
 
           <Btn className="w-full" type="submit" disabled={busy}>{busy ? "Creating…" : "Create account & continue"}</Btn>
+          <WhatsAppHelp module="Signup" action="Help me create my Flatmates profile" setup={setup} city={city} area={areas[0]} className="w-full mt-2" />
         </form>
 
         <p className="text-center text-sm text-muted-foreground mt-5">

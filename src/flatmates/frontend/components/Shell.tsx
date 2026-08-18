@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Home, Compass, Plus, MessageCircle, User, Bell, ChevronLeft, Heart, ShieldCheck, Search, LayoutGrid } from "lucide-react";
 import { cn } from "@/referral-app/lib/utils";
 import { useFM, Notifs } from "@/flatmates/backend/store/store";
+import { WhatsAppHelp } from "@/flatmates/frontend/components/WhatsAppHelp";
 
 export function FMShell({ children, title, sub, back, action, tab, wide }: any) {
   const unread = useFM(() => Notifs.all().filter((n: any) => !n.read).length);
@@ -36,6 +37,7 @@ export function FMShell({ children, title, sub, back, action, tab, wide }: any) 
         </div>
       </header>
       <main className={cn("mx-auto px-4 py-4", wide ? "max-w-5xl" : "max-w-2xl")}>{children}</main>
+      <WhatsAppHelp module={title || "Flatmates"} action="Help me complete this step" label="" className="fixed bottom-24 left-4 z-30 w-11 px-0 rounded-full md:bottom-6" />
       <FMTabs active={tab} />
     </div>
   );

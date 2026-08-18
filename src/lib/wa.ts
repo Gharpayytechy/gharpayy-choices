@@ -168,3 +168,33 @@ export function waListMyProperty() {
 export function waSupport() {
   return waLink("Heyy GHARPAYY 👋  I'm an existing Gharpayy tenant and need help with: " + sig("support"), "support");
 }
+
+export type FlatmatesSupportContext = {
+  module?: string;
+  action?: string;
+  reference?: string;
+  city?: string;
+  area?: string;
+  role?: string;
+  setup?: string;
+  budget?: number;
+};
+
+/** Shared recovery handoff for every Flatmates workflow. Keep it diagnostic, never private. */
+export function waFlatmatesSupport(context: FlatmatesSupportContext = {}) {
+  const desk: WaDesk = context.role === "owner" || context.setup?.includes("list") ? "owner" : "support";
+  const lines = [
+    "Heyy GHARPAYY 👋 I need help in *Gharpayy Flatmates*.",
+    context.action ? `What I need: ${context.action}` : "Please help me complete my move.",
+    context.module ? `Module: ${context.module}` : "",
+    context.role ? `Role: ${context.role}` : "",
+    context.setup ? `Setup: ${context.setup}` : "",
+    context.city ? `City: ${context.city}` : "",
+    context.area ? `Locality: ${context.area}` : "",
+    context.budget ? `Budget: ₹${context.budget.toLocaleString("en-IN")}/month` : "",
+    context.reference ? `Reference: ${context.reference}` : "",
+    "",
+    "Please pick this up from here and help me finish it.",
+  ].filter(Boolean);
+  return waLink(lines.join("\n") + "\n\n- sent via Gharpayy Flatmates", desk);
+}

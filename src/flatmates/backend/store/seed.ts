@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { People, Rooms, Flats, Groups, Notifs } from "./store";
+import { coordinatesFor } from "./locations";
 
 const iso = (d: number) => new Date(Date.now() + d * 86400000).toISOString().slice(0, 10);
 const ago = (m: number) => new Date(Date.now() - m * 60000).toISOString();
@@ -49,6 +50,7 @@ export function seedFlatmates(force = false) {
     id: "p" + i,
     ownerActor: { 0: "seeker_aarav", 1: "seeker_aditi", 2: "group_kunal", 4: "seeker_rohit" }[i],
     name: p[0], age: p[1], gender: p[2], occupation: p[3], company: p[4],
+     city: "Bengaluru", coordinates: coordinatesFor(p[5], i), verifiedAt: ago(20 + i * 35),
     area: p[5], nearby: AREAS.filter((a) => a !== p[5]).slice(0, 2),
     budgetIdeal: p[6], budgetMax: Math.round(p[6] * 1.2), rent: p[6],
     roomType: p[7], moveIn: iso(3 + i * 2), availableFrom: iso(3 + i * 2),
@@ -72,6 +74,7 @@ export function seedFlatmates(force = false) {
     id: "r" + i,
     ownerActor: ROOM_OWNERS[i % ROOM_OWNERS.length],
     title: r[0], area: r[1], rent: r[2], deposit: r[3], roomType: r[4],
+     city: "Bengaluru", coordinates: coordinatesFor(r[1], i),
     genderPref: r[5], residents: r[6], address: r[7], verifiedAt: ago(r[8]),
     nearby: AREAS.filter((a) => a !== r[1]).slice(0, 2),
     availableFrom: iso(2 + i * 3),
@@ -98,6 +101,7 @@ export function seedFlatmates(force = false) {
     id: "f" + i,
     ownerActor: FLAT_OWNERS[i % FLAT_OWNERS.length],
     title: f[0], area: f[1], rent: f[2], bhk: f[3], deposit: f[4], address: f[5],
+     city: "Bengaluru", coordinates: coordinatesFor(f[1], i + 2),
     nearby: AREAS.filter((a) => a !== f[1]).slice(0, 2),
     availableFrom: iso(6 + i * 4), furnishing: i % 2 ? "Semi-furnished" : "Fully furnished",
     amenities: ["Lift", "Parking", "Power backup", "Security", i % 2 ? "Gym" : "Pet friendly"],
@@ -107,9 +111,9 @@ export function seedFlatmates(force = false) {
   })));
 
   Groups.replace([
-    { id: "g0", name: "HSR 3BHK Crew", area: "HSR Layout", memberIds: ["p0", "p3"], budget: 56000, bhk: 3, moveIn: iso(12), compatibility: 91, status: "forming", checklist: { location: true, budget: true, moveIn: true, expectations: false, flats: false, visit: false }, shortlist: [] },
-    { id: "g1", name: "Koramangala Duo", area: "Koramangala", memberIds: ["p1", "p7"], budget: 38000, bhk: 2, moveIn: iso(20), compatibility: 87, status: "forming", checklist: { location: true, budget: true, moveIn: false, expectations: false, flats: false, visit: false }, shortlist: [] },
-    { id: "g2", name: "Bellandur Techies", area: "Bellandur", memberIds: ["p2", "p8"], budget: 47000, bhk: 3, moveIn: iso(9), compatibility: 84, status: "forming", checklist: { location: true, budget: true, moveIn: true, expectations: true, flats: false, visit: false }, shortlist: [] },
+    { id: "g0", name: "HSR 3BHK Crew", city: "Bengaluru", area: "HSR Layout", memberIds: ["p0", "p3"], budget: 56000, rent: 56000, bhk: 3, moveIn: iso(12), compatibility: 91, status: "forming", checklist: { location: true, budget: true, moveIn: true, expectations: false, flats: false, visit: false }, shortlist: [] },
+    { id: "g1", name: "Koramangala Duo", city: "Bengaluru", area: "Koramangala", memberIds: ["p1", "p7"], budget: 38000, rent: 38000, bhk: 2, moveIn: iso(20), compatibility: 87, status: "forming", checklist: { location: true, budget: true, moveIn: false, expectations: false, flats: false, visit: false }, shortlist: [] },
+    { id: "g2", name: "Bellandur Techies", city: "Bengaluru", area: "Bellandur", memberIds: ["p2", "p8"], budget: 47000, rent: 47000, bhk: 3, moveIn: iso(9), compatibility: 84, status: "forming", checklist: { location: true, budget: true, moveIn: true, expectations: true, flats: false, visit: false }, shortlist: [] },
   ]);
 
   if (!Notifs.all().length) {
@@ -122,10 +126,10 @@ export function seedFlatmates(force = false) {
 }
 
 export const READY_STAYS = [
-  { id: "rs0", title: "Gharpayy HSR · Private ensuite", area: "HSR Layout", rent: 16999, roomType: "Private room", food: true, deposit: 16999, ready: "Today", distance: "0.9 km" },
-  { id: "rs1", title: "Gharpayy Koramangala · Twin", area: "Koramangala", rent: 12499, roomType: "Twin sharing", food: true, deposit: 12499, ready: "Today", distance: "2.1 km" },
-  { id: "rs2", title: "Gharpayy Bellandur · Private", area: "Bellandur", rent: 15499, roomType: "Private room", food: false, deposit: 15499, ready: "Tomorrow", distance: "1.4 km" },
-  { id: "rs3", title: "Gharpayy BTM · Shared", area: "BTM Layout", rent: 8999, roomType: "Shared room", food: true, deposit: 8999, ready: "Today", distance: "3.2 km" },
+  { id: "rs0", title: "Gharpayy HSR · Private ensuite", city: "Bengaluru", kind: "ready", area: "HSR Layout", rent: 16999, roomType: "Private room", food: true, deposit: 16999, ready: "Today", distance: "0.9 km", coordinates: coordinatesFor("HSR Layout", 4) },
+  { id: "rs1", title: "Gharpayy Koramangala · Twin", city: "Bengaluru", kind: "ready", area: "Koramangala", rent: 12499, roomType: "Twin sharing", food: true, deposit: 12499, ready: "Today", distance: "2.1 km", coordinates: coordinatesFor("Koramangala", 4) },
+  { id: "rs2", title: "Gharpayy Bellandur · Private", city: "Bengaluru", kind: "ready", area: "Bellandur", rent: 15499, roomType: "Private room", food: false, deposit: 15499, ready: "Tomorrow", distance: "1.4 km", coordinates: coordinatesFor("Bellandur", 4) },
+  { id: "rs3", title: "Gharpayy BTM · Shared", city: "Bengaluru", kind: "ready", area: "BTM Layout", rent: 8999, roomType: "Shared room", food: true, deposit: 8999, ready: "Today", distance: "3.2 km", coordinates: coordinatesFor("BTM Layout", 4) },
 ];
 
 export const AREA_LIST = AREAS;

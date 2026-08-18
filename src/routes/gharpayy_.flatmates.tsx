@@ -1,8 +1,6 @@
 // @ts-nocheck
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
-
-const FlatmatesApp = lazy(() => import("@/flatmates/frontend/FlatmatesApp"));
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/gharpayy_/flatmates")({
   ssr: false,
@@ -16,13 +14,10 @@ export const Route = createFileRoute("/gharpayy_/flatmates")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: FlatmatesIndexRoute,
+  component: LegacyFlatmatesRedirect,
 });
 
-function FlatmatesIndexRoute() {
-  return (
-    <Suspense fallback={<div className="min-h-screen grid place-items-center text-muted-foreground">Loading Flatmates…</div>}>
-      <FlatmatesApp />
-    </Suspense>
-  );
+function LegacyFlatmatesRedirect() {
+  useEffect(() => { window.location.replace("/flatmates"); }, []);
+  return <div className="min-h-screen grid place-items-center text-sm text-muted-foreground">Opening Flatmates…</div>;
 }
