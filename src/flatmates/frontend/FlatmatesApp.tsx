@@ -4,6 +4,7 @@
  * Self-contained wouter app mounted at /gharpayy. Every screen, component and
  * data port lives under src/flatmates/, independent of the main site.
  */
+import { useEffect } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/referral-app/components/ui/toaster";
@@ -42,6 +43,8 @@ import FMWelcome from "@/flatmates/frontend/pages/welcome";
 import FMSignup from "@/flatmates/frontend/pages/signup";
 import FMLogin from "@/flatmates/frontend/pages/login";
 import { RoleSwitcher } from "@/flatmates/frontend/components/RoleSwitcher";
+import { seedFlatmates } from "@/flatmates/backend/store/seed";
+import { hydrateAccounts } from "@/flatmates/backend/store/accounts";
 
 import AdminCommand from "@/flatmates/frontend/admin/command";
 import AdminSupply from "@/flatmates/frontend/admin/supply";
@@ -126,6 +129,9 @@ function FlatmatesRoutes() {
 }
 
 export default function FlatmatesApp() {
+  // Seed the marketplace and restore local accounts on any entry point, so a
+  // deep link (inbox, admin, a shared listing) is never an empty screen.
+  useEffect(() => { seedFlatmates(); hydrateAccounts(); }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
