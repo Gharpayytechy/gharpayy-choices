@@ -47,6 +47,7 @@ export function seedFlatmates(force = false) {
 
   People.replace(PEOPLE.map((p, i) => ({
     id: "p" + i,
+    ownerActor: { 0: "seeker_aarav", 1: "seeker_aditi", 2: "group_kunal", 4: "seeker_rohit" }[i],
     name: p[0], age: p[1], gender: p[2], occupation: p[3], company: p[4],
     area: p[5], nearby: AREAS.filter((a) => a !== p[5]).slice(0, 2),
     budgetIdeal: p[6], budgetMax: Math.round(p[6] * 1.2), rent: p[6],
