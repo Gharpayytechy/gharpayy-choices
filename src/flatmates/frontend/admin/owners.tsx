@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useEffect, useState } from "react";
+import { toast } from "@/referral-app/hooks/use-toast";
 import { AdminShell, Panel, Kpi, Tag } from "./AdminShell";
 import { repo, useFM, ownerBoard, ownerPortfolios, money, opsActions } from "@/flatmates/backend";
 
@@ -55,8 +56,8 @@ export default function AdminOwners() {
                         <span className="text-[11px] text-muted-foreground tabular-nums">
                           {money(r.rent)} vs mkt {money(r.marketRent)}
                         </span>
-                        <button onClick={() => opsActions.reprice(r.id, r.marketRent)} className="px-2 py-1 rounded-md border border-border text-[11px] font-semibold">Match market</button>
-                        <button onClick={() => opsActions.reverify(r.id)} className="px-2 py-1 rounded-md bg-primary/10 text-primary text-[11px] font-semibold">Re-verify</button>
+                        <button onClick={() => { opsActions.reprice(r.id, r.marketRent); toast(`${r.title} priced to market`); }} className="px-2 py-1 rounded-md border border-border text-[11px] font-semibold">Match market</button>
+                        <button onClick={() => { opsActions.reverify(r.id); toast(`${r.title} re-verified`); }} className="px-2 py-1 rounded-md bg-primary/10 text-primary text-[11px] font-semibold">Re-verify</button>
                       </div>
                     ))}
                   </div>
@@ -84,9 +85,9 @@ export default function AdminOwners() {
                   </p>
                   <p className="text-[12px] text-primary font-medium mt-1.5">{r.recommendation}</p>
                   <div className="flex gap-1.5 mt-2">
-                    <button onClick={() => opsActions.reprice(r.id, r.marketRent)} className="px-2.5 py-1.5 rounded-lg border border-border text-xs font-semibold">Apply price</button>
-                    <button onClick={() => opsActions.reverify(r.id)} className="px-2.5 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-semibold">Re-verify</button>
-                    <button onClick={() => opsActions.log("owner", `Sent recommendation for ${r.title}`)} className="px-2.5 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold">Send to owner</button>
+                    <button onClick={() => { opsActions.reprice(r.id, r.marketRent); toast(`${r.title} priced to market`); }} className="px-2.5 py-1.5 rounded-lg border border-border text-xs font-semibold">Apply price</button>
+                    <button onClick={() => { opsActions.reverify(r.id); toast(`${r.title} re-verified`); }} className="px-2.5 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-semibold">Re-verify</button>
+                    <button onClick={() => { opsActions.log("owner", `Sent recommendation for ${r.title}`); toast(`Recommendation sent to the owner of ${r.title}`); }} className="px-2.5 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold">Send to owner</button>
                   </div>
                 </div>
               ))}

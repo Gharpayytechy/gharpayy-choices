@@ -83,26 +83,6 @@ export default function FlatmatesPublish() {
     return <FMShell title="Publish a listing" back="/flatmates"><p className="text-sm text-muted-foreground">Loading…</p></FMShell>;
   }
 
-  if (!session) {
-    return (
-      <FMShell title="Publish a listing" sub="Sign in — anonymous posting is disabled" back="/flatmates">
-        <div className="rounded-2xl border border-border bg-card p-4">
-          <p className="text-sm text-muted-foreground mb-3">
-            Every listing is tied to a verified identity. That single rule removes most spam before it exists.
-          </p>
-          <input className={`${inp} mb-2`} placeholder="Full name (for sign up)" value={authForm.name} onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })} />
-          <input className={`${inp} mb-2`} placeholder="Email" type="email" value={authForm.email} onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })} />
-          <input className={`${inp} mb-3`} placeholder="Password" type="password" value={authForm.password} onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })} />
-          {authMsg && <p className="text-xs text-destructive mb-2">{authMsg}</p>}
-          <div className="flex gap-2">
-            <button onClick={() => signIn("in")} className="flex-1 h-11 rounded-xl bg-primary text-primary-foreground text-sm font-semibold">Log in</button>
-            <button onClick={() => signIn("up")} className="flex-1 h-11 rounded-xl border border-border text-sm font-semibold">Create account</button>
-          </div>
-        </div>
-      </FMShell>
-    );
-  }
-
   return (
     <FMShell title="Publish a listing" sub="Reviewed before it reaches anyone" back="/flatmates">
       {/* Quality meter */}
@@ -199,10 +179,27 @@ export default function FlatmatesPublish() {
         </ul>
       </div>
 
-      <button onClick={submit} disabled={busy} className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-semibold flex items-center justify-center gap-2">
-        {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
-        Submit for approval
-      </button>
+      {session ? (
+        <button onClick={submit} disabled={busy} className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-semibold flex items-center justify-center gap-2">
+          {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
+          Submit for approval
+        </button>
+      ) : (
+        <div className="rounded-2xl border border-border bg-card p-4">
+          <p className="text-sm font-semibold">Last step — attach this listing to your account</p>
+          <p className="text-xs text-muted-foreground mt-1 mb-3">
+            Your draft above is kept. Every listing is tied to a real identity — that single rule removes most spam before it exists.
+          </p>
+          <input className={`${inp} mb-2`} placeholder="Full name" value={authForm.name} onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })} />
+          <input className={`${inp} mb-2`} placeholder="Email" type="email" value={authForm.email} onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })} />
+          <input className={`${inp} mb-3`} placeholder="Password" type="password" value={authForm.password} onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })} />
+          {authMsg && <p className="text-xs text-destructive mb-2">{authMsg}</p>}
+          <div className="flex gap-2">
+            <button onClick={() => signIn("up")} className="flex-1 h-11 rounded-xl bg-primary text-primary-foreground text-sm font-semibold">Create account & continue</button>
+            <button onClick={() => signIn("in")} className="flex-1 h-11 rounded-xl border border-border text-sm font-semibold">I already have one</button>
+          </div>
+        </div>
+      )}
 
       {result && (
         <div className={`rounded-2xl border p-4 mt-4 ${result.ok ? "border-primary/30 bg-primary/[0.06]" : "border-destructive/30 bg-destructive/[0.06]"}`}>

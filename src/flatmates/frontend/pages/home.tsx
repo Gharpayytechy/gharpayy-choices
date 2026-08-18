@@ -12,10 +12,10 @@ import { WhatsAppHelp } from "@/flatmates/frontend/components/WhatsAppHelp";
 
 /** The four canonical doors. We never ask "owner or tenant" — we ask what you're trying to do. */
 const SETUPS = [
-  { key: "need-room", icon: KeyRound, title: "I need a room or shared flat", sub: "Room Seeker · find somewhere you can actually live", to: "/flatmates/move", cta: "Find my place" },
-  { key: "have-room", icon: Users, title: "I have a room, need a flatmate", sub: "Replacement Host · fill your room with the right person", to: "/flatmates/host", cta: "Find a flatmate" },
-  { key: "own-property", icon: Building2, title: "I own a property, want occupants", sub: "Property Owner · fill your asset faster", to: "/flatmates/portfolio", cta: "Find tenants" },
-  { key: "managed", icon: Home, title: "I want Gharpayy to manage it", sub: "Managed Property · we run the property for you", to: "/flatmates/managed", cta: "Manage my property" },
+  { key: "need-room", icon: KeyRound, title: "I need a room or shared flat", sub: "Room Seeker · find somewhere you can actually live", to: "/flatmates/onboard", cta: "Find my place" },
+  { key: "have-room", icon: Users, title: "I have a room, need a flatmate", sub: "Replacement Host · fill your room with the right person", to: "/flatmates/publish?mode=replacement_room", cta: "Find a flatmate" },
+  { key: "own-property", icon: Building2, title: "I own a property, want occupants", sub: "Property Owner · fill your asset faster", to: "/flatmates/publish?mode=owner_room", cta: "Find tenants" },
+  { key: "managed", icon: Home, title: "I want Gharpayy to manage it", sub: "Managed Property · we run the property for you", to: "/flatmates/publish?mode=managed_unit", cta: "Manage my property" },
 ];
 
 export default function FlatmatesHome() {
@@ -41,7 +41,7 @@ export default function FlatmatesHome() {
     <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-3">
         <Link href="/flatmates" className="flex items-center gap-2 min-w-0"><span className="w-8 h-8 rounded-lg bg-primary text-primary-foreground grid place-items-center font-display font-bold">G</span><span className="font-display font-bold">Gharpayy Flatmates</span></Link>
-        <nav className="hidden md:flex items-center gap-1 ml-5 text-sm font-semibold text-muted-foreground"><Link href="/flatmates/discover" className="px-3 py-2 hover:text-foreground">Discover</Link><Link href="/flatmates/map" className="px-3 py-2 hover:text-foreground">Map</Link><Link href="/flatmates/publish" className="px-3 py-2 hover:text-foreground">List</Link><Link href="/flatmates/guide" className="px-3 py-2 hover:text-foreground">Guide</Link><Link href="/flatmates/playbook" className="px-3 py-2 hover:text-foreground">Playbook</Link></nav>
+        <nav className="hidden md:flex items-center gap-1 ml-5 text-sm font-semibold text-muted-foreground"><Link href="/flatmates/discover" className="px-3 py-2 hover:text-foreground">Discover</Link><Link href="/flatmates/map" className="px-3 py-2 hover:text-foreground">Map</Link><Link href="/flatmates/publish" className="px-3 py-2 hover:text-foreground">List</Link></nav>
         <div className="ml-auto flex items-center gap-2">{account ? <Link href="/flatmates/inbox" className="h-9 px-3 rounded-lg border border-border grid place-items-center text-xs font-semibold">My inbox</Link> : <><Link href="/flatmates/login" className="hidden sm:grid h-9 px-3 place-items-center text-xs font-semibold">Log in</Link><Link href="/flatmates/signup" className="h-9 px-3 rounded-lg bg-primary text-primary-foreground grid place-items-center text-xs font-semibold">Join free</Link></>}</div>
       </div>
     </header>

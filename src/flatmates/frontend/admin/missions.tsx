@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useEffect, useState } from "react";
+import { toast } from "@/referral-app/hooks/use-toast";
 import { AdminShell, Panel, Kpi, Tag } from "./AdminShell";
 import { repo, useFM, missionBoard, opsActions, opsLog } from "@/flatmates/backend";
 
@@ -27,7 +28,7 @@ export default function AdminMissions() {
       sub="Today's exact moves, generated from live imbalance. Drag-free kanban — just advance each card."
       action={
         <button
-          onClick={() => rows.forEach((m: any) => opsActions.setMission(m.id, { status: "open" }))}
+          onClick={() => { rows.forEach((m: any) => opsActions.setMission(m.id, { status: "open" })); toast("Mission board reset — everything back to open"); }}
           className="px-3 py-2 rounded-xl border border-border text-xs font-semibold"
         >
           Reset board
@@ -69,7 +70,7 @@ export default function AdminMissions() {
                   <div className="flex gap-1.5 mt-2">
                     {col.key !== "open" && (
                       <button
-                        onClick={() => opsActions.setMission(m.id, { status: col.key === "done" ? "doing" : "open" })}
+                        onClick={() => { opsActions.setMission(m.id, { status: col.key === "done" ? "doing" : "open" }); toast("Mission moved back"); }}
                         className="px-2.5 py-1.5 rounded-lg border border-border text-xs font-semibold"
                       >
                         ← Back
@@ -77,7 +78,7 @@ export default function AdminMissions() {
                     )}
                     {col.key !== "done" && (
                       <button
-                        onClick={() => opsActions.setMission(m.id, { status: col.key === "open" ? "doing" : "done" })}
+                        onClick={() => { const next = col.key === "open" ? "doing" : "done"; opsActions.setMission(m.id, { status: next }); toast(next === "done" ? "Mission marked done" : "Mission started"); }}
                         className="px-2.5 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold"
                       >
                         {col.key === "open" ? "Start" : "Complete"} →
