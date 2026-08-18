@@ -28,6 +28,8 @@ const GROUPS = [
       { href: "/flatmates/groups", icon: Sparkles, t: "Groups", s: "Form a household first" },
       { href: "/flatmates/inbox", icon: MessageCircle, t: "Conversations", s: "Interests and chats" },
       { href: "/flatmates/pipeline", icon: Activity, t: "Your move", s: "Pipeline + next best action" },
+      { href: "/flatmates/playbook", icon: FileText, t: "The playbook", s: "Why, how to use it, data flow" },
+      { href: "/flatmates/property", icon: Home, t: "Property twin", s: "Building → room → money, linked" },
       { href: "/flatmates/meetings", icon: CalendarDays, t: "Meets & visits", s: "Safe, scheduled, logged" },
     ],
   },
