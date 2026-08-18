@@ -119,14 +119,16 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const standalone = pathname.startsWith("/gharpayy/flatmates") || pathname.startsWith("/app");
 
   return (
     <QueryClientProvider client={queryClient}>
       <RentFormProvider>
         <ReferralProvider>
           <Outlet />
-          <CommandPalette />
-          <FloatingDualCTA />
+          {!standalone && <CommandPalette />}
+          {!standalone && <FloatingDualCTA />}
           <Toaster />
         </ReferralProvider>
       </RentFormProvider>
