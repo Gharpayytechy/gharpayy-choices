@@ -59,7 +59,7 @@ export default function FMSearch() {
           </Section>
           <Section title="Browse by micro-market" sub="Live supply in each area">
             <div className="grid grid-cols-2 gap-2">
-              {CITY_OPTIONS.flatMap((city) => city.areas.map((area) => ({ city: city.name, area }))).map(({city,a: unused,area: a}: any) => {
+              {CITY_OPTIONS.flatMap((city) => city.areas.map((area) => ({ city: city.name, area }))).map(({city, area: a}: any) => {
                 const n = data.rooms.filter((r: any) => r.area === a && r.status === "LIVE").length;
                 const p = data.people.filter((x: any) => x.area === a).length;
                 return (

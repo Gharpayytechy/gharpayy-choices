@@ -8,10 +8,10 @@ export const Route = createFileRoute("/flatmates")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Gharpayy Flatmates · Find your room & flatmate" },
-      { name: "description", content: "Match with verified rooms, flatmates and ready-to-move flats in Bengaluru — lifestyle-matched and broker-free." },
+      { title: "Gharpayy Flatmates · Rooms Across India" },
+      { name: "description", content: "Find rooms, flatmates, groups and whole homes across Indian cities, with verified profiles and direct support." },
       { property: "og:title", content: "Gharpayy Flatmates · Find your room & flatmate" },
-      { property: "og:description", content: "Lifestyle-matched rooms, flatmates and ready flats in Bengaluru." },
+      { property: "og:description", content: "Rooms, flatmates, groups and whole homes across India, connected in one app." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

@@ -8,8 +8,8 @@ export const Route = createFileRoute("/flatmates/$")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Flatmates · Discover rooms, people and groups" },
-      { name: "description", content: "Browse rooms, flatmate profiles, groups, meetings and your household inside Gharpayy Flatmates." },
+      { title: "Discover Rooms & Flatmates · Gharpayy" },
+      { name: "description", content: "Search rooms, flatmate profiles, groups and whole homes by city, locality, budget and lifestyle." },
       { property: "og:title", content: "Flatmates · Discover rooms, people and groups" },
       { property: "og:description", content: "Rooms, flatmate profiles, groups and meetings inside Gharpayy Flatmates." },
       { property: "og:type", content: "website" },
